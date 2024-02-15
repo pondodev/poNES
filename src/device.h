@@ -1,6 +1,8 @@
 #ifndef DEVICE_H
 #define DEVICE_H
 
+#include "cart.h"
+
 #include <stdint.h>
 
 #define MEMORY_SIZE_BYTES       0xFFFF
@@ -35,11 +37,14 @@ typedef struct {
     // buffers
     uint8_t     memory[MEMORY_SIZE_BYTES];
     uint8_t     video[VIDEO_BUFFER_SIZE_BYTES];
+
+    Cart*       cart;
 } Device;
 
 extern Device g_device;
 
-void device_init(void);
+void device_init(Cart* cart);
+void device_exec(void);
 
 #endif
 

@@ -8,6 +8,7 @@
 #include <stdint.h>
 
 static inline int _parse_ines(Cart* cart);
+static inline int _get_ines_start_addr(uint16_t mapper, uint16_t* start_addr_out);
 static inline int _parse_ines20(Cart* cart);
 
 int cart_load(const char* path, Cart* cart) {
@@ -76,14 +77,14 @@ void cart_unload(Cart* cart) {
 static inline int _parse_ines(Cart* cart) {
     TraceLog(LOG_INFO, "ROM is iNES format");
     cart->type = kROMTYPE_INES;
+    int success = 1;
 
     cart->prg_rom_size = cart->buffer[4]*16*1000;
     cart->chr_rom_size = cart->buffer[5]*8*1000;
     cart->prg_ram_size = cart->buffer[8]*8*1000;
-
     cart->nametable_arrangement = cart->buffer[6] & (1 << 0) ? kNAMETABLE_HORIZONTAL : kNAMETABLE_VERTICAL;
-
     cart->mapper = (cart->buffer[6] & 0xF0) >> 4 | (cart->buffer[7] & 0xF0);
+    success |= _get_ines_start_addr(cart->mapper, &cart->start_addr);
 
     TraceLog(LOG_INFO, "ROM info:");
     TraceLog(LOG_INFO, "PRG ROM size (bytes): %zu", cart->prg_rom_size);
@@ -91,8 +92,20 @@ static inline int _parse_ines(Cart* cart) {
     TraceLog(LOG_INFO, "PRG RAM size (bytes): %zu", cart->prg_ram_size);
     TraceLog(LOG_INFO, "nametable arrangement: %s", cart->nametable_arrangement == kNAMETABLE_VERTICAL ? "vertical" : "horizontal");
     TraceLog(LOG_INFO, "mapper: %u", cart->mapper);
+    TraceLog(LOG_INFO, "start addr: 0x%X", cart->start_addr);
 
-    return 1;
+    return success;
+}
+
+static inline int _get_ines_start_addr(uint16_t mapper, uint16_t* start_addr_out) {
+    switch (mapper) {
+        case 0:
+            *start_addr_out = 0x8000;
+            return 1;
+        default:
+            TraceLog(LOG_ERROR, "failed to get start address (unhandled mapper type '%u')", mapper);
+            return 0;
+    }
 }
 
 static inline int _parse_ines20(Cart* cart) {

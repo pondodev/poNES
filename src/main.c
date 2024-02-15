@@ -25,17 +25,19 @@ int main(int argc, char* argv[]) {
     InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE);
     SetTargetFPS(60);
 
-    device_init();
-    ppu_init();
-
     Cart cart;
     if (! cart_load(argv[1], &cart))
         return 1;
+
+    device_init(&cart);
+    ppu_init();
 
     const char* palette_path = argc == 3 ? argv[2] : NULL;
     ppu_load_color_palette(palette_path);
 
     while (! WindowShouldClose()) {
+        device_exec();
+
         BeginDrawing();
         {
             ClearBackground(BLACK);

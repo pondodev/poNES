@@ -23,6 +23,7 @@ typedef struct {
     size_t                  prg_ram_size;
     NametableArrangement    nametable_arrangement;
     uint16_t                mapper;
+    uint16_t                start_addr;
 } Cart;
 
 int cart_load(const char* path, Cart* cart);
