@@ -4,7 +4,7 @@
 #include <stdint.h>
 
 typedef enum {
-    kINSTRTYPE_UNKNOWN,
+    kINSTRTYPE_UNKNOWN = 0,
     kINSTRTYPE_ADC, kINSTRTYPE_AND, kINSTRTYPE_ASL, kINSTRTYPE_BCC,
     kINSTRTYPE_BCS, kINSTRTYPE_BEQ, kINSTRTYPE_BIT, kINSTRTYPE_BMI,
     kINSTRTYPE_BNE, kINSTRTYPE_BPL, kINSTRTYPE_BRK, kINSTRTYPE_BVC,
@@ -19,10 +19,12 @@ typedef enum {
     kINSTRTYPE_SEC, kINSTRTYPE_SED, kINSTRTYPE_SEI, kINSTRTYPE_STA,
     kINSTRTYPE_STX, kINSTRTYPE_STY, kINSTRTYPE_TAX, kINSTRTYPE_TAY,
     kINSTRTYPE_TSX, kINSTRTYPE_TXA, kINSTRTYPE_TXS, kINSTRTYPE_TYA,
+
+    kINSTRTYPE_COUNT,
 } InstrType;
 
 typedef enum {
-    kADDRMODE_UNKNOWN,
+    kADDRMODE_UNKNOWN = 0,
     kADDRMODE_IMPLICIT,
     kADDRMODE_ACCUMULATOR,
     kADDRMODE_IMMEDIATE,
@@ -45,10 +47,12 @@ typedef struct {
     union {
         uint8_t     byte;
         uint16_t    addr;
+        int8_t      offset;
     }               data;
     uint16_t        stride;
 } InstrInfo;
 
+void instr_init(void);
 InstrInfo instr_decode(void);
 void instr_exec(const InstrInfo* instr);
 

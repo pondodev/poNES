@@ -8,9 +8,6 @@
 
 Device g_device;
 
-static inline void _instr_fetch_bytes(void* buf, size_t size);
-static inline void _instr_adc(InstrInfo instr);
-
 void device_init(Cart* cart) {
     g_device = (Device) {
         .pc     = cart->start_addr,
@@ -24,6 +21,8 @@ void device_init(Cart* cart) {
 
     memset(g_device.memory, 0x00, sizeof(g_device.memory[0])*MEMORY_SIZE_BYTES);
     memset(g_device.video, 0x00, sizeof(g_device.video[0])*VIDEO_BUFFER_SIZE_BYTES);
+
+    instr_init();
 }
 
 void device_exec(void) {
