@@ -61,16 +61,17 @@ static void _instr_sei(const InstrInfo* instr);
 static void _instr_sta(const InstrInfo* instr);
 static void _instr_stx(const InstrInfo* instr);
 static void _instr_sty(const InstrInfo* instr);
+static void _instr_tax(const InstrInfo* instr);
+static void _instr_tay(const InstrInfo* instr);
+static void _instr_tsx(const InstrInfo* instr);
+static void _instr_txa(const InstrInfo* instr);
+static void _instr_txs(const InstrInfo* instr);
+static void _instr_tya(const InstrInfo* instr);
 
 static InstrExecFunc s_instr_exec_funcs[kINSTRTYPE_COUNT];
 #define REG_INSTR(_alias, _func) s_instr_exec_funcs[_alias] = _func
 
 void instr_init(void) {
-    // TODO: remove once we have all instruction handlers implemented
-    for (size_t i = 0; i < kINSTRTYPE_COUNT; ++i) {
-        s_instr_exec_funcs[i] = _instr_unknown;
-    }
-
     REG_INSTR(kINSTRTYPE_UNKNOWN, _instr_unknown);
 
     REG_INSTR(kINSTRTYPE_ADC, _instr_adc);
@@ -123,6 +124,12 @@ void instr_init(void) {
     REG_INSTR(kINSTRTYPE_STA, _instr_sta);
     REG_INSTR(kINSTRTYPE_STX, _instr_stx);
     REG_INSTR(kINSTRTYPE_STY, _instr_sty);
+    REG_INSTR(kINSTRTYPE_TAX, _instr_tax);
+    REG_INSTR(kINSTRTYPE_TAY, _instr_tay);
+    REG_INSTR(kINSTRTYPE_TSX, _instr_tsx);
+    REG_INSTR(kINSTRTYPE_TXA, _instr_txa);
+    REG_INSTR(kINSTRTYPE_TXS, _instr_txs);
+    REG_INSTR(kINSTRTYPE_TYA, _instr_tya);
 }
 
 InstrInfo instr_decode(void) {
@@ -1371,7 +1378,59 @@ InstrInfo instr_decode(void) {
             break;
         }
 
-        // TODO: the rest of the instructions
+        // TAX instructions
+        case 0xAA:
+        {
+            instr.type      = kINSTRTYPE_TAX;
+            instr.addr_mode = kADDRMODE_IMPLICIT;
+            instr.stride    = 1;
+            break;
+        }
+
+        // TAY instructions
+        case 0xA8:
+        {
+            instr.type      = kINSTRTYPE_TAY;
+            instr.addr_mode = kADDRMODE_IMPLICIT;
+            instr.stride    = 1;
+            break;
+        }
+
+        // TSX instructions
+        case 0xBA:
+        {
+            instr.type      = kINSTRTYPE_TSX;
+            instr.addr_mode = kADDRMODE_IMPLICIT;
+            instr.stride    = 1;
+            break;
+        }
+
+        // TXA instructions
+        case 0x8A:
+        {
+            instr.type      = kINSTRTYPE_TXA;
+            instr.addr_mode = kADDRMODE_IMPLICIT;
+            instr.stride    = 1;
+            break;
+        }
+
+        // TXS instructions
+        case 0x9A:
+        {
+            instr.type      = kINSTRTYPE_TXS;
+            instr.addr_mode = kADDRMODE_IMPLICIT;
+            instr.stride    = 1;
+            break;
+        }
+
+        // TYA instructions
+        case 0x98:
+        {
+            instr.type      = kINSTRTYPE_TYA;
+            instr.addr_mode = kADDRMODE_IMPLICIT;
+            instr.stride    = 1;
+            break;
+        }
 
         default: break;
     }
@@ -2084,6 +2143,78 @@ static void _instr_sty(const InstrInfo* instr) {
 
         default:
             TraceLog(LOG_ERROR, "invalid addressing mode for instr STY (%d)", instr->addr_mode);
+            break;
+    }
+}
+
+static void _instr_tax(const InstrInfo* instr) {
+    switch (instr->addr_mode) {
+        case kADDRMODE_IMPLICIT:
+            TraceLog(LOG_INFO, "%s", disasm_get_asm(instr));
+            break;
+
+        default:
+            TraceLog(LOG_ERROR, "invalid addressing mode for instr TAX (%d)", instr->addr_mode);
+            break;
+    }
+}
+
+static void _instr_tay(const InstrInfo* instr) {
+    switch (instr->addr_mode) {
+        case kADDRMODE_IMPLICIT:
+            TraceLog(LOG_INFO, "%s", disasm_get_asm(instr));
+            break;
+
+        default:
+            TraceLog(LOG_ERROR, "invalid addressing mode for instr TAY (%d)", instr->addr_mode);
+            break;
+    }
+}
+
+static void _instr_tsx(const InstrInfo* instr) {
+    switch (instr->addr_mode) {
+        case kADDRMODE_IMPLICIT:
+            TraceLog(LOG_INFO, "%s", disasm_get_asm(instr));
+            break;
+
+        default:
+            TraceLog(LOG_ERROR, "invalid addressing mode for instr TSX (%d)", instr->addr_mode);
+            break;
+    }
+}
+
+static void _instr_txa(const InstrInfo* instr) {
+    switch (instr->addr_mode) {
+        case kADDRMODE_IMPLICIT:
+            TraceLog(LOG_INFO, "%s", disasm_get_asm(instr));
+            break;
+
+        default:
+            TraceLog(LOG_ERROR, "invalid addressing mode for instr TXA (%d)", instr->addr_mode);
+            break;
+    }
+}
+
+static void _instr_txs(const InstrInfo* instr) {
+    switch (instr->addr_mode) {
+        case kADDRMODE_IMPLICIT:
+            TraceLog(LOG_INFO, "%s", disasm_get_asm(instr));
+            break;
+
+        default:
+            TraceLog(LOG_ERROR, "invalid addressing mode for instr TXS (%d)", instr->addr_mode);
+            break;
+    }
+}
+
+static void _instr_tya(const InstrInfo* instr) {
+    switch (instr->addr_mode) {
+        case kADDRMODE_IMPLICIT:
+            TraceLog(LOG_INFO, "%s", disasm_get_asm(instr));
+            break;
+
+        default:
+            TraceLog(LOG_ERROR, "invalid addressing mode for instr TYA (%d)", instr->addr_mode);
             break;
     }
 }
