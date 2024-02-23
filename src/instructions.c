@@ -1,6 +1,7 @@
 #include "instructions.h"
 
 #include "device.h"
+#include "disassembler.h"
 
 #include "raylib.h"
 
@@ -34,6 +35,13 @@ static void _instr_dec(const InstrInfo* instr);
 static void _instr_dex(const InstrInfo* instr);
 static void _instr_dey(const InstrInfo* instr);
 static void _instr_eor(const InstrInfo* instr);
+static void _instr_inc(const InstrInfo* instr);
+static void _instr_inx(const InstrInfo* instr);
+static void _instr_iny(const InstrInfo* instr);
+static void _instr_jmp(const InstrInfo* instr);
+static void _instr_jsr(const InstrInfo* instr);
+static void _instr_lda(const InstrInfo* instr);
+static void _instr_ldx(const InstrInfo* instr);
 static void _instr_nop(const InstrInfo* instr);
 
 static InstrExecFunc s_instr_exec_funcs[kINSTRTYPE_COUNT];
@@ -71,6 +79,13 @@ void instr_init(void) {
     REG_INSTR(kINSTRTYPE_DEX, _instr_dex);
     REG_INSTR(kINSTRTYPE_DEY, _instr_dey);
     REG_INSTR(kINSTRTYPE_EOR, _instr_eor);
+    REG_INSTR(kINSTRTYPE_INC, _instr_inc);
+    REG_INSTR(kINSTRTYPE_INX, _instr_inx);
+    REG_INSTR(kINSTRTYPE_INY, _instr_iny);
+    REG_INSTR(kINSTRTYPE_JMP, _instr_jmp);
+    REG_INSTR(kINSTRTYPE_JSR, _instr_jsr);
+    REG_INSTR(kINSTRTYPE_LDA, _instr_lda);
+    REG_INSTR(kINSTRTYPE_LDX, _instr_ldx);
     REG_INSTR(kINSTRTYPE_NOP, _instr_nop);
 }
 
@@ -746,6 +761,234 @@ InstrInfo instr_decode(void) {
             break;
         }
 
+        // INC instructions
+        case 0xE6:
+        {
+            uint8_t byte = 0;
+            _instr_fetch_bytes(&byte, sizeof(byte));
+            instr.type      = kINSTRTYPE_INC;
+            instr.addr_mode = kADDRMODE_ZEROPAGE;
+            instr.data.byte = byte;
+            instr.stride    = 2;
+            break;
+        }
+        case 0xF6:
+        {
+            uint8_t byte = 0;
+            _instr_fetch_bytes(&byte, sizeof(byte));
+            instr.type      = kINSTRTYPE_INC;
+            instr.addr_mode = kADDRMODE_ZEROPAGE_X;
+            instr.data.byte = byte;
+            instr.stride    = 2;
+            break;
+        }
+        case 0xEE:
+        {
+            uint16_t addr = 0;
+            _instr_fetch_bytes(&addr, sizeof(addr));
+            instr.type      = kINSTRTYPE_INC;
+            instr.addr_mode = kADDRMODE_ABSOLUTE;
+            instr.data.addr = addr;
+            instr.stride    = 3;
+            break;
+        }
+        case 0xFE:
+        {
+            uint16_t addr = 0;
+            _instr_fetch_bytes(&addr, sizeof(addr));
+            instr.type      = kINSTRTYPE_INC;
+            instr.addr_mode = kADDRMODE_ABSOLUTE_X;
+            instr.data.addr = addr;
+            instr.stride    = 3;
+            break;
+        }
+
+        // INX instructions
+        case 0xE8:
+        {
+            instr.type      = kINSTRTYPE_INX;
+            instr.addr_mode = kADDRMODE_IMPLICIT;
+            instr.stride    = 1;
+            break;
+        }
+
+        // INY instructions
+        case 0xC8:
+        {
+            instr.type      = kINSTRTYPE_INY;
+            instr.addr_mode = kADDRMODE_IMPLICIT;
+            instr.stride    = 1;
+            break;
+        }
+
+        // JMP instructions
+        case 0x4C:
+        {
+            uint16_t addr = 0;
+            _instr_fetch_bytes(&addr, sizeof(addr));
+            instr.type      = kINSTRTYPE_JMP;
+            instr.addr_mode = kADDRMODE_ABSOLUTE;
+            instr.data.addr = addr;
+            instr.stride    = 3;
+            break;
+        }
+        case 0x6C:
+        {
+            uint16_t addr = 0;
+            _instr_fetch_bytes(&addr, sizeof(addr));
+            instr.type      = kINSTRTYPE_JMP;
+            instr.addr_mode = kADDRMODE_INDIRECT;
+            instr.data.addr = addr;
+            instr.stride    = 3;
+            break;
+        }
+
+        // JSR instructions
+        case 0x20:
+        {
+            uint16_t addr = 0;
+            _instr_fetch_bytes(&addr, sizeof(addr));
+            instr.type      = kINSTRTYPE_JSR;
+            instr.addr_mode = kADDRMODE_ABSOLUTE;
+            instr.data.addr = addr;
+            instr.stride    = 3;
+            break;
+        }
+
+        // LDA instructions
+        case 0xA9:
+        {
+            uint8_t byte = 0;
+            _instr_fetch_bytes(&byte, sizeof(byte));
+            instr.type      = kINSTRTYPE_LDA;
+            instr.addr_mode = kADDRMODE_IMMEDIATE;
+            instr.data.byte = byte;
+            instr.stride    = 2;
+            break;
+        }
+        case 0xA5:
+        {
+            uint8_t byte = 0;
+            _instr_fetch_bytes(&byte, sizeof(byte));
+            instr.type      = kINSTRTYPE_LDA;
+            instr.addr_mode = kADDRMODE_ZEROPAGE;
+            instr.data.byte = byte;
+            instr.stride    = 2;
+            break;
+        }
+        case 0xB5:
+        {
+            uint8_t byte = 0;
+            _instr_fetch_bytes(&byte, sizeof(byte));
+            instr.type      = kINSTRTYPE_LDA;
+            instr.addr_mode = kADDRMODE_ZEROPAGE_X;
+            instr.data.byte = byte;
+            instr.stride    = 2;
+            break;
+        }
+        case 0xAD:
+        {
+            uint16_t addr = 0;
+            _instr_fetch_bytes(&addr, sizeof(addr));
+            instr.type      = kINSTRTYPE_LDA;
+            instr.addr_mode = kADDRMODE_ABSOLUTE;
+            instr.data.addr = addr;
+            instr.stride    = 3;
+            break;
+        }
+        case 0xBD:
+        {
+            uint16_t addr = 0;
+            _instr_fetch_bytes(&addr, sizeof(addr));
+            instr.type      = kINSTRTYPE_LDA;
+            instr.addr_mode = kADDRMODE_ABSOLUTE_X;
+            instr.data.addr = addr;
+            instr.stride    = 3;
+            break;
+        }
+        case 0xB9:
+        {
+            uint16_t addr = 0;
+            _instr_fetch_bytes(&addr, sizeof(addr));
+            instr.type      = kINSTRTYPE_LDA;
+            instr.addr_mode = kADDRMODE_ABSOLUTE_Y;
+            instr.data.addr = addr;
+            instr.stride    = 3;
+            break;
+        }
+        case 0xA1:
+        {
+            uint8_t byte = 0;
+            _instr_fetch_bytes(&byte, sizeof(byte));
+            instr.type      = kINSTRTYPE_LDA;
+            instr.addr_mode = kADDRMODE_IDX_INDIRECT;
+            instr.data.byte = byte;
+            instr.stride    = 2;
+            break;
+        }
+        case 0xB1:
+        {
+            uint8_t byte = 0;
+            _instr_fetch_bytes(&byte, sizeof(byte));
+            instr.type      = kINSTRTYPE_LDA;
+            instr.addr_mode = kADDRMODE_INDIRECT_IDX;
+            instr.data.byte = byte;
+            instr.stride    = 2;
+            break;
+        }
+
+        // LDX instructions
+        case 0xA2:
+        {
+            uint8_t byte = 0;
+            _instr_fetch_bytes(&byte, sizeof(byte));
+            instr.type      = kINSTRTYPE_LDX;
+            instr.addr_mode = kADDRMODE_IMMEDIATE;
+            instr.data.byte = byte;
+            instr.stride    = 2;
+            break;
+        }
+        case 0xA6:
+        {
+            uint8_t byte = 0;
+            _instr_fetch_bytes(&byte, sizeof(byte));
+            instr.type      = kINSTRTYPE_LDX;
+            instr.addr_mode = kADDRMODE_ZEROPAGE;
+            instr.data.byte = byte;
+            instr.stride    = 2;
+            break;
+        }
+        case 0xB6:
+        {
+            uint8_t byte = 0;
+            _instr_fetch_bytes(&byte, sizeof(byte));
+            instr.type      = kINSTRTYPE_LDX;
+            instr.addr_mode = kADDRMODE_ZEROPAGE_Y;
+            instr.data.byte = byte;
+            instr.stride    = 2;
+            break;
+        }
+        case 0xAE:
+        {
+            uint16_t addr = 0;
+            _instr_fetch_bytes(&addr, sizeof(addr));
+            instr.type      = kINSTRTYPE_LDX;
+            instr.addr_mode = kADDRMODE_ABSOLUTE;
+            instr.data.addr = addr;
+            instr.stride    = 3;
+            break;
+        }
+        case 0xBE:
+        {
+            uint16_t addr = 0;
+            _instr_fetch_bytes(&addr, sizeof(addr));
+            instr.type      = kINSTRTYPE_LDX;
+            instr.addr_mode = kADDRMODE_ABSOLUTE_Y;
+            instr.data.addr = addr;
+            instr.stride    = 3;
+            break;
+        }
+
         // NOP instructions
         case 0xEA:
         {
@@ -779,35 +1022,14 @@ static void _instr_unknown(const InstrInfo* instr) {
 static void _instr_adc(const InstrInfo* instr) {
     switch (instr->addr_mode) {
         case kADDRMODE_IMMEDIATE:
-            TraceLog(LOG_INFO, "ADC #$%02X", instr->data.byte);
-            break;
-
         case kADDRMODE_ZEROPAGE:
-            TraceLog(LOG_INFO, "ADC $%02X", instr->data.byte);
-            break;
-
         case kADDRMODE_ZEROPAGE_X:
-            TraceLog(LOG_INFO, "ADC $%02X, X", instr->data.byte);
-            break;
-
         case kADDRMODE_ABSOLUTE:
-            TraceLog(LOG_INFO, "ADC $%04X", instr->data.addr);
-            break;
-
         case kADDRMODE_ABSOLUTE_X:
-            TraceLog(LOG_INFO, "ADC $%04X, X", instr->data.addr);
-            break;
-
         case kADDRMODE_ABSOLUTE_Y:
-            TraceLog(LOG_INFO, "ADC $%04X, Y", instr->data.addr);
-            break;
-
         case kADDRMODE_IDX_INDIRECT:
-            TraceLog(LOG_INFO, "ADC ($%02X, X)", instr->data.byte);
-            break;
-
         case kADDRMODE_INDIRECT_IDX:
-            TraceLog(LOG_INFO, "ADC ($%02X), Y", instr->data.byte);
+            TraceLog(LOG_INFO, "%s", disasm_get_asm(instr));
             break;
 
         default:
@@ -819,35 +1041,14 @@ static void _instr_adc(const InstrInfo* instr) {
 static void _instr_and(const InstrInfo* instr) {
     switch (instr->addr_mode) {
         case kADDRMODE_IMMEDIATE:
-            TraceLog(LOG_INFO, "AND #$%02X", instr->data.byte);
-            break;
-
         case kADDRMODE_ZEROPAGE:
-            TraceLog(LOG_INFO, "AND $%02X", instr->data.byte);
-            break;
-
         case kADDRMODE_ZEROPAGE_X:
-            TraceLog(LOG_INFO, "AND $%02X, X", instr->data.byte);
-            break;
-
         case kADDRMODE_ABSOLUTE:
-            TraceLog(LOG_INFO, "AND $%04X", instr->data.addr);
-            break;
-
         case kADDRMODE_ABSOLUTE_X:
-            TraceLog(LOG_INFO, "AND $%04X, X", instr->data.addr);
-            break;
-
         case kADDRMODE_ABSOLUTE_Y:
-            TraceLog(LOG_INFO, "AND $%04X, Y", instr->data.addr);
-            break;
-
         case kADDRMODE_IDX_INDIRECT:
-            TraceLog(LOG_INFO, "AND ($%02X, X)", instr->data.byte);
-            break;
-
         case kADDRMODE_INDIRECT_IDX:
-            TraceLog(LOG_INFO, "AND ($%02X), Y", instr->data.byte);
+            TraceLog(LOG_INFO, "%s", disasm_get_asm(instr));
             break;
 
         default:
@@ -859,23 +1060,11 @@ static void _instr_and(const InstrInfo* instr) {
 static void _instr_asl(const InstrInfo* instr) {
     switch (instr->addr_mode) {
         case kADDRMODE_ACCUMULATOR:
-            TraceLog(LOG_INFO, "ASL A");
-            break;
-
         case kADDRMODE_ZEROPAGE:
-            TraceLog(LOG_INFO, "ASL $%02X", instr->data.byte);
-            break;
-
         case kADDRMODE_ZEROPAGE_X:
-            TraceLog(LOG_INFO, "ASL $%02X, X", instr->data.byte);
-            break;
-
         case kADDRMODE_ABSOLUTE:
-            TraceLog(LOG_INFO, "ASL $%04X", instr->data.addr);
-            break;
-
         case kADDRMODE_ABSOLUTE_X:
-            TraceLog(LOG_INFO, "ASL $%04X, X", instr->data.addr);
+            TraceLog(LOG_INFO, "%s", disasm_get_asm(instr));
             break;
 
         default:
@@ -885,40 +1074,46 @@ static void _instr_asl(const InstrInfo* instr) {
 }
 
 static void _instr_bcc(const InstrInfo* instr) {
-    if (instr->addr_mode != kADDRMODE_RELATIVE) {
-        TraceLog(LOG_ERROR, "invalid addressing mode for instr BCC (%d)", instr->addr_mode);
-        return;
-    }
+    switch (instr->addr_mode) {
+        case kADDRMODE_RELATIVE:
+            TraceLog(LOG_INFO, "%s", disasm_get_asm(instr));
+            break;
 
-    TraceLog(LOG_INFO, "BCC *%s%d", instr->data.offset < 0 ? "" : "+", instr->data.offset);
+        default:
+            TraceLog(LOG_ERROR, "invalid addressing mode for instr BCC (%d)", instr->addr_mode);
+            break;
+    }
 }
 
 static void _instr_bcs(const InstrInfo* instr) {
-    if (instr->addr_mode != kADDRMODE_RELATIVE) {
-        TraceLog(LOG_ERROR, "invalid addressing mode for instr BCS (%d)", instr->addr_mode);
-        return;
-    }
+    switch (instr->addr_mode) {
+        case kADDRMODE_RELATIVE:
+            TraceLog(LOG_INFO, "%s", disasm_get_asm(instr));
+            break;
 
-    TraceLog(LOG_INFO, "BCS *%s%d", instr->data.offset < 0 ? "" : "+", instr->data.offset);
+        default:
+            TraceLog(LOG_ERROR, "invalid addressing mode for instr BCS (%d)", instr->addr_mode);
+            break;
+    }
 }
 
 static void _instr_beq(const InstrInfo* instr) {
-    if (instr->addr_mode != kADDRMODE_RELATIVE) {
-        TraceLog(LOG_ERROR, "invalid addressing mode for instr BEQ (%d)", instr->addr_mode);
-        return;
-    }
+    switch (instr->addr_mode) {
+        case kADDRMODE_RELATIVE:
+            TraceLog(LOG_INFO, "%s", disasm_get_asm(instr));
+            break;
 
-    TraceLog(LOG_INFO, "BEQ *%s%d", instr->data.offset < 0 ? "" : "+", instr->data.offset);
+        default:
+            TraceLog(LOG_ERROR, "invalid addressing mode for instr BEQ (%d)", instr->addr_mode);
+            break;
+    }
 }
 
 static void _instr_bit(const InstrInfo* instr) {
     switch (instr->addr_mode) {
         case kADDRMODE_ZEROPAGE:
-            TraceLog(LOG_INFO, "BIT $%02X", instr->data.byte);
-            break;
-
         case kADDRMODE_ABSOLUTE:
-            TraceLog(LOG_INFO, "BIT $%04X", instr->data.addr);
+            TraceLog(LOG_INFO, "%s", disasm_get_asm(instr));
             break;
 
         default:
@@ -928,127 +1123,136 @@ static void _instr_bit(const InstrInfo* instr) {
 }
 
 static void _instr_bmi(const InstrInfo* instr) {
-    if (instr->addr_mode != kADDRMODE_RELATIVE) {
-        TraceLog(LOG_ERROR, "invalid addressing mode for instr BMI (%d)", instr->addr_mode);
-        return;
-    }
+    switch (instr->addr_mode) {
+        case kADDRMODE_RELATIVE:
+            TraceLog(LOG_INFO, "%s", disasm_get_asm(instr));
+            break;
 
-    TraceLog(LOG_INFO, "BMI *%s%d", instr->data.offset < 0 ? "" : "+", instr->data.offset);
+        default:
+            TraceLog(LOG_ERROR, "invalid addressing mode for instr BMI (%d)", instr->addr_mode);
+            break;
+    }
 }
 
 static void _instr_bne(const InstrInfo* instr) {
-    if (instr->addr_mode != kADDRMODE_RELATIVE) {
-        TraceLog(LOG_ERROR, "invalid addressing mode for instr BNE (%d)", instr->addr_mode);
-        return;
-    }
+    switch (instr->addr_mode) {
+        case kADDRMODE_RELATIVE:
+            TraceLog(LOG_INFO, "%s", disasm_get_asm(instr));
+            break;
 
-    TraceLog(LOG_INFO, "BNE *%s%d", instr->data.offset < 0 ? "" : "+", instr->data.offset);
+        default:
+            TraceLog(LOG_ERROR, "invalid addressing mode for instr BNE (%d)", instr->addr_mode);
+            break;
+    }
 }
 
 static void _instr_bpl(const InstrInfo* instr) {
-    if (instr->addr_mode != kADDRMODE_RELATIVE) {
-        TraceLog(LOG_ERROR, "invalid addressing mode for instr BPL (%d)", instr->addr_mode);
-        return;
-    }
+    switch (instr->addr_mode) {
+        case kADDRMODE_RELATIVE:
+            TraceLog(LOG_INFO, "%s", disasm_get_asm(instr));
+            break;
 
-    TraceLog(LOG_INFO, "BPL *%s%d", instr->data.offset < 0 ? "" : "+", instr->data.offset);
+        default:
+            TraceLog(LOG_ERROR, "invalid addressing mode for instr BPL (%d)", instr->addr_mode);
+            break;
+    }
 }
 
 static void _instr_brk(const InstrInfo* instr) {
-    if (instr->addr_mode != kADDRMODE_IMPLICIT) {
-        TraceLog(LOG_ERROR, "invalid addressing mode for instr BRK (%d)", instr->addr_mode);
-        return;
-    }
+    switch (instr->addr_mode) {
+        case kADDRMODE_IMPLICIT:
+            TraceLog(LOG_INFO, "%s", disasm_get_asm(instr));
+            break;
 
-    TraceLog(LOG_INFO, "BRK");
+        default:
+            TraceLog(LOG_ERROR, "invalid addressing mode for instr BRK (%d)", instr->addr_mode);
+            break;
+    }
 }
 
 static void _instr_bvc(const InstrInfo* instr) {
-    if (instr->addr_mode != kADDRMODE_RELATIVE) {
-        TraceLog(LOG_ERROR, "invalid addressing mode for instr BVC (%d)", instr->addr_mode);
-        return;
-    }
+    switch (instr->addr_mode) {
+        case kADDRMODE_RELATIVE:
+            TraceLog(LOG_INFO, "%s", disasm_get_asm(instr));
+            break;
 
-    TraceLog(LOG_INFO, "BVC *%s%d", instr->data.offset < 0 ? "" : "+", instr->data.offset);
+        default:
+            TraceLog(LOG_ERROR, "invalid addressing mode for instr BVC (%d)", instr->addr_mode);
+            break;
+    }
 }
 
 static void _instr_bvs(const InstrInfo* instr) {
-    if (instr->addr_mode != kADDRMODE_RELATIVE) {
-        TraceLog(LOG_ERROR, "invalid addressing mode for instr BVS (%d)", instr->addr_mode);
-        return;
-    }
+    switch (instr->addr_mode) {
+        case kADDRMODE_RELATIVE:
+            TraceLog(LOG_INFO, "%s", disasm_get_asm(instr));
+            break;
 
-    TraceLog(LOG_INFO, "BVS *%s%d", instr->data.offset < 0 ? "" : "+", instr->data.offset);
+        default:
+            TraceLog(LOG_ERROR, "invalid addressing mode for instr BVS (%d)", instr->addr_mode);
+            break;
+    }
 }
 
 static void _instr_clc(const InstrInfo* instr) {
-    if (instr->addr_mode != kADDRMODE_IMPLICIT) {
-        TraceLog(LOG_ERROR, "invalid addressing mode for instr CLC (%d)", instr->addr_mode);
-        return;
-    }
+    switch (instr->addr_mode) {
+        case kADDRMODE_IMPLICIT:
+            TraceLog(LOG_INFO, "%s", disasm_get_asm(instr));
+            break;
 
-    TraceLog(LOG_INFO, "CLC");
+        default:
+            TraceLog(LOG_ERROR, "invalid addressing mode for instr CLC (%d)", instr->addr_mode);
+            break;
+    }
 }
 
 static void _instr_cld(const InstrInfo* instr) {
-    if (instr->addr_mode != kADDRMODE_IMPLICIT) {
-        TraceLog(LOG_ERROR, "invalid addressing mode for instr CLD (%d)", instr->addr_mode);
-        return;
-    }
+    switch (instr->addr_mode) {
+        case kADDRMODE_IMPLICIT:
+            TraceLog(LOG_INFO, "%s", disasm_get_asm(instr));
+            break;
 
-    TraceLog(LOG_INFO, "CLD");
+        default:
+            TraceLog(LOG_ERROR, "invalid addressing mode for instr CLD (%d)", instr->addr_mode);
+            break;
+    }
 }
 
 static void _instr_cli(const InstrInfo* instr) {
-    if (instr->addr_mode != kADDRMODE_IMPLICIT) {
-        TraceLog(LOG_ERROR, "invalid addressing mode for instr CLI (%d)", instr->addr_mode);
-        return;
-    }
+    switch (instr->addr_mode) {
+        case kADDRMODE_IMPLICIT:
+            TraceLog(LOG_INFO, "%s", disasm_get_asm(instr));
+            break;
 
-    TraceLog(LOG_INFO, "CLI");
+        default:
+            TraceLog(LOG_ERROR, "invalid addressing mode for instr CLI (%d)", instr->addr_mode);
+            break;
+    }
 }
 
 static void _instr_clv(const InstrInfo* instr) {
-    if (instr->addr_mode != kADDRMODE_IMPLICIT) {
-        TraceLog(LOG_ERROR, "invalid addressing mode for instr CLV (%d)", instr->addr_mode);
-        return;
-    }
+    switch (instr->addr_mode) {
+        case kADDRMODE_IMPLICIT:
+            TraceLog(LOG_INFO, "%s", disasm_get_asm(instr));
+            break;
 
-    TraceLog(LOG_INFO, "CLV");
+        default:
+            TraceLog(LOG_ERROR, "invalid addressing mode for instr CLV (%d)", instr->addr_mode);
+            break;
+    }
 }
 
 static void _instr_cmp(const InstrInfo* instr) {
     switch (instr->addr_mode) {
         case kADDRMODE_IMMEDIATE:
-            TraceLog(LOG_INFO, "CMP #$%02X", instr->data.byte);
-            break;
-
         case kADDRMODE_ZEROPAGE:
-            TraceLog(LOG_INFO, "CMP $%02X", instr->data.byte);
-            break;
-
         case kADDRMODE_ZEROPAGE_X:
-            TraceLog(LOG_INFO, "CMP $%02X, X", instr->data.byte);
-            break;
-
         case kADDRMODE_ABSOLUTE:
-            TraceLog(LOG_INFO, "CMP $%04X", instr->data.addr);
-            break;
-
         case kADDRMODE_ABSOLUTE_X:
-            TraceLog(LOG_INFO, "CMP $%04X, X", instr->data.addr);
-            break;
-
         case kADDRMODE_ABSOLUTE_Y:
-            TraceLog(LOG_INFO, "CMP $%04X, Y", instr->data.addr);
-            break;
-
         case kADDRMODE_IDX_INDIRECT:
-            TraceLog(LOG_INFO, "CMP ($%02X, X)", instr->data.byte);
-            break;
-
         case kADDRMODE_INDIRECT_IDX:
-            TraceLog(LOG_INFO, "CMP ($%02X), Y", instr->data.byte);
+            TraceLog(LOG_INFO, "%s", disasm_get_asm(instr));
             break;
 
         default:
@@ -1060,15 +1264,9 @@ static void _instr_cmp(const InstrInfo* instr) {
 static void _instr_cpx(const InstrInfo* instr) {
     switch (instr->addr_mode) {
         case kADDRMODE_IMMEDIATE:
-            TraceLog(LOG_INFO, "CPX #$%02X", instr->data.byte);
-            break;
-
         case kADDRMODE_ZEROPAGE:
-            TraceLog(LOG_INFO, "CPX $%02X", instr->data.byte);
-            break;
-
         case kADDRMODE_ABSOLUTE:
-            TraceLog(LOG_INFO, "CPX $%04X", instr->data.addr);
+            TraceLog(LOG_INFO, "%s", disasm_get_asm(instr));
             break;
 
         default:
@@ -1080,15 +1278,9 @@ static void _instr_cpx(const InstrInfo* instr) {
 static void _instr_cpy(const InstrInfo* instr) {
     switch (instr->addr_mode) {
         case kADDRMODE_IMMEDIATE:
-            TraceLog(LOG_INFO, "CPY #$%02X", instr->data.byte);
-            break;
-
         case kADDRMODE_ZEROPAGE:
-            TraceLog(LOG_INFO, "CPY $%02X", instr->data.byte);
-            break;
-
         case kADDRMODE_ABSOLUTE:
-            TraceLog(LOG_INFO, "CPY $%04X", instr->data.addr);
+            TraceLog(LOG_INFO, "%s", disasm_get_asm(instr));
             break;
 
         default:
@@ -1100,19 +1292,10 @@ static void _instr_cpy(const InstrInfo* instr) {
 static void _instr_dec(const InstrInfo* instr) {
     switch (instr->addr_mode) {
         case kADDRMODE_ZEROPAGE:
-            TraceLog(LOG_INFO, "DEC $%02X", instr->data.byte);
-            break;
-
         case kADDRMODE_ZEROPAGE_X:
-            TraceLog(LOG_INFO, "DEC $%02X, X", instr->data.byte);
-            break;
-
         case kADDRMODE_ABSOLUTE:
-            TraceLog(LOG_INFO, "DEC $%04X", instr->data.addr);
-            break;
-
         case kADDRMODE_ABSOLUTE_X:
-            TraceLog(LOG_INFO, "CMP $%04X, X", instr->data.addr);
+            TraceLog(LOG_INFO, "%s", disasm_get_asm(instr));
             break;
 
         default:
@@ -1122,55 +1305,40 @@ static void _instr_dec(const InstrInfo* instr) {
 }
 
 static void _instr_dex(const InstrInfo* instr) {
-    if (instr->addr_mode != kADDRMODE_IMPLICIT) {
-        TraceLog(LOG_ERROR, "invalid addressing mode for instr DEX (%d)", instr->addr_mode);
-        return;
-    }
+    switch (instr->addr_mode) {
+        case kADDRMODE_IMPLICIT:
+            TraceLog(LOG_INFO, "%s", disasm_get_asm(instr));
+            break;
 
-    TraceLog(LOG_INFO, "DEX");
+        default:
+            TraceLog(LOG_ERROR, "invalid addressing mode for instr DEX (%d)", instr->addr_mode);
+            break;
+    }
 }
 
 static void _instr_dey(const InstrInfo* instr) {
-    if (instr->addr_mode != kADDRMODE_IMPLICIT) {
-        TraceLog(LOG_ERROR, "invalid addressing mode for instr DEY (%d)", instr->addr_mode);
-        return;
-    }
+    switch (instr->addr_mode) {
+        case kADDRMODE_IMPLICIT:
+            TraceLog(LOG_INFO, "%s", disasm_get_asm(instr));
+            break;
 
-    TraceLog(LOG_INFO, "DEY");
+        default:
+            TraceLog(LOG_ERROR, "invalid addressing mode for instr DEY (%d)", instr->addr_mode);
+            break;
+    }
 }
 
 static void _instr_eor(const InstrInfo* instr) {
     switch (instr->addr_mode) {
         case kADDRMODE_IMMEDIATE:
-            TraceLog(LOG_INFO, "EOR #$%02X", instr->data.byte);
-            break;
-
         case kADDRMODE_ZEROPAGE:
-            TraceLog(LOG_INFO, "EOR $%02X", instr->data.byte);
-            break;
-
         case kADDRMODE_ZEROPAGE_X:
-            TraceLog(LOG_INFO, "EOR $%02X, X", instr->data.byte);
-            break;
-
         case kADDRMODE_ABSOLUTE:
-            TraceLog(LOG_INFO, "EOR $%04X", instr->data.addr);
-            break;
-
         case kADDRMODE_ABSOLUTE_X:
-            TraceLog(LOG_INFO, "EOR $%04X, X", instr->data.addr);
-            break;
-
         case kADDRMODE_ABSOLUTE_Y:
-            TraceLog(LOG_INFO, "EOR $%04X, Y", instr->data.addr);
-            break;
-
         case kADDRMODE_IDX_INDIRECT:
-            TraceLog(LOG_INFO, "EOR ($%02X, X)", instr->data.byte);
-            break;
-
         case kADDRMODE_INDIRECT_IDX:
-            TraceLog(LOG_INFO, "EOR ($%02X), Y", instr->data.byte);
+            TraceLog(LOG_INFO, "%s", disasm_get_asm(instr));
             break;
 
         default:
@@ -1179,12 +1347,114 @@ static void _instr_eor(const InstrInfo* instr) {
     }
 }
 
-static void _instr_nop(const InstrInfo* instr) {
-    if (instr->addr_mode != kADDRMODE_IMPLICIT) {
-        TraceLog(LOG_ERROR, "invalid addressing mode for instr NOP (%d)", instr->addr_mode);
-        return;
-    }
+static void _instr_inc(const InstrInfo* instr) {
+    switch (instr->addr_mode) {
+        case kADDRMODE_ZEROPAGE:
+        case kADDRMODE_ZEROPAGE_X:
+        case kADDRMODE_ABSOLUTE:
+        case kADDRMODE_ABSOLUTE_X:
+            TraceLog(LOG_INFO, "%s", disasm_get_asm(instr));
+            break;
 
-    TraceLog(LOG_INFO, "NOP");
+        default:
+            TraceLog(LOG_ERROR, "invalid addressing mode for instr INC (%d)", instr->addr_mode);
+            break;
+    }
+}
+
+static void _instr_inx(const InstrInfo* instr) {
+    switch (instr->addr_mode) {
+        case kADDRMODE_IMPLICIT:
+            TraceLog(LOG_INFO, "%s", disasm_get_asm(instr));
+            break;
+
+        default:
+            TraceLog(LOG_ERROR, "invalid addressing mode for instr INX (%d)", instr->addr_mode);
+            break;
+    }
+}
+
+static void _instr_iny(const InstrInfo* instr) {
+    switch (instr->addr_mode) {
+        case kADDRMODE_IMPLICIT:
+            TraceLog(LOG_INFO, "%s", disasm_get_asm(instr));
+            break;
+
+        default:
+            TraceLog(LOG_ERROR, "invalid addressing mode for instr INY (%d)", instr->addr_mode);
+            break;
+    }
+}
+
+static void _instr_jmp(const InstrInfo* instr) {
+    switch (instr->addr_mode) {
+        case kADDRMODE_ABSOLUTE:
+        case kADDRMODE_INDIRECT:
+            TraceLog(LOG_INFO, "%s", disasm_get_asm(instr));
+            break;
+
+        default:
+            TraceLog(LOG_ERROR, "invalid addressing mode for instr JMP (%d)", instr->addr_mode);
+            break;
+    }
+}
+
+static void _instr_jsr(const InstrInfo* instr) {
+    switch (instr->addr_mode) {
+        case kADDRMODE_ABSOLUTE:
+            TraceLog(LOG_INFO, "%s", disasm_get_asm(instr));
+            break;
+
+        default:
+            TraceLog(LOG_ERROR, "invalid addressing mode for instr JSR (%d)", instr->addr_mode);
+            break;
+    }
+}
+
+static void _instr_lda(const InstrInfo* instr) {
+    switch (instr->addr_mode) {
+        case kADDRMODE_IMMEDIATE:
+        case kADDRMODE_ZEROPAGE:
+        case kADDRMODE_ZEROPAGE_X:
+        case kADDRMODE_ABSOLUTE:
+        case kADDRMODE_ABSOLUTE_X:
+        case kADDRMODE_ABSOLUTE_Y:
+        case kADDRMODE_IDX_INDIRECT:
+        case kADDRMODE_INDIRECT_IDX:
+            TraceLog(LOG_INFO, "%s", disasm_get_asm(instr));
+            break;
+
+        default:
+            TraceLog(LOG_ERROR, "invalid addressing mode for instr LDA (%d)", instr->addr_mode);
+            break;
+    }
+}
+
+static void _instr_ldx(const InstrInfo* instr) {
+    switch (instr->addr_mode) {
+        case kADDRMODE_IMMEDIATE:
+        case kADDRMODE_ZEROPAGE:
+        case kADDRMODE_ZEROPAGE_Y:
+        case kADDRMODE_ABSOLUTE:
+        case kADDRMODE_ABSOLUTE_Y:
+            TraceLog(LOG_INFO, "%s", disasm_get_asm(instr));
+            break;
+
+        default:
+            TraceLog(LOG_ERROR, "invalid addressing mode for instr LDA (%d)", instr->addr_mode);
+            break;
+    }
+}
+
+static void _instr_nop(const InstrInfo* instr) {
+    switch (instr->addr_mode) {
+        case kADDRMODE_IMPLICIT:
+            TraceLog(LOG_INFO, "%s", disasm_get_asm(instr));
+            break;
+
+        default:
+            TraceLog(LOG_ERROR, "invalid addressing mode for instr NOP (%d)", instr->addr_mode);
+            break;
+    }
 }
 
