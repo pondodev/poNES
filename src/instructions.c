@@ -138,81 +138,65 @@ InstrInfo instr_decode(void) {
         // ADC instructions
         case 0x69:
         {
-            uint8_t byte = 0;
-            _instr_fetch_bytes(&byte, sizeof(byte));
+            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_ADC;
             instr.addr_mode = kADDRMODE_IMMEDIATE;
-            instr.data.byte = byte;
             instr.stride    = 2;
             break;
         }
         case 0x65:
         {
-            uint8_t byte = 0;
-            _instr_fetch_bytes(&byte, sizeof(byte));
+            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_ADC;
             instr.addr_mode = kADDRMODE_ZEROPAGE;
-            instr.data.byte = byte;
             instr.stride    = 2;
             break;
         }
         case 0x75:
         {
-            uint8_t byte = 0;
-            _instr_fetch_bytes(&byte, sizeof(byte));
+            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_ADC;
             instr.addr_mode = kADDRMODE_ZEROPAGE_X;
-            instr.data.byte = byte;
             instr.stride    = 2;
             break;
         }
         case 0x6D:
         {
-            uint16_t addr = 0;
-            _instr_fetch_bytes(&addr, sizeof(addr));
+            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_ADC;
             instr.addr_mode = kADDRMODE_ABSOLUTE;
-            instr.data.addr = addr;
             instr.stride    = 3;
             break;
         }
         case 0x7D:
         {
-            uint16_t addr = 0;
-            _instr_fetch_bytes(&addr, sizeof(addr));
+            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_ADC;
             instr.addr_mode = kADDRMODE_ABSOLUTE_X;
-            instr.data.addr = addr;
             instr.stride    = 3;
             break;
         }
         case 0x79:
         {
-            uint16_t addr = 0;
-            _instr_fetch_bytes(&addr, sizeof(addr));
+            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_ADC;
             instr.addr_mode = kADDRMODE_ABSOLUTE_Y;
-            instr.data.addr = addr;
             instr.stride    = 3;
             break;
         }
         case 0x61:
         {
-            uint8_t byte = 0;
-            _instr_fetch_bytes(&byte, sizeof(byte));
+            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_ADC;
             instr.addr_mode = kADDRMODE_IDX_INDIRECT;
-            instr.data.byte = byte;
             instr.stride    = 2;
             break;
         }
         case 0x71:
         {
-            uint8_t byte = 0;
-            _instr_fetch_bytes(&byte, sizeof(byte));
+            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_ADC;
             instr.addr_mode = kADDRMODE_INDIRECT_IDX;
-            instr.data.byte = byte;
             instr.stride    = 2;
             break;
         }
@@ -220,81 +204,65 @@ InstrInfo instr_decode(void) {
         // AND instructions
         case 0x29:
         {
-            uint8_t byte = 0;
-            _instr_fetch_bytes(&byte, sizeof(byte));
+            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_AND;
             instr.addr_mode = kADDRMODE_IMMEDIATE;
-            instr.data.byte = byte;
             instr.stride    = 2;
             break;
         }
         case 0x25:
         {
-            uint8_t byte = 0;
-            _instr_fetch_bytes(&byte, sizeof(byte));
+            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_AND;
             instr.addr_mode = kADDRMODE_ZEROPAGE;
-            instr.data.byte = byte;
             instr.stride    = 2;
             break;
         }
         case 0x35:
         {
-            uint8_t byte = 0;
-            _instr_fetch_bytes(&byte, sizeof(byte));
+            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_AND;
             instr.addr_mode = kADDRMODE_ZEROPAGE_X;
-            instr.data.byte = byte;
             instr.stride    = 2;
             break;
         }
         case 0x2D:
         {
-            uint16_t addr = 0;
-            _instr_fetch_bytes(&addr, sizeof(addr));
+            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_AND;
             instr.addr_mode = kADDRMODE_ABSOLUTE;
-            instr.data.addr = addr;
             instr.stride    = 3;
             break;
         }
         case 0x3D:
         {
-            uint16_t addr = 0;
-            _instr_fetch_bytes(&addr, sizeof(addr));
+            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_AND;
             instr.addr_mode = kADDRMODE_ABSOLUTE_X;
-            instr.data.addr = addr;
             instr.stride    = 3;
             break;
         }
         case 0x39:
         {
-            uint16_t addr = 0;
-            _instr_fetch_bytes(&addr, sizeof(addr));
+            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_AND;
             instr.addr_mode = kADDRMODE_ABSOLUTE_Y;
-            instr.data.addr = addr;
             instr.stride    = 3;
             break;
         }
         case 0x21:
         {
-            uint8_t byte = 0;
-            _instr_fetch_bytes(&byte, sizeof(byte));
+            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_AND;
             instr.addr_mode = kADDRMODE_IDX_INDIRECT;
-            instr.data.byte = byte;
             instr.stride    = 2;
             break;
         }
         case 0x31:
         {
-            uint8_t byte = 0;
-            _instr_fetch_bytes(&byte, sizeof(byte));
+            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_AND;
             instr.addr_mode = kADDRMODE_INDIRECT_IDX;
-            instr.data.byte = byte;
             instr.stride    = 2;
             break;
         }
@@ -308,18 +276,16 @@ InstrInfo instr_decode(void) {
         }
         case 0x06:
         {
-            uint8_t byte = 0;
-            _instr_fetch_bytes(&byte, sizeof(byte));
+            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_ASL;
             instr.addr_mode = kADDRMODE_ZEROPAGE;
-            instr.data.byte = byte;
             instr.stride    = 2;
             break;
         }
         case 0x16:
         {
             uint8_t byte = 0;
-            _instr_fetch_bytes(&byte, sizeof(byte));
+            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_ASL;
             instr.addr_mode = kADDRMODE_ZEROPAGE_X;
             instr.data.byte = byte;
@@ -328,21 +294,17 @@ InstrInfo instr_decode(void) {
         }
         case 0x0E:
         {
-            uint16_t addr = 0;
-            _instr_fetch_bytes(&addr, sizeof(addr));
+            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_ASL;
             instr.addr_mode = kADDRMODE_ABSOLUTE;
-            instr.data.addr = addr;
             instr.stride    = 3;
             break;
         }
         case 0x1E:
         {
-            uint16_t addr = 0;
-            _instr_fetch_bytes(&addr, sizeof(addr));
+            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_ASL;
             instr.addr_mode = kADDRMODE_ABSOLUTE_X;
-            instr.data.addr = addr;
             instr.stride    = 3;
             break;
         }
@@ -350,94 +312,78 @@ InstrInfo instr_decode(void) {
         // BCC instructions
         case 0x90:
         {
-            int8_t offset = 0;
-            _instr_fetch_bytes(&offset, sizeof(offset));
-            instr.type          = kINSTRTYPE_BCC;
-            instr.addr_mode     = kADDRMODE_RELATIVE;
-            instr.data.offset   = offset;
-            instr.stride        = 2;
+            _instr_fetch_bytes(&instr.data.offset, sizeof(instr.data.offset));
+            instr.type      = kINSTRTYPE_BCC;
+            instr.addr_mode = kADDRMODE_RELATIVE;
+            instr.stride    = 2;
             break;
         }
 
         // BCS instructions
         case 0xB0:
         {
-            int8_t offset = 0;
-            _instr_fetch_bytes(&offset, sizeof(offset));
-            instr.type          = kINSTRTYPE_BCS;
-            instr.addr_mode     = kADDRMODE_RELATIVE;
-            instr.data.offset   = offset;
-            instr.stride        = 2;
+            _instr_fetch_bytes(&instr.data.offset, sizeof(instr.data.offset));
+            instr.type      = kINSTRTYPE_BCS;
+            instr.addr_mode = kADDRMODE_RELATIVE;
+            instr.stride    = 2;
             break;
         }
 
         // BEQ instructions
         case 0xF0:
         {
-            int8_t offset = 0;
-            _instr_fetch_bytes(&offset, sizeof(offset));
-            instr.type          = kINSTRTYPE_BEQ;
-            instr.addr_mode     = kADDRMODE_RELATIVE;
-            instr.data.offset   = offset;
-            instr.stride        = 2;
+            _instr_fetch_bytes(&instr.data.offset, sizeof(instr.data.offset));
+            instr.type      = kINSTRTYPE_BEQ;
+            instr.addr_mode = kADDRMODE_RELATIVE;
+            instr.stride    = 2;
             break;
         }
 
         // BIT instructions
         case 0x24:
         {
-            uint8_t byte = 0;
-            _instr_fetch_bytes(&byte, sizeof(byte));
+            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_BIT;
             instr.addr_mode = kADDRMODE_ZEROPAGE;
-            instr.data.byte = byte;
             instr.stride    = 2;
             break;
         }
         case 0x2C:
         {
-            uint16_t addr = 0;
-            _instr_fetch_bytes(&addr, sizeof(addr));
+            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_BIT;
             instr.addr_mode = kADDRMODE_ABSOLUTE;
-            instr.data.addr = addr;
-            instr.stride    = 2;
+            instr.stride    = 3;
             break;
         }
 
         // BMI instructions
         case 0x30:
         {
-            int8_t offset = 0;
-            _instr_fetch_bytes(&offset, sizeof(offset));
-            instr.type          = kINSTRTYPE_BMI;
-            instr.addr_mode     = kADDRMODE_RELATIVE;
-            instr.data.offset   = offset;
-            instr.stride        = 2;
+            _instr_fetch_bytes(&instr.data.offset, sizeof(instr.data.offset));
+            instr.type      = kINSTRTYPE_BMI;
+            instr.addr_mode = kADDRMODE_RELATIVE;
+            instr.stride    = 2;
             break;
         }
 
         // BNE instructions
         case 0xD0:
         {
-            int8_t offset = 0;
-            _instr_fetch_bytes(&offset, sizeof(offset));
-            instr.type          = kINSTRTYPE_BNE;
-            instr.addr_mode     = kADDRMODE_RELATIVE;
-            instr.data.offset   = offset;
-            instr.stride        = 2;
+            _instr_fetch_bytes(&instr.data.offset, sizeof(instr.data.offset));
+            instr.type      = kINSTRTYPE_BNE;
+            instr.addr_mode = kADDRMODE_RELATIVE;
+            instr.stride    = 2;
             break;
         }
 
         // BPL instructions
         case 0x10:
         {
-            int8_t offset = 0;
-            _instr_fetch_bytes(&offset, sizeof(offset));
-            instr.type          = kINSTRTYPE_BPL;
-            instr.addr_mode     = kADDRMODE_RELATIVE;
-            instr.data.offset   = offset;
-            instr.stride        = 2;
+            _instr_fetch_bytes(&instr.data.offset, sizeof(instr.data.offset));
+            instr.type      = kINSTRTYPE_BPL;
+            instr.addr_mode = kADDRMODE_RELATIVE;
+            instr.stride    = 2;
             break;
         }
 
@@ -452,24 +398,20 @@ InstrInfo instr_decode(void) {
         // BVC instructions
         case 0x50:
         {
-            int8_t offset = 0;
-            _instr_fetch_bytes(&offset, sizeof(offset));
-            instr.type          = kINSTRTYPE_BVC;
-            instr.addr_mode     = kADDRMODE_RELATIVE;
-            instr.data.offset   = offset;
-            instr.stride        = 2;
+            _instr_fetch_bytes(&instr.data.offset, sizeof(instr.data.offset));
+            instr.type      = kINSTRTYPE_BVC;
+            instr.addr_mode = kADDRMODE_RELATIVE;
+            instr.stride    = 2;
             break;
         }
 
         // BVS instructions
         case 0x70:
         {
-            int8_t offset = 0;
-            _instr_fetch_bytes(&offset, sizeof(offset));
-            instr.type          = kINSTRTYPE_BVS;
-            instr.addr_mode     = kADDRMODE_RELATIVE;
-            instr.data.offset   = offset;
-            instr.stride        = 2;
+            _instr_fetch_bytes(&instr.data.offset, sizeof(instr.data.offset));
+            instr.type      = kINSTRTYPE_BVS;
+            instr.addr_mode = kADDRMODE_RELATIVE;
+            instr.stride    = 2;
             break;
         }
 
@@ -512,81 +454,65 @@ InstrInfo instr_decode(void) {
         // CMP instructions
         case 0xC9:
         {
-            uint8_t byte = 0;
-            _instr_fetch_bytes(&byte, sizeof(byte));
+            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_CMP;
             instr.addr_mode = kADDRMODE_IMMEDIATE;
-            instr.data.byte = byte;
             instr.stride    = 2;
             break;
         }
         case 0xC5:
         {
-            uint8_t byte = 0;
-            _instr_fetch_bytes(&byte, sizeof(byte));
+            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_CMP;
             instr.addr_mode = kADDRMODE_ZEROPAGE;
-            instr.data.byte = byte;
             instr.stride    = 2;
             break;
         }
         case 0xD5:
         {
-            uint8_t byte = 0;
-            _instr_fetch_bytes(&byte, sizeof(byte));
+            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_CMP;
             instr.addr_mode = kADDRMODE_ZEROPAGE_X;
-            instr.data.byte = byte;
             instr.stride    = 2;
             break;
         }
         case 0xCD:
         {
-            uint16_t addr = 0;
-            _instr_fetch_bytes(&addr, sizeof(addr));
+            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_CMP;
             instr.addr_mode = kADDRMODE_ABSOLUTE;
-            instr.data.addr = addr;
             instr.stride    = 3;
             break;
         }
         case 0xDD:
         {
-            uint16_t addr = 0;
-            _instr_fetch_bytes(&addr, sizeof(addr));
+            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_CMP;
             instr.addr_mode = kADDRMODE_ABSOLUTE_X;
-            instr.data.addr = addr;
             instr.stride    = 3;
             break;
         }
         case 0xD9:
         {
-            uint16_t addr = 0;
-            _instr_fetch_bytes(&addr, sizeof(addr));
+            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_CMP;
             instr.addr_mode = kADDRMODE_ABSOLUTE_Y;
-            instr.data.addr = addr;
             instr.stride    = 3;
             break;
         }
         case 0xC1:
         {
-            uint8_t byte = 0;
-            _instr_fetch_bytes(&byte, sizeof(byte));
+            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_CMP;
             instr.addr_mode = kADDRMODE_IDX_INDIRECT;
-            instr.data.byte = byte;
             instr.stride    = 2;
             break;
         }
         case 0xD1:
         {
-            uint8_t byte = 0;
-            _instr_fetch_bytes(&byte, sizeof(byte));
+            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_CMP;
             instr.addr_mode = kADDRMODE_INDIRECT_IDX;
-            instr.data.byte = byte;
             instr.stride    = 2;
             break;
         }
@@ -594,31 +520,25 @@ InstrInfo instr_decode(void) {
         // CPX instructions
         case 0xE0:
         {
-            uint8_t byte = 0;
-            _instr_fetch_bytes(&byte, sizeof(byte));
+            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_CPX;
             instr.addr_mode = kADDRMODE_IMMEDIATE;
-            instr.data.byte = byte;
             instr.stride    = 2;
             break;
         }
         case 0xE4:
         {
-            uint8_t byte = 0;
-            _instr_fetch_bytes(&byte, sizeof(byte));
+            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_CPX;
             instr.addr_mode = kADDRMODE_ZEROPAGE;
-            instr.data.byte = byte;
             instr.stride    = 2;
             break;
         }
         case 0xEC:
         {
-            uint16_t addr = 0;
-            _instr_fetch_bytes(&addr, sizeof(addr));
+            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_CPX;
             instr.addr_mode = kADDRMODE_ABSOLUTE;
-            instr.data.addr = addr;
             instr.stride    = 3;
             break;
         }
@@ -626,31 +546,25 @@ InstrInfo instr_decode(void) {
         // CPY instructions
         case 0xC0:
         {
-            uint8_t byte = 0;
-            _instr_fetch_bytes(&byte, sizeof(byte));
+            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_CPY;
             instr.addr_mode = kADDRMODE_IMMEDIATE;
-            instr.data.byte = byte;
             instr.stride    = 2;
             break;
         }
         case 0xC4:
         {
-            uint8_t byte = 0;
-            _instr_fetch_bytes(&byte, sizeof(byte));
+            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_CPY;
             instr.addr_mode = kADDRMODE_ZEROPAGE;
-            instr.data.byte = byte;
             instr.stride    = 2;
             break;
         }
         case 0xCC:
         {
-            uint16_t addr = 0;
-            _instr_fetch_bytes(&addr, sizeof(addr));
+            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_CPY;
             instr.addr_mode = kADDRMODE_ABSOLUTE;
-            instr.data.addr = addr;
             instr.stride    = 3;
             break;
         }
@@ -658,41 +572,33 @@ InstrInfo instr_decode(void) {
         // DEC instructions
         case 0xC6:
         {
-            uint8_t byte = 0;
-            _instr_fetch_bytes(&byte, sizeof(byte));
+            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_DEC;
             instr.addr_mode = kADDRMODE_ZEROPAGE;
-            instr.data.byte = byte;
             instr.stride    = 2;
             break;
         }
         case 0xD6:
         {
-            uint8_t byte = 0;
-            _instr_fetch_bytes(&byte, sizeof(byte));
+            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_DEC;
             instr.addr_mode = kADDRMODE_ZEROPAGE_X;
-            instr.data.byte = byte;
             instr.stride    = 2;
             break;
         }
         case 0xCE:
         {
-            uint16_t addr = 0;
-            _instr_fetch_bytes(&addr, sizeof(addr));
+            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_DEC;
             instr.addr_mode = kADDRMODE_ABSOLUTE;
-            instr.data.addr = addr;
             instr.stride    = 3;
             break;
         }
         case 0xDE:
         {
-            uint16_t addr = 0;
-            _instr_fetch_bytes(&addr, sizeof(addr));
+            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_DEC;
             instr.addr_mode = kADDRMODE_ABSOLUTE_X;
-            instr.data.addr = addr;
             instr.stride    = 3;
             break;
         }
@@ -718,81 +624,65 @@ InstrInfo instr_decode(void) {
         // EOR instructions
         case 0x49:
         {
-            uint8_t byte = 0;
-            _instr_fetch_bytes(&byte, sizeof(byte));
+            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_EOR;
             instr.addr_mode = kADDRMODE_IMMEDIATE;
-            instr.data.byte = byte;
             instr.stride    = 2;
             break;
         }
         case 0x45:
         {
-            uint8_t byte = 0;
-            _instr_fetch_bytes(&byte, sizeof(byte));
+            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_EOR;
             instr.addr_mode = kADDRMODE_ZEROPAGE;
-            instr.data.byte = byte;
             instr.stride    = 2;
             break;
         }
         case 0x55:
         {
-            uint8_t byte = 0;
-            _instr_fetch_bytes(&byte, sizeof(byte));
+            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_EOR;
             instr.addr_mode = kADDRMODE_ZEROPAGE_X;
-            instr.data.byte = byte;
             instr.stride    = 2;
             break;
         }
         case 0x4D:
         {
-            uint16_t addr = 0;
-            _instr_fetch_bytes(&addr, sizeof(addr));
+            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_EOR;
             instr.addr_mode = kADDRMODE_ABSOLUTE;
-            instr.data.addr = addr;
             instr.stride    = 3;
             break;
         }
         case 0x5D:
         {
-            uint16_t addr = 0;
-            _instr_fetch_bytes(&addr, sizeof(addr));
+            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_EOR;
             instr.addr_mode = kADDRMODE_ABSOLUTE_X;
-            instr.data.addr = addr;
             instr.stride    = 3;
             break;
         }
         case 0x59:
         {
-            uint16_t addr = 0;
-            _instr_fetch_bytes(&addr, sizeof(addr));
+            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_EOR;
             instr.addr_mode = kADDRMODE_ABSOLUTE_Y;
-            instr.data.addr = addr;
             instr.stride    = 3;
             break;
         }
         case 0x41:
         {
-            uint8_t byte = 0;
-            _instr_fetch_bytes(&byte, sizeof(byte));
+            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_EOR;
             instr.addr_mode = kADDRMODE_IDX_INDIRECT;
-            instr.data.byte = byte;
             instr.stride    = 2;
             break;
         }
         case 0x51:
         {
-            uint8_t byte = 0;
-            _instr_fetch_bytes(&byte, sizeof(byte));
+            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_EOR;
             instr.addr_mode = kADDRMODE_INDIRECT_IDX;
-            instr.data.byte = byte;
             instr.stride    = 2;
             break;
         }
@@ -800,41 +690,33 @@ InstrInfo instr_decode(void) {
         // INC instructions
         case 0xE6:
         {
-            uint8_t byte = 0;
-            _instr_fetch_bytes(&byte, sizeof(byte));
+            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_INC;
             instr.addr_mode = kADDRMODE_ZEROPAGE;
-            instr.data.byte = byte;
             instr.stride    = 2;
             break;
         }
         case 0xF6:
         {
-            uint8_t byte = 0;
-            _instr_fetch_bytes(&byte, sizeof(byte));
+            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_INC;
             instr.addr_mode = kADDRMODE_ZEROPAGE_X;
-            instr.data.byte = byte;
             instr.stride    = 2;
             break;
         }
         case 0xEE:
         {
-            uint16_t addr = 0;
-            _instr_fetch_bytes(&addr, sizeof(addr));
+            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_INC;
             instr.addr_mode = kADDRMODE_ABSOLUTE;
-            instr.data.addr = addr;
             instr.stride    = 3;
             break;
         }
         case 0xFE:
         {
-            uint16_t addr = 0;
-            _instr_fetch_bytes(&addr, sizeof(addr));
+            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_INC;
             instr.addr_mode = kADDRMODE_ABSOLUTE_X;
-            instr.data.addr = addr;
             instr.stride    = 3;
             break;
         }
@@ -860,21 +742,17 @@ InstrInfo instr_decode(void) {
         // JMP instructions
         case 0x4C:
         {
-            uint16_t addr = 0;
-            _instr_fetch_bytes(&addr, sizeof(addr));
+            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_JMP;
             instr.addr_mode = kADDRMODE_ABSOLUTE;
-            instr.data.addr = addr;
             instr.stride    = 3;
             break;
         }
         case 0x6C:
         {
-            uint16_t addr = 0;
-            _instr_fetch_bytes(&addr, sizeof(addr));
+            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_JMP;
             instr.addr_mode = kADDRMODE_INDIRECT;
-            instr.data.addr = addr;
             instr.stride    = 3;
             break;
         }
@@ -882,11 +760,9 @@ InstrInfo instr_decode(void) {
         // JSR instructions
         case 0x20:
         {
-            uint16_t addr = 0;
-            _instr_fetch_bytes(&addr, sizeof(addr));
+            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_JSR;
             instr.addr_mode = kADDRMODE_ABSOLUTE;
-            instr.data.addr = addr;
             instr.stride    = 3;
             break;
         }
@@ -894,81 +770,65 @@ InstrInfo instr_decode(void) {
         // LDA instructions
         case 0xA9:
         {
-            uint8_t byte = 0;
-            _instr_fetch_bytes(&byte, sizeof(byte));
+            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_LDA;
             instr.addr_mode = kADDRMODE_IMMEDIATE;
-            instr.data.byte = byte;
             instr.stride    = 2;
             break;
         }
         case 0xA5:
         {
-            uint8_t byte = 0;
-            _instr_fetch_bytes(&byte, sizeof(byte));
+            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_LDA;
             instr.addr_mode = kADDRMODE_ZEROPAGE;
-            instr.data.byte = byte;
             instr.stride    = 2;
             break;
         }
         case 0xB5:
         {
-            uint8_t byte = 0;
-            _instr_fetch_bytes(&byte, sizeof(byte));
+            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_LDA;
             instr.addr_mode = kADDRMODE_ZEROPAGE_X;
-            instr.data.byte = byte;
             instr.stride    = 2;
             break;
         }
         case 0xAD:
         {
-            uint16_t addr = 0;
-            _instr_fetch_bytes(&addr, sizeof(addr));
+            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_LDA;
             instr.addr_mode = kADDRMODE_ABSOLUTE;
-            instr.data.addr = addr;
             instr.stride    = 3;
             break;
         }
         case 0xBD:
         {
-            uint16_t addr = 0;
-            _instr_fetch_bytes(&addr, sizeof(addr));
+            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_LDA;
             instr.addr_mode = kADDRMODE_ABSOLUTE_X;
-            instr.data.addr = addr;
             instr.stride    = 3;
             break;
         }
         case 0xB9:
         {
-            uint16_t addr = 0;
-            _instr_fetch_bytes(&addr, sizeof(addr));
+            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_LDA;
             instr.addr_mode = kADDRMODE_ABSOLUTE_Y;
-            instr.data.addr = addr;
             instr.stride    = 3;
             break;
         }
         case 0xA1:
         {
-            uint8_t byte = 0;
-            _instr_fetch_bytes(&byte, sizeof(byte));
+            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_LDA;
             instr.addr_mode = kADDRMODE_IDX_INDIRECT;
-            instr.data.byte = byte;
             instr.stride    = 2;
             break;
         }
         case 0xB1:
         {
-            uint8_t byte = 0;
-            _instr_fetch_bytes(&byte, sizeof(byte));
+            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_LDA;
             instr.addr_mode = kADDRMODE_INDIRECT_IDX;
-            instr.data.byte = byte;
             instr.stride    = 2;
             break;
         }
@@ -976,51 +836,41 @@ InstrInfo instr_decode(void) {
         // LDX instructions
         case 0xA2:
         {
-            uint8_t byte = 0;
-            _instr_fetch_bytes(&byte, sizeof(byte));
+            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_LDX;
             instr.addr_mode = kADDRMODE_IMMEDIATE;
-            instr.data.byte = byte;
             instr.stride    = 2;
             break;
         }
         case 0xA6:
         {
-            uint8_t byte = 0;
-            _instr_fetch_bytes(&byte, sizeof(byte));
+            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_LDX;
             instr.addr_mode = kADDRMODE_ZEROPAGE;
-            instr.data.byte = byte;
             instr.stride    = 2;
             break;
         }
         case 0xB6:
         {
-            uint8_t byte = 0;
-            _instr_fetch_bytes(&byte, sizeof(byte));
+            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_LDX;
             instr.addr_mode = kADDRMODE_ZEROPAGE_Y;
-            instr.data.byte = byte;
             instr.stride    = 2;
             break;
         }
         case 0xAE:
         {
-            uint16_t addr = 0;
-            _instr_fetch_bytes(&addr, sizeof(addr));
+            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_LDX;
             instr.addr_mode = kADDRMODE_ABSOLUTE;
-            instr.data.addr = addr;
             instr.stride    = 3;
             break;
         }
         case 0xBE:
         {
-            uint16_t addr = 0;
-            _instr_fetch_bytes(&addr, sizeof(addr));
+            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_LDX;
             instr.addr_mode = kADDRMODE_ABSOLUTE_Y;
-            instr.data.addr = addr;
             instr.stride    = 3;
             break;
         }
@@ -1028,51 +878,41 @@ InstrInfo instr_decode(void) {
         // LDY instructions
         case 0xA0:
         {
-            uint8_t byte = 0;
-            _instr_fetch_bytes(&byte, sizeof(byte));
+            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_LDY;
             instr.addr_mode = kADDRMODE_IMMEDIATE;
-            instr.data.byte = byte;
             instr.stride    = 2;
             break;
         }
         case 0xA4:
         {
-            uint8_t byte = 0;
-            _instr_fetch_bytes(&byte, sizeof(byte));
+            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_LDY;
             instr.addr_mode = kADDRMODE_ZEROPAGE;
-            instr.data.byte = byte;
             instr.stride    = 2;
             break;
         }
         case 0xB4:
         {
-            uint8_t byte = 0;
-            _instr_fetch_bytes(&byte, sizeof(byte));
+            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_LDY;
             instr.addr_mode = kADDRMODE_ZEROPAGE_X;
-            instr.data.byte = byte;
             instr.stride    = 2;
             break;
         }
         case 0xAC:
         {
-            uint16_t addr = 0;
-            _instr_fetch_bytes(&addr, sizeof(addr));
+            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_LDY;
             instr.addr_mode = kADDRMODE_ABSOLUTE;
-            instr.data.addr = addr;
             instr.stride    = 3;
             break;
         }
         case 0xBC:
         {
-            uint16_t addr = 0;
-            _instr_fetch_bytes(&addr, sizeof(addr));
+            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_LDY;
             instr.addr_mode = kADDRMODE_ABSOLUTE_X;
-            instr.data.addr = addr;
             instr.stride    = 3;
             break;
         }
@@ -1087,41 +927,33 @@ InstrInfo instr_decode(void) {
         }
         case 0x46:
         {
-            uint8_t byte = 0;
-            _instr_fetch_bytes(&byte, sizeof(byte));
+            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_LSR;
             instr.addr_mode = kADDRMODE_ZEROPAGE;
-            instr.data.byte = byte;
             instr.stride    = 2;
             break;
         }
         case 0x56:
         {
-            uint8_t byte = 0;
-            _instr_fetch_bytes(&byte, sizeof(byte));
+            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_LSR;
             instr.addr_mode = kADDRMODE_ZEROPAGE_X;
-            instr.data.byte = byte;
             instr.stride    = 2;
             break;
         }
         case 0x4E:
         {
-            uint16_t addr = 0;
-            _instr_fetch_bytes(&addr, sizeof(addr));
+            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_LSR;
             instr.addr_mode = kADDRMODE_ABSOLUTE;
-            instr.data.addr = addr;
             instr.stride    = 3;
             break;
         }
         case 0x5E:
         {
-            uint16_t addr = 0;
-            _instr_fetch_bytes(&addr, sizeof(addr));
+            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_LSR;
             instr.addr_mode = kADDRMODE_ABSOLUTE_X;
-            instr.data.addr = addr;
             instr.stride    = 3;
             break;
         }
@@ -1137,81 +969,65 @@ InstrInfo instr_decode(void) {
         // ORA instructions
         case 0x09:
         {
-            uint8_t byte = 0;
-            _instr_fetch_bytes(&byte, sizeof(byte));
+            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_ORA;
             instr.addr_mode = kADDRMODE_IMMEDIATE;
-            instr.data.byte = byte;
             instr.stride    = 2;
             break;
         }
         case 0x05:
         {
-            uint8_t byte = 0;
-            _instr_fetch_bytes(&byte, sizeof(byte));
+            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_ORA;
             instr.addr_mode = kADDRMODE_ZEROPAGE;
-            instr.data.byte = byte;
             instr.stride    = 2;
             break;
         }
         case 0x15:
         {
-            uint8_t byte = 0;
-            _instr_fetch_bytes(&byte, sizeof(byte));
+            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_ORA;
             instr.addr_mode = kADDRMODE_ZEROPAGE_X;
-            instr.data.byte = byte;
             instr.stride    = 2;
             break;
         }
         case 0x0D:
         {
-            uint16_t addr = 0;
-            _instr_fetch_bytes(&addr, sizeof(addr));
+            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_ORA;
             instr.addr_mode = kADDRMODE_ABSOLUTE;
-            instr.data.addr = addr;
             instr.stride    = 3;
             break;
         }
         case 0x1D:
         {
-            uint16_t addr = 0;
-            _instr_fetch_bytes(&addr, sizeof(addr));
+            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_ORA;
             instr.addr_mode = kADDRMODE_ABSOLUTE_X;
-            instr.data.addr = addr;
             instr.stride    = 3;
             break;
         }
         case 0x19:
         {
-            uint16_t addr = 0;
-            _instr_fetch_bytes(&addr, sizeof(addr));
+            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_ORA;
             instr.addr_mode = kADDRMODE_ABSOLUTE_Y;
-            instr.data.addr = addr;
             instr.stride    = 3;
             break;
         }
         case 0x01:
         {
-            uint8_t byte = 0;
-            _instr_fetch_bytes(&byte, sizeof(byte));
+            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_ORA;
             instr.addr_mode = kADDRMODE_IDX_INDIRECT;
-            instr.data.byte = byte;
             instr.stride    = 2;
             break;
         }
         case 0x11:
         {
-            uint8_t byte = 0;
-            _instr_fetch_bytes(&byte, sizeof(byte));
+            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_ORA;
             instr.addr_mode = kADDRMODE_INDIRECT_IDX;
-            instr.data.byte = byte;
             instr.stride    = 2;
             break;
         }
@@ -1262,41 +1078,33 @@ InstrInfo instr_decode(void) {
         }
         case 0x26:
         {
-            uint8_t byte = 0;
-            _instr_fetch_bytes(&byte, sizeof(byte));
+            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_ROL;
             instr.addr_mode = kADDRMODE_ZEROPAGE;
-            instr.data.byte = byte;
             instr.stride    = 2;
             break;
         }
         case 0x36:
         {
-            uint8_t byte = 0;
-            _instr_fetch_bytes(&byte, sizeof(byte));
+            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_ROL;
             instr.addr_mode = kADDRMODE_ZEROPAGE_X;
-            instr.data.byte = byte;
             instr.stride    = 2;
             break;
         }
         case 0x2E:
         {
-            uint16_t addr = 0;
-            _instr_fetch_bytes(&addr, sizeof(addr));
+            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_ROL;
             instr.addr_mode = kADDRMODE_ABSOLUTE;
-            instr.data.addr = addr;
             instr.stride    = 3;
             break;
         }
         case 0x3E:
         {
-            uint16_t addr = 0;
-            _instr_fetch_bytes(&addr, sizeof(addr));
+            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_ROL;
             instr.addr_mode = kADDRMODE_ABSOLUTE_X;
-            instr.data.addr = addr;
             instr.stride    = 3;
             break;
         }
@@ -1311,41 +1119,33 @@ InstrInfo instr_decode(void) {
         }
         case 0x66:
         {
-            uint8_t byte = 0;
-            _instr_fetch_bytes(&byte, sizeof(byte));
+            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_ROR;
             instr.addr_mode = kADDRMODE_ZEROPAGE;
-            instr.data.byte = byte;
             instr.stride    = 2;
             break;
         }
         case 0x76:
         {
-            uint8_t byte = 0;
-            _instr_fetch_bytes(&byte, sizeof(byte));
+            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_ROR;
             instr.addr_mode = kADDRMODE_ZEROPAGE_X;
-            instr.data.byte = byte;
             instr.stride    = 2;
             break;
         }
         case 0x6E:
         {
-            uint16_t addr = 0;
-            _instr_fetch_bytes(&addr, sizeof(addr));
+            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_ROR;
             instr.addr_mode = kADDRMODE_ABSOLUTE;
-            instr.data.addr = addr;
             instr.stride    = 3;
             break;
         }
         case 0x7E:
         {
-            uint16_t addr = 0;
-            _instr_fetch_bytes(&addr, sizeof(addr));
+            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_ROR;
             instr.addr_mode = kADDRMODE_ABSOLUTE_X;
-            instr.data.addr = addr;
             instr.stride    = 3;
             break;
         }
@@ -1371,81 +1171,65 @@ InstrInfo instr_decode(void) {
         // SBC instructions
         case 0xE9:
         {
-            uint8_t byte    = 0;
-            _instr_fetch_bytes(&byte, sizeof(byte));
+            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_SBC;
             instr.addr_mode = kADDRMODE_IMMEDIATE;
-            instr.data.byte = byte;
             instr.stride    = 2;
             break;
         }
         case 0xE5:
         {
-            uint8_t byte    = 0;
-            _instr_fetch_bytes(&byte, sizeof(byte));
+            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_SBC;
             instr.addr_mode = kADDRMODE_ZEROPAGE;
-            instr.data.byte = byte;
             instr.stride    = 2;
             break;
         }
         case 0xF5:
         {
-            uint8_t byte    = 0;
-            _instr_fetch_bytes(&byte, sizeof(byte));
+            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_SBC;
             instr.addr_mode = kADDRMODE_ZEROPAGE_X;
-            instr.data.byte = byte;
             instr.stride    = 2;
             break;
         }
         case 0xED:
         {
-            uint16_t addr    = 0;
-            _instr_fetch_bytes(&addr, sizeof(addr));
+            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_SBC;
             instr.addr_mode = kADDRMODE_ABSOLUTE;
-            instr.data.addr = addr;
             instr.stride    = 3;
             break;
         }
         case 0xFD:
         {
-            uint16_t addr    = 0;
-            _instr_fetch_bytes(&addr, sizeof(addr));
+            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_SBC;
             instr.addr_mode = kADDRMODE_ABSOLUTE_X;
-            instr.data.addr = addr;
             instr.stride    = 3;
             break;
         }
         case 0xF9:
         {
-            uint16_t addr    = 0;
-            _instr_fetch_bytes(&addr, sizeof(addr));
+            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_SBC;
             instr.addr_mode = kADDRMODE_ABSOLUTE_Y;
-            instr.data.addr = addr;
             instr.stride    = 3;
             break;
         }
         case 0xE1:
         {
-            uint8_t byte    = 0;
-            _instr_fetch_bytes(&byte, sizeof(byte));
+            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_SBC;
             instr.addr_mode = kADDRMODE_IDX_INDIRECT;
-            instr.data.byte = byte;
             instr.stride    = 2;
             break;
         }
         case 0xF1:
         {
-            uint8_t byte    = 0;
-            _instr_fetch_bytes(&byte, sizeof(byte));
+            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_SBC;
             instr.addr_mode = kADDRMODE_INDIRECT_IDX;
-            instr.data.byte = byte;
             instr.stride    = 2;
             break;
         }
@@ -1480,71 +1264,57 @@ InstrInfo instr_decode(void) {
         // STA instructions
         case 0x85:
         {
-            uint8_t byte    = 0;
-            _instr_fetch_bytes(&byte, sizeof(byte));
+            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_STA;
             instr.addr_mode = kADDRMODE_ZEROPAGE;
-            instr.data.byte = byte;
             instr.stride    = 2;
             break;
         }
         case 0x95:
         {
-            uint8_t byte    = 0;
-            _instr_fetch_bytes(&byte, sizeof(byte));
+            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_STA;
             instr.addr_mode = kADDRMODE_ZEROPAGE_X;
-            instr.data.byte = byte;
             instr.stride    = 2;
             break;
         }
         case 0x8D:
         {
-            uint16_t addr    = 0;
-            _instr_fetch_bytes(&addr, sizeof(addr));
+            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_STA;
             instr.addr_mode = kADDRMODE_ABSOLUTE;
-            instr.data.addr = addr;
             instr.stride    = 3;
             break;
         }
         case 0x9D:
         {
-            uint16_t addr    = 0;
-            _instr_fetch_bytes(&addr, sizeof(addr));
+            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_STA;
             instr.addr_mode = kADDRMODE_ABSOLUTE_X;
-            instr.data.addr = addr;
             instr.stride    = 3;
             break;
         }
         case 0x99:
         {
-            uint16_t addr    = 0;
-            _instr_fetch_bytes(&addr, sizeof(addr));
+            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_STA;
             instr.addr_mode = kADDRMODE_ABSOLUTE_Y;
-            instr.data.addr = addr;
             instr.stride    = 3;
             break;
         }
         case 0x81:
         {
-            uint8_t byte    = 0;
-            _instr_fetch_bytes(&byte, sizeof(byte));
+            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_STA;
             instr.addr_mode = kADDRMODE_IDX_INDIRECT;
-            instr.data.byte = byte;
             instr.stride    = 2;
             break;
         }
         case 0x91:
         {
-            uint8_t byte    = 0;
-            _instr_fetch_bytes(&byte, sizeof(byte));
+            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_STA;
             instr.addr_mode = kADDRMODE_INDIRECT_IDX;
-            instr.data.byte = byte;
             instr.stride    = 2;
             break;
         }
@@ -1552,31 +1322,25 @@ InstrInfo instr_decode(void) {
         // STX instructions
         case 0x86:
         {
-            uint8_t byte    = 0;
-            _instr_fetch_bytes(&byte, sizeof(byte));
+            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_STX;
             instr.addr_mode = kADDRMODE_ZEROPAGE;
-            instr.data.byte = byte;
             instr.stride    = 2;
             break;
         }
         case 0x96:
         {
-            uint8_t byte    = 0;
-            _instr_fetch_bytes(&byte, sizeof(byte));
+            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_STX;
             instr.addr_mode = kADDRMODE_ZEROPAGE_Y;
-            instr.data.byte = byte;
             instr.stride    = 2;
             break;
         }
         case 0x8E:
         {
-            uint16_t addr    = 0;
-            _instr_fetch_bytes(&addr, sizeof(addr));
+            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_STX;
             instr.addr_mode = kADDRMODE_ABSOLUTE;
-            instr.data.addr = addr;
             instr.stride    = 3;
             break;
         }
@@ -1584,31 +1348,25 @@ InstrInfo instr_decode(void) {
         // STY instructions
         case 0x84:
         {
-            uint8_t byte    = 0;
-            _instr_fetch_bytes(&byte, sizeof(byte));
+            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_STY;
             instr.addr_mode = kADDRMODE_ZEROPAGE;
-            instr.data.byte = byte;
             instr.stride    = 2;
             break;
         }
         case 0x94:
         {
-            uint8_t byte    = 0;
-            _instr_fetch_bytes(&byte, sizeof(byte));
+            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_STY;
             instr.addr_mode = kADDRMODE_ZEROPAGE_X;
-            instr.data.byte = byte;
             instr.stride    = 2;
             break;
         }
         case 0x8C:
         {
-            uint16_t addr    = 0;
-            _instr_fetch_bytes(&addr, sizeof(addr));
+            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_STY;
             instr.addr_mode = kADDRMODE_ABSOLUTE;
-            instr.data.addr = addr;
             instr.stride    = 3;
             break;
         }
