@@ -42,7 +42,25 @@ static void _instr_jmp(const InstrInfo* instr);
 static void _instr_jsr(const InstrInfo* instr);
 static void _instr_lda(const InstrInfo* instr);
 static void _instr_ldx(const InstrInfo* instr);
+static void _instr_ldy(const InstrInfo* instr);
+static void _instr_lsr(const InstrInfo* instr);
 static void _instr_nop(const InstrInfo* instr);
+static void _instr_ora(const InstrInfo* instr);
+static void _instr_pha(const InstrInfo* instr);
+static void _instr_php(const InstrInfo* instr);
+static void _instr_pla(const InstrInfo* instr);
+static void _instr_plp(const InstrInfo* instr);
+static void _instr_rol(const InstrInfo* instr);
+static void _instr_ror(const InstrInfo* instr);
+static void _instr_rti(const InstrInfo* instr);
+static void _instr_rts(const InstrInfo* instr);
+static void _instr_sbc(const InstrInfo* instr);
+static void _instr_sec(const InstrInfo* instr);
+static void _instr_sed(const InstrInfo* instr);
+static void _instr_sei(const InstrInfo* instr);
+static void _instr_sta(const InstrInfo* instr);
+static void _instr_stx(const InstrInfo* instr);
+static void _instr_sty(const InstrInfo* instr);
 
 static InstrExecFunc s_instr_exec_funcs[kINSTRTYPE_COUNT];
 #define REG_INSTR(_alias, _func) s_instr_exec_funcs[_alias] = _func
@@ -86,7 +104,25 @@ void instr_init(void) {
     REG_INSTR(kINSTRTYPE_JSR, _instr_jsr);
     REG_INSTR(kINSTRTYPE_LDA, _instr_lda);
     REG_INSTR(kINSTRTYPE_LDX, _instr_ldx);
+    REG_INSTR(kINSTRTYPE_LDY, _instr_ldy);
+    REG_INSTR(kINSTRTYPE_LSR, _instr_lsr);
     REG_INSTR(kINSTRTYPE_NOP, _instr_nop);
+    REG_INSTR(kINSTRTYPE_ORA, _instr_ora);
+    REG_INSTR(kINSTRTYPE_PHA, _instr_pha);
+    REG_INSTR(kINSTRTYPE_PHP, _instr_php);
+    REG_INSTR(kINSTRTYPE_PLA, _instr_pla);
+    REG_INSTR(kINSTRTYPE_PLP, _instr_plp);
+    REG_INSTR(kINSTRTYPE_ROL, _instr_rol);
+    REG_INSTR(kINSTRTYPE_ROR, _instr_ror);
+    REG_INSTR(kINSTRTYPE_RTI, _instr_rti);
+    REG_INSTR(kINSTRTYPE_RTS, _instr_rts);
+    REG_INSTR(kINSTRTYPE_SBC, _instr_sbc);
+    REG_INSTR(kINSTRTYPE_SEC, _instr_sec);
+    REG_INSTR(kINSTRTYPE_SED, _instr_sed);
+    REG_INSTR(kINSTRTYPE_SEI, _instr_sei);
+    REG_INSTR(kINSTRTYPE_STA, _instr_sta);
+    REG_INSTR(kINSTRTYPE_STX, _instr_stx);
+    REG_INSTR(kINSTRTYPE_STY, _instr_sty);
 }
 
 InstrInfo instr_decode(void) {
@@ -989,11 +1025,591 @@ InstrInfo instr_decode(void) {
             break;
         }
 
+        // LDY instructions
+        case 0xA0:
+        {
+            uint8_t byte = 0;
+            _instr_fetch_bytes(&byte, sizeof(byte));
+            instr.type      = kINSTRTYPE_LDY;
+            instr.addr_mode = kADDRMODE_IMMEDIATE;
+            instr.data.byte = byte;
+            instr.stride    = 2;
+            break;
+        }
+        case 0xA4:
+        {
+            uint8_t byte = 0;
+            _instr_fetch_bytes(&byte, sizeof(byte));
+            instr.type      = kINSTRTYPE_LDY;
+            instr.addr_mode = kADDRMODE_ZEROPAGE;
+            instr.data.byte = byte;
+            instr.stride    = 2;
+            break;
+        }
+        case 0xB4:
+        {
+            uint8_t byte = 0;
+            _instr_fetch_bytes(&byte, sizeof(byte));
+            instr.type      = kINSTRTYPE_LDY;
+            instr.addr_mode = kADDRMODE_ZEROPAGE_X;
+            instr.data.byte = byte;
+            instr.stride    = 2;
+            break;
+        }
+        case 0xAC:
+        {
+            uint16_t addr = 0;
+            _instr_fetch_bytes(&addr, sizeof(addr));
+            instr.type      = kINSTRTYPE_LDY;
+            instr.addr_mode = kADDRMODE_ABSOLUTE;
+            instr.data.addr = addr;
+            instr.stride    = 3;
+            break;
+        }
+        case 0xBC:
+        {
+            uint16_t addr = 0;
+            _instr_fetch_bytes(&addr, sizeof(addr));
+            instr.type      = kINSTRTYPE_LDY;
+            instr.addr_mode = kADDRMODE_ABSOLUTE_X;
+            instr.data.addr = addr;
+            instr.stride    = 3;
+            break;
+        }
+
+        // LSR instructions
+        case 0x4A:
+        {
+            instr.type      = kINSTRTYPE_LSR;
+            instr.addr_mode = kADDRMODE_ACCUMULATOR;
+            instr.stride    = 1;
+            break;
+        }
+        case 0x46:
+        {
+            uint8_t byte = 0;
+            _instr_fetch_bytes(&byte, sizeof(byte));
+            instr.type      = kINSTRTYPE_LSR;
+            instr.addr_mode = kADDRMODE_ZEROPAGE;
+            instr.data.byte = byte;
+            instr.stride    = 2;
+            break;
+        }
+        case 0x56:
+        {
+            uint8_t byte = 0;
+            _instr_fetch_bytes(&byte, sizeof(byte));
+            instr.type      = kINSTRTYPE_LSR;
+            instr.addr_mode = kADDRMODE_ZEROPAGE_X;
+            instr.data.byte = byte;
+            instr.stride    = 2;
+            break;
+        }
+        case 0x4E:
+        {
+            uint16_t addr = 0;
+            _instr_fetch_bytes(&addr, sizeof(addr));
+            instr.type      = kINSTRTYPE_LSR;
+            instr.addr_mode = kADDRMODE_ABSOLUTE;
+            instr.data.addr = addr;
+            instr.stride    = 3;
+            break;
+        }
+        case 0x5E:
+        {
+            uint16_t addr = 0;
+            _instr_fetch_bytes(&addr, sizeof(addr));
+            instr.type      = kINSTRTYPE_LSR;
+            instr.addr_mode = kADDRMODE_ABSOLUTE_X;
+            instr.data.addr = addr;
+            instr.stride    = 3;
+            break;
+        }
+
         // NOP instructions
         case 0xEA:
         {
             instr.type      = kINSTRTYPE_NOP;
             instr.addr_mode = kADDRMODE_IMPLICIT;
+            break;
+        }
+
+        // ORA instructions
+        case 0x09:
+        {
+            uint8_t byte = 0;
+            _instr_fetch_bytes(&byte, sizeof(byte));
+            instr.type      = kINSTRTYPE_ORA;
+            instr.addr_mode = kADDRMODE_IMMEDIATE;
+            instr.data.byte = byte;
+            instr.stride    = 2;
+            break;
+        }
+        case 0x05:
+        {
+            uint8_t byte = 0;
+            _instr_fetch_bytes(&byte, sizeof(byte));
+            instr.type      = kINSTRTYPE_ORA;
+            instr.addr_mode = kADDRMODE_ZEROPAGE;
+            instr.data.byte = byte;
+            instr.stride    = 2;
+            break;
+        }
+        case 0x15:
+        {
+            uint8_t byte = 0;
+            _instr_fetch_bytes(&byte, sizeof(byte));
+            instr.type      = kINSTRTYPE_ORA;
+            instr.addr_mode = kADDRMODE_ZEROPAGE_X;
+            instr.data.byte = byte;
+            instr.stride    = 2;
+            break;
+        }
+        case 0x0D:
+        {
+            uint16_t addr = 0;
+            _instr_fetch_bytes(&addr, sizeof(addr));
+            instr.type      = kINSTRTYPE_ORA;
+            instr.addr_mode = kADDRMODE_ABSOLUTE;
+            instr.data.addr = addr;
+            instr.stride    = 3;
+            break;
+        }
+        case 0x1D:
+        {
+            uint16_t addr = 0;
+            _instr_fetch_bytes(&addr, sizeof(addr));
+            instr.type      = kINSTRTYPE_ORA;
+            instr.addr_mode = kADDRMODE_ABSOLUTE_X;
+            instr.data.addr = addr;
+            instr.stride    = 3;
+            break;
+        }
+        case 0x19:
+        {
+            uint16_t addr = 0;
+            _instr_fetch_bytes(&addr, sizeof(addr));
+            instr.type      = kINSTRTYPE_ORA;
+            instr.addr_mode = kADDRMODE_ABSOLUTE_Y;
+            instr.data.addr = addr;
+            instr.stride    = 3;
+            break;
+        }
+        case 0x01:
+        {
+            uint8_t byte = 0;
+            _instr_fetch_bytes(&byte, sizeof(byte));
+            instr.type      = kINSTRTYPE_ORA;
+            instr.addr_mode = kADDRMODE_IDX_INDIRECT;
+            instr.data.byte = byte;
+            instr.stride    = 2;
+            break;
+        }
+        case 0x11:
+        {
+            uint8_t byte = 0;
+            _instr_fetch_bytes(&byte, sizeof(byte));
+            instr.type      = kINSTRTYPE_ORA;
+            instr.addr_mode = kADDRMODE_INDIRECT_IDX;
+            instr.data.byte = byte;
+            instr.stride    = 2;
+            break;
+        }
+
+        // PHA instructions
+        case 0x48:
+        {
+            instr.type      = kINSTRTYPE_PHA;
+            instr.addr_mode = kADDRMODE_IMPLICIT;
+            instr.stride    = 1;
+            break;
+        }
+
+        // PHP instructions
+        case 0x08:
+        {
+            instr.type      = kINSTRTYPE_PHP;
+            instr.addr_mode = kADDRMODE_IMPLICIT;
+            instr.stride    = 1;
+            break;
+        }
+
+        // PLA instructions
+        case 0x68:
+        {
+            instr.type      = kINSTRTYPE_PLA;
+            instr.addr_mode = kADDRMODE_IMPLICIT;
+            instr.stride    = 1;
+            break;
+        }
+
+        // PLP instructions
+        case 0x28:
+        {
+            instr.type      = kINSTRTYPE_PLP;
+            instr.addr_mode = kADDRMODE_IMPLICIT;
+            instr.stride    = 1;
+            break;
+        }
+
+        // ROL instructions
+        case 0x2A:
+        {
+            instr.type      = kINSTRTYPE_ROL;
+            instr.addr_mode = kADDRMODE_ACCUMULATOR;
+            instr.stride    = 1;
+            break;
+        }
+        case 0x26:
+        {
+            uint8_t byte = 0;
+            _instr_fetch_bytes(&byte, sizeof(byte));
+            instr.type      = kINSTRTYPE_ROL;
+            instr.addr_mode = kADDRMODE_ZEROPAGE;
+            instr.data.byte = byte;
+            instr.stride    = 2;
+            break;
+        }
+        case 0x36:
+        {
+            uint8_t byte = 0;
+            _instr_fetch_bytes(&byte, sizeof(byte));
+            instr.type      = kINSTRTYPE_ROL;
+            instr.addr_mode = kADDRMODE_ZEROPAGE_X;
+            instr.data.byte = byte;
+            instr.stride    = 2;
+            break;
+        }
+        case 0x2E:
+        {
+            uint16_t addr = 0;
+            _instr_fetch_bytes(&addr, sizeof(addr));
+            instr.type      = kINSTRTYPE_ROL;
+            instr.addr_mode = kADDRMODE_ABSOLUTE;
+            instr.data.addr = addr;
+            instr.stride    = 3;
+            break;
+        }
+        case 0x3E:
+        {
+            uint16_t addr = 0;
+            _instr_fetch_bytes(&addr, sizeof(addr));
+            instr.type      = kINSTRTYPE_ROL;
+            instr.addr_mode = kADDRMODE_ABSOLUTE_X;
+            instr.data.addr = addr;
+            instr.stride    = 3;
+            break;
+        }
+
+        // ROR instructions
+        case 0x6A:
+        {
+            instr.type      = kINSTRTYPE_ROR;
+            instr.addr_mode = kADDRMODE_ACCUMULATOR;
+            instr.stride    = 1;
+            break;
+        }
+        case 0x66:
+        {
+            uint8_t byte = 0;
+            _instr_fetch_bytes(&byte, sizeof(byte));
+            instr.type      = kINSTRTYPE_ROR;
+            instr.addr_mode = kADDRMODE_ZEROPAGE;
+            instr.data.byte = byte;
+            instr.stride    = 2;
+            break;
+        }
+        case 0x76:
+        {
+            uint8_t byte = 0;
+            _instr_fetch_bytes(&byte, sizeof(byte));
+            instr.type      = kINSTRTYPE_ROR;
+            instr.addr_mode = kADDRMODE_ZEROPAGE_X;
+            instr.data.byte = byte;
+            instr.stride    = 2;
+            break;
+        }
+        case 0x6E:
+        {
+            uint16_t addr = 0;
+            _instr_fetch_bytes(&addr, sizeof(addr));
+            instr.type      = kINSTRTYPE_ROR;
+            instr.addr_mode = kADDRMODE_ABSOLUTE;
+            instr.data.addr = addr;
+            instr.stride    = 3;
+            break;
+        }
+        case 0x7E:
+        {
+            uint16_t addr = 0;
+            _instr_fetch_bytes(&addr, sizeof(addr));
+            instr.type      = kINSTRTYPE_ROR;
+            instr.addr_mode = kADDRMODE_ABSOLUTE_X;
+            instr.data.addr = addr;
+            instr.stride    = 3;
+            break;
+        }
+
+        // RTI instructions
+        case 0x40:
+        {
+            instr.type      = kINSTRTYPE_RTI;
+            instr.addr_mode = kADDRMODE_IMPLICIT;
+            instr.stride    = 1;
+            break;
+        }
+
+        // RTS instructions
+        case 0x60:
+        {
+            instr.type      = kINSTRTYPE_RTS;
+            instr.addr_mode = kADDRMODE_IMPLICIT;
+            instr.stride    = 1;
+            break;
+        }
+
+        // SBC instructions
+        case 0xE9:
+        {
+            uint8_t byte    = 0;
+            _instr_fetch_bytes(&byte, sizeof(byte));
+            instr.type      = kINSTRTYPE_SBC;
+            instr.addr_mode = kADDRMODE_IMMEDIATE;
+            instr.data.byte = byte;
+            instr.stride    = 2;
+            break;
+        }
+        case 0xE5:
+        {
+            uint8_t byte    = 0;
+            _instr_fetch_bytes(&byte, sizeof(byte));
+            instr.type      = kINSTRTYPE_SBC;
+            instr.addr_mode = kADDRMODE_ZEROPAGE;
+            instr.data.byte = byte;
+            instr.stride    = 2;
+            break;
+        }
+        case 0xF5:
+        {
+            uint8_t byte    = 0;
+            _instr_fetch_bytes(&byte, sizeof(byte));
+            instr.type      = kINSTRTYPE_SBC;
+            instr.addr_mode = kADDRMODE_ZEROPAGE_X;
+            instr.data.byte = byte;
+            instr.stride    = 2;
+            break;
+        }
+        case 0xED:
+        {
+            uint16_t addr    = 0;
+            _instr_fetch_bytes(&addr, sizeof(addr));
+            instr.type      = kINSTRTYPE_SBC;
+            instr.addr_mode = kADDRMODE_ABSOLUTE;
+            instr.data.addr = addr;
+            instr.stride    = 3;
+            break;
+        }
+        case 0xFD:
+        {
+            uint16_t addr    = 0;
+            _instr_fetch_bytes(&addr, sizeof(addr));
+            instr.type      = kINSTRTYPE_SBC;
+            instr.addr_mode = kADDRMODE_ABSOLUTE_X;
+            instr.data.addr = addr;
+            instr.stride    = 3;
+            break;
+        }
+        case 0xF9:
+        {
+            uint16_t addr    = 0;
+            _instr_fetch_bytes(&addr, sizeof(addr));
+            instr.type      = kINSTRTYPE_SBC;
+            instr.addr_mode = kADDRMODE_ABSOLUTE_Y;
+            instr.data.addr = addr;
+            instr.stride    = 3;
+            break;
+        }
+        case 0xE1:
+        {
+            uint8_t byte    = 0;
+            _instr_fetch_bytes(&byte, sizeof(byte));
+            instr.type      = kINSTRTYPE_SBC;
+            instr.addr_mode = kADDRMODE_IDX_INDIRECT;
+            instr.data.byte = byte;
+            instr.stride    = 2;
+            break;
+        }
+        case 0xF1:
+        {
+            uint8_t byte    = 0;
+            _instr_fetch_bytes(&byte, sizeof(byte));
+            instr.type      = kINSTRTYPE_SBC;
+            instr.addr_mode = kADDRMODE_INDIRECT_IDX;
+            instr.data.byte = byte;
+            instr.stride    = 2;
+            break;
+        }
+
+        // SEC instructions
+        case 0x38:
+        {
+            instr.type      = kINSTRTYPE_SEC;
+            instr.addr_mode = kADDRMODE_IMPLICIT;
+            instr.stride    = 1;
+            break;
+        }
+
+        // SED instructions
+        case 0xF8:
+        {
+            instr.type      = kINSTRTYPE_SED;
+            instr.addr_mode = kADDRMODE_IMPLICIT;
+            instr.stride    = 1;
+            break;
+        }
+
+        // SEI instructions
+        case 0x78:
+        {
+            instr.type      = kINSTRTYPE_SEI;
+            instr.addr_mode = kADDRMODE_IMPLICIT;
+            instr.stride    = 1;
+            break;
+        }
+
+        // STA instructions
+        case 0x85:
+        {
+            uint8_t byte    = 0;
+            _instr_fetch_bytes(&byte, sizeof(byte));
+            instr.type      = kINSTRTYPE_STA;
+            instr.addr_mode = kADDRMODE_ZEROPAGE;
+            instr.data.byte = byte;
+            instr.stride    = 2;
+            break;
+        }
+        case 0x95:
+        {
+            uint8_t byte    = 0;
+            _instr_fetch_bytes(&byte, sizeof(byte));
+            instr.type      = kINSTRTYPE_STA;
+            instr.addr_mode = kADDRMODE_ZEROPAGE_X;
+            instr.data.byte = byte;
+            instr.stride    = 2;
+            break;
+        }
+        case 0x8D:
+        {
+            uint16_t addr    = 0;
+            _instr_fetch_bytes(&addr, sizeof(addr));
+            instr.type      = kINSTRTYPE_STA;
+            instr.addr_mode = kADDRMODE_ABSOLUTE;
+            instr.data.addr = addr;
+            instr.stride    = 3;
+            break;
+        }
+        case 0x9D:
+        {
+            uint16_t addr    = 0;
+            _instr_fetch_bytes(&addr, sizeof(addr));
+            instr.type      = kINSTRTYPE_STA;
+            instr.addr_mode = kADDRMODE_ABSOLUTE_X;
+            instr.data.addr = addr;
+            instr.stride    = 3;
+            break;
+        }
+        case 0x99:
+        {
+            uint16_t addr    = 0;
+            _instr_fetch_bytes(&addr, sizeof(addr));
+            instr.type      = kINSTRTYPE_STA;
+            instr.addr_mode = kADDRMODE_ABSOLUTE_Y;
+            instr.data.addr = addr;
+            instr.stride    = 3;
+            break;
+        }
+        case 0x81:
+        {
+            uint8_t byte    = 0;
+            _instr_fetch_bytes(&byte, sizeof(byte));
+            instr.type      = kINSTRTYPE_STA;
+            instr.addr_mode = kADDRMODE_IDX_INDIRECT;
+            instr.data.byte = byte;
+            instr.stride    = 2;
+            break;
+        }
+        case 0x91:
+        {
+            uint8_t byte    = 0;
+            _instr_fetch_bytes(&byte, sizeof(byte));
+            instr.type      = kINSTRTYPE_STA;
+            instr.addr_mode = kADDRMODE_INDIRECT_IDX;
+            instr.data.byte = byte;
+            instr.stride    = 2;
+            break;
+        }
+
+        // STX instructions
+        case 0x86:
+        {
+            uint8_t byte    = 0;
+            _instr_fetch_bytes(&byte, sizeof(byte));
+            instr.type      = kINSTRTYPE_STX;
+            instr.addr_mode = kADDRMODE_ZEROPAGE;
+            instr.data.byte = byte;
+            instr.stride    = 2;
+            break;
+        }
+        case 0x96:
+        {
+            uint8_t byte    = 0;
+            _instr_fetch_bytes(&byte, sizeof(byte));
+            instr.type      = kINSTRTYPE_STX;
+            instr.addr_mode = kADDRMODE_ZEROPAGE_Y;
+            instr.data.byte = byte;
+            instr.stride    = 2;
+            break;
+        }
+        case 0x8E:
+        {
+            uint16_t addr    = 0;
+            _instr_fetch_bytes(&addr, sizeof(addr));
+            instr.type      = kINSTRTYPE_STX;
+            instr.addr_mode = kADDRMODE_ABSOLUTE;
+            instr.data.addr = addr;
+            instr.stride    = 3;
+            break;
+        }
+
+        // STY instructions
+        case 0x84:
+        {
+            uint8_t byte    = 0;
+            _instr_fetch_bytes(&byte, sizeof(byte));
+            instr.type      = kINSTRTYPE_STY;
+            instr.addr_mode = kADDRMODE_ZEROPAGE;
+            instr.data.byte = byte;
+            instr.stride    = 2;
+            break;
+        }
+        case 0x94:
+        {
+            uint8_t byte    = 0;
+            _instr_fetch_bytes(&byte, sizeof(byte));
+            instr.type      = kINSTRTYPE_STY;
+            instr.addr_mode = kADDRMODE_ZEROPAGE_X;
+            instr.data.byte = byte;
+            instr.stride    = 2;
+            break;
+        }
+        case 0x8C:
+        {
+            uint16_t addr    = 0;
+            _instr_fetch_bytes(&addr, sizeof(addr));
+            instr.type      = kINSTRTYPE_STY;
+            instr.addr_mode = kADDRMODE_ABSOLUTE;
+            instr.data.addr = addr;
+            instr.stride    = 3;
             break;
         }
 
@@ -1441,7 +2057,39 @@ static void _instr_ldx(const InstrInfo* instr) {
             break;
 
         default:
-            TraceLog(LOG_ERROR, "invalid addressing mode for instr LDA (%d)", instr->addr_mode);
+            TraceLog(LOG_ERROR, "invalid addressing mode for instr LDX (%d)", instr->addr_mode);
+            break;
+    }
+}
+
+static void _instr_ldy(const InstrInfo* instr) {
+    switch (instr->addr_mode) {
+        case kADDRMODE_IMMEDIATE:
+        case kADDRMODE_ZEROPAGE:
+        case kADDRMODE_ZEROPAGE_X:
+        case kADDRMODE_ABSOLUTE:
+        case kADDRMODE_ABSOLUTE_X:
+            TraceLog(LOG_INFO, "%s", disasm_get_asm(instr));
+            break;
+
+        default:
+            TraceLog(LOG_ERROR, "invalid addressing mode for instr LDY (%d)", instr->addr_mode);
+            break;
+    }
+}
+
+static void _instr_lsr(const InstrInfo* instr) {
+    switch (instr->addr_mode) {
+        case kADDRMODE_ACCUMULATOR:
+        case kADDRMODE_ZEROPAGE:
+        case kADDRMODE_ZEROPAGE_X:
+        case kADDRMODE_ABSOLUTE:
+        case kADDRMODE_ABSOLUTE_X:
+            TraceLog(LOG_INFO, "%s", disasm_get_asm(instr));
+            break;
+
+        default:
+            TraceLog(LOG_ERROR, "invalid addressing mode for instr LSR (%d)", instr->addr_mode);
             break;
     }
 }
@@ -1454,6 +2102,230 @@ static void _instr_nop(const InstrInfo* instr) {
 
         default:
             TraceLog(LOG_ERROR, "invalid addressing mode for instr NOP (%d)", instr->addr_mode);
+            break;
+    }
+}
+
+static void _instr_ora(const InstrInfo* instr) {
+    switch (instr->addr_mode) {
+        case kADDRMODE_IMMEDIATE:
+        case kADDRMODE_ZEROPAGE:
+        case kADDRMODE_ZEROPAGE_X:
+        case kADDRMODE_ABSOLUTE:
+        case kADDRMODE_ABSOLUTE_X:
+        case kADDRMODE_ABSOLUTE_Y:
+        case kADDRMODE_IDX_INDIRECT:
+        case kADDRMODE_INDIRECT_IDX:
+            TraceLog(LOG_INFO, "%s", disasm_get_asm(instr));
+            break;
+
+        default:
+            TraceLog(LOG_ERROR, "invalid addressing mode for instr ORA (%d)", instr->addr_mode);
+            break;
+    }
+}
+
+static void _instr_pha(const InstrInfo* instr) {
+    switch (instr->addr_mode) {
+        case kADDRMODE_IMPLICIT:
+            TraceLog(LOG_INFO, "%s", disasm_get_asm(instr));
+            break;
+
+        default:
+            TraceLog(LOG_ERROR, "invalid addressing mode for instr PHA (%d)", instr->addr_mode);
+            break;
+    }
+}
+
+static void _instr_php(const InstrInfo* instr) {
+    switch (instr->addr_mode) {
+        case kADDRMODE_IMPLICIT:
+            TraceLog(LOG_INFO, "%s", disasm_get_asm(instr));
+            break;
+
+        default:
+            TraceLog(LOG_ERROR, "invalid addressing mode for instr PHP (%d)", instr->addr_mode);
+            break;
+    }
+}
+
+static void _instr_pla(const InstrInfo* instr) {
+    switch (instr->addr_mode) {
+        case kADDRMODE_IMPLICIT:
+            TraceLog(LOG_INFO, "%s", disasm_get_asm(instr));
+            break;
+
+        default:
+            TraceLog(LOG_ERROR, "invalid addressing mode for instr PLA (%d)", instr->addr_mode);
+            break;
+    }
+}
+
+static void _instr_plp(const InstrInfo* instr) {
+    switch (instr->addr_mode) {
+        case kADDRMODE_IMPLICIT:
+            TraceLog(LOG_INFO, "%s", disasm_get_asm(instr));
+            break;
+
+        default:
+            TraceLog(LOG_ERROR, "invalid addressing mode for instr PLP (%d)", instr->addr_mode);
+            break;
+    }
+}
+
+static void _instr_rol(const InstrInfo* instr) {
+    switch (instr->addr_mode) {
+        case kADDRMODE_ACCUMULATOR:
+        case kADDRMODE_ZEROPAGE:
+        case kADDRMODE_ZEROPAGE_X:
+        case kADDRMODE_ABSOLUTE:
+        case kADDRMODE_ABSOLUTE_X:
+            TraceLog(LOG_INFO, "%s", disasm_get_asm(instr));
+            break;
+
+        default:
+            TraceLog(LOG_ERROR, "invalid addressing mode for instr ROL (%d)", instr->addr_mode);
+            break;
+    }
+}
+
+static void _instr_ror(const InstrInfo* instr) {
+    switch (instr->addr_mode) {
+        case kADDRMODE_ACCUMULATOR:
+        case kADDRMODE_ZEROPAGE:
+        case kADDRMODE_ZEROPAGE_X:
+        case kADDRMODE_ABSOLUTE:
+        case kADDRMODE_ABSOLUTE_X:
+            TraceLog(LOG_INFO, "%s", disasm_get_asm(instr));
+            break;
+
+        default:
+            TraceLog(LOG_ERROR, "invalid addressing mode for instr ROR (%d)", instr->addr_mode);
+            break;
+    }
+}
+
+static void _instr_rti(const InstrInfo* instr) {
+    switch (instr->addr_mode) {
+        case kADDRMODE_IMPLICIT:
+            TraceLog(LOG_INFO, "%s", disasm_get_asm(instr));
+            break;
+
+        default:
+            TraceLog(LOG_ERROR, "invalid addressing mode for instr RTI (%d)", instr->addr_mode);
+            break;
+    }
+}
+
+static void _instr_rts(const InstrInfo* instr) {
+    switch (instr->addr_mode) {
+        case kADDRMODE_IMPLICIT:
+            TraceLog(LOG_INFO, "%s", disasm_get_asm(instr));
+            break;
+
+        default:
+            TraceLog(LOG_ERROR, "invalid addressing mode for instr RTS (%d)", instr->addr_mode);
+            break;
+    }
+}
+
+static void _instr_sbc(const InstrInfo* instr) {
+    switch (instr->addr_mode) {
+        case kADDRMODE_IMMEDIATE:
+        case kADDRMODE_ZEROPAGE:
+        case kADDRMODE_ZEROPAGE_X:
+        case kADDRMODE_ABSOLUTE:
+        case kADDRMODE_ABSOLUTE_X:
+        case kADDRMODE_ABSOLUTE_Y:
+        case kADDRMODE_IDX_INDIRECT:
+        case kADDRMODE_INDIRECT_IDX:
+            TraceLog(LOG_INFO, "%s", disasm_get_asm(instr));
+            break;
+
+        default:
+            TraceLog(LOG_ERROR, "invalid addressing mode for instr SBC (%d)", instr->addr_mode);
+            break;
+    }
+}
+
+static void _instr_sec(const InstrInfo* instr) {
+    switch (instr->addr_mode) {
+        case kADDRMODE_IMPLICIT:
+            TraceLog(LOG_INFO, "%s", disasm_get_asm(instr));
+            break;
+
+        default:
+            TraceLog(LOG_ERROR, "invalid addressing mode for instr SEC (%d)", instr->addr_mode);
+            break;
+    }
+}
+
+static void _instr_sed(const InstrInfo* instr) {
+    switch (instr->addr_mode) {
+        case kADDRMODE_IMPLICIT:
+            TraceLog(LOG_INFO, "%s", disasm_get_asm(instr));
+            break;
+
+        default:
+            TraceLog(LOG_ERROR, "invalid addressing mode for instr SED (%d)", instr->addr_mode);
+            break;
+    }
+}
+
+static void _instr_sei(const InstrInfo* instr) {
+    switch (instr->addr_mode) {
+        case kADDRMODE_IMPLICIT:
+            TraceLog(LOG_INFO, "%s", disasm_get_asm(instr));
+            break;
+
+        default:
+            TraceLog(LOG_ERROR, "invalid addressing mode for instr SEI (%d)", instr->addr_mode);
+            break;
+    }
+}
+
+static void _instr_sta(const InstrInfo* instr) {
+    switch (instr->addr_mode) {
+        case kADDRMODE_ZEROPAGE:
+        case kADDRMODE_ZEROPAGE_X:
+        case kADDRMODE_ABSOLUTE:
+        case kADDRMODE_ABSOLUTE_X:
+        case kADDRMODE_ABSOLUTE_Y:
+        case kADDRMODE_IDX_INDIRECT:
+        case kADDRMODE_INDIRECT_IDX:
+            TraceLog(LOG_INFO, "%s", disasm_get_asm(instr));
+            break;
+
+        default:
+            TraceLog(LOG_ERROR, "invalid addressing mode for instr STA (%d)", instr->addr_mode);
+            break;
+    }
+}
+
+static void _instr_stx(const InstrInfo* instr) {
+    switch (instr->addr_mode) {
+        case kADDRMODE_ZEROPAGE:
+        case kADDRMODE_ZEROPAGE_Y:
+        case kADDRMODE_ABSOLUTE:
+            TraceLog(LOG_INFO, "%s", disasm_get_asm(instr));
+            break;
+
+        default:
+            TraceLog(LOG_ERROR, "invalid addressing mode for instr STX (%d)", instr->addr_mode);
+            break;
+    }
+}
+
+static void _instr_sty(const InstrInfo* instr) {
+    switch (instr->addr_mode) {
+        case kADDRMODE_ZEROPAGE:
+        case kADDRMODE_ZEROPAGE_X:
+        case kADDRMODE_ABSOLUTE:
+            TraceLog(LOG_INFO, "%s", disasm_get_asm(instr));
+            break;
+
+        default:
+            TraceLog(LOG_ERROR, "invalid addressing mode for instr STY (%d)", instr->addr_mode);
             break;
     }
 }
