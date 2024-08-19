@@ -10,7 +10,7 @@ Device g_device;
 
 void device_init(Cart* cart) {
     g_device = (Device) {
-        .pc     = cart->start_addr,
+        .pc     = cart->prg_rom_start,
         .sp     = 0xFF, // TODO: where does the sp init to?
         .acc    = 0x00,
         .x      = 0x00,
@@ -31,5 +31,4 @@ void device_exec(void) {
 
     g_device.pc += instr.stride;
 }
-
 
