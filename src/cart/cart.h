@@ -2,6 +2,7 @@
 #define CART_H
 
 #include <stdlib.h>
+#include <stdint.h>
 
 typedef enum {
     kROMFORMAT_NONE = 0,

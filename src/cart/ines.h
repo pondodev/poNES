@@ -2,6 +2,7 @@
 #define INES_H
 
 #include <stdlib.h>
+#include <stdint.h>
 
 typedef struct {
     uint8_t prg_rom_blocks;
