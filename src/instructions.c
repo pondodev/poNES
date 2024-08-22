@@ -2,10 +2,9 @@
 
 #include "device.h"
 #include "disassembler.h"
+#include "memory.h"
 
 #include "raylib.h"
-
-#include <string.h>
 
 typedef void (*InstrExecFunc)(const InstrInfo* instr);
 
@@ -133,7 +132,7 @@ void instr_init(void) {
 }
 
 InstrInfo instr_decode(void) {
-    const uint8_t opcode = g_device.cart->buffer[g_device.pc];
+    const uint8_t opcode = memory_read8(g_device.pc);
     InstrInfo instr = {
         .type       = kINSTRTYPE_UNKNOWN,
         .addr_mode  = kADDRMODE_UNKNOWN,
@@ -1444,8 +1443,7 @@ void instr_exec(const InstrInfo* instr) {
 
 static inline void _instr_fetch_bytes(void* buf, size_t size) {
     // +1 offset since pc should point at current instruction opcode
-    uint8_t* bytes_start = g_device.cart->buffer + g_device.pc + 1;
-    memcpy(buf, bytes_start , size);
+    memory_read(g_device.pc+1, buf, size);
 }
 
 static void _instr_unknown(const InstrInfo* instr) {

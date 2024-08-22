@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include <stdint.h>
 
+#include "mapper.h"
+
 typedef enum {
     kROMFORMAT_NONE = 0,
     kROMFORMAT_INES,
@@ -15,6 +17,7 @@ typedef struct {
     void*                   format_header;
     uint8_t*                buffer;
     size_t                  buffer_size;
+    CartMapper              mapper;
     uint16_t                prg_rom_start;
     size_t                  prg_rom_size;
     uint16_t                chr_rom_start;
@@ -24,6 +27,8 @@ typedef struct {
 
 int cart_load(const char* path, Cart* cart);
 void cart_unload(Cart* cart);
+
+uint16_t cart_entrypoint(Cart* cart);
 
 #endif
 

@@ -77,6 +77,10 @@ void cart_unload(Cart* cart) {
     memset(cart, 0, sizeof(*cart));
 }
 
+uint16_t cart_entrypoint(Cart* cart) {
+    return mapper_get_start_addr(cart->mapper);
+}
+
 static inline int _parse_ines(Cart* cart) {
     TraceLog(LOG_INFO, "ROM is iNES format");
     cart->format = kROMFORMAT_INES;
@@ -84,6 +88,15 @@ static inline int _parse_ines(Cart* cart) {
 
     cart->format_header = ines_load(cart->buffer, cart->buffer_size);
     if (cart->format_header == NULL) {
+        TraceLog(LOG_ERROR, "failed to parse header");
+        success = 0;
+        goto bail;
+    }
+
+    const uint8_t mapper_num = ines_mapper(cart->format_header);
+    cart->mapper = mapper_get_type(mapper_num);
+    if (cart->mapper == kCARTMAPPER_UNKNOWN) {
+        TraceLog(LOG_ERROR, "unknown mapper type '%u'", mapper_num);
         success = 0;
         goto bail;
     }

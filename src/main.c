@@ -29,7 +29,8 @@ int main(int argc, char* argv[]) {
     if (! cart_load(argv[1], &cart))
         return 1;
 
-    device_init(&cart);
+    device_init();
+    device_load_cart(&cart);
     ppu_init();
 
     const char* palette_path = argc == 3 ? argv[2] : NULL;

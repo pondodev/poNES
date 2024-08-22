@@ -46,7 +46,8 @@ file(GLOB_RECURSE PROJECT_SOURCES
 )
 set(PROJECT_INCLUDE_DIRS
     src/
-    src/cart
+    src/cart/
+    src/mapper/
 )
 
 # platform
