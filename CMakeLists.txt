@@ -42,12 +42,9 @@ endif()
 # target files
 file(GLOB_RECURSE PROJECT_SOURCES
     src/*.c
-    src/*.h
 )
 set(PROJECT_INCLUDE_DIRS
     src/
-    src/cart/
-    src/mapper/
 )
 
 # platform

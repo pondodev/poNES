@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 
-#include "mapper.h"
+#include "../mapper/mapper.h"
 
 typedef enum {
     kROMFORMAT_NONE = 0,

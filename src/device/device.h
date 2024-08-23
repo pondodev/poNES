@@ -1,13 +1,9 @@
 #ifndef DEVICE_H
 #define DEVICE_H
 
-#include "cart.h"
+#include "cart/cart.h"
 
 #include <stdint.h>
-
-#define VIDEO_BUFFER_WIDTH      256
-#define VIDEO_BUFFER_HEIGHT     240
-#define VIDEO_BUFFER_SIZE_BYTES VIDEO_BUFFER_WIDTH*VIDEO_BUFFER_HEIGHT
 
 typedef enum {
     kCPUSTATUSFLAG_CARRY        = 1 << 0,
@@ -27,9 +23,6 @@ typedef struct {
     uint8_t     x;
     uint8_t     y;
     uint8_t     status;
-
-    // buffers
-    uint8_t     video[VIDEO_BUFFER_SIZE_BYTES];
 
     Cart*       cart;
 } Device;

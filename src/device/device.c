@@ -2,6 +2,7 @@
 
 #include "instructions.h"
 #include "memory.h"
+#include "ppu.h"
 
 #include "raylib.h"
 
@@ -21,8 +22,8 @@ void device_init(void) {
         .cart   = NULL,
     };
 
-    memset(g_device.video, 0x00, sizeof(g_device.video[0])*VIDEO_BUFFER_SIZE_BYTES);
     memory_init();
+    ppu_init();
     instr_init();
 }
 
