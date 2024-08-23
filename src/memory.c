@@ -142,8 +142,13 @@ static inline void _write_mem(uint8_t* mem, size_t offset, const void* in, size_
 
 static inline int _read_internal_ram(uint16_t addr, void* out, size_t n) {
     uint16_t offset;
-    if (! _transform_addr(addr, &offset, n, INTERNAL_RAM_START, INTERNAL_RAM_END))
+    // check if we're trying to read from a mirror instead
+    if (_transform_addr(addr, &offset, n, INTERNAL_RAM_MIRROR_START, INTERNAL_RAM_MIRROR_END)) {
+        // transform the offset to an index into s_internal_ram
+        offset %= INTERNAL_RAM_SIZE;
+    } else if (! _transform_addr(addr, &offset, n, INTERNAL_RAM_START, INTERNAL_RAM_END)) {
         return 0;
+    }
 
     _read_mem(s_internal_ram, offset, out, n);
     return 1;
@@ -151,8 +156,13 @@ static inline int _read_internal_ram(uint16_t addr, void* out, size_t n) {
 
 static inline int _read_ppu_reg(uint16_t addr, void* out, size_t n) {
     uint16_t offset;
-    if (! _transform_addr(addr, &offset, n, PPU_REG_START, PPU_REG_END))
+    // check if we're trying to read from a mirror instead
+    if (_transform_addr(addr, &offset, n, PPU_REG_MIRROR_START, PPU_REG_MIRROR_END)) {
+        // transform the offset to an index into s_ppu_reg
+        offset %= PPU_REG_SIZE;
+    } else if (! _transform_addr(addr, &offset, n, PPU_REG_START, PPU_REG_END)) {
         return 0;
+    }
 
     _read_mem(s_ppu_reg, offset, out, n);
     return 1;
@@ -187,8 +197,13 @@ static inline int _read_unmapped(uint16_t addr, void* out, size_t n) {
 
 static inline int _write_internal_ram(uint16_t addr, const void* in, size_t n) {
     uint16_t offset;
-    if (! _transform_addr(addr, &offset, n, INTERNAL_RAM_START, INTERNAL_RAM_END))
+    // check if we're trying to write to a mirror instead
+    if (_transform_addr(addr, &offset, n, INTERNAL_RAM_MIRROR_START, INTERNAL_RAM_MIRROR_END)) {
+        // transform the offset to an index into s_internal_ram
+        offset %= INTERNAL_RAM_SIZE;
+    } else if (! _transform_addr(addr, &offset, n, INTERNAL_RAM_START, INTERNAL_RAM_END)) {
         return 0;
+    }
 
     _write_mem(s_internal_ram, offset, in, n);
     return 1;
@@ -196,8 +211,13 @@ static inline int _write_internal_ram(uint16_t addr, const void* in, size_t n) {
 
 static inline int _write_ppu_reg(uint16_t addr, const void* in, size_t n) {
     uint16_t offset;
-    if (! _transform_addr(addr, &offset, n, PPU_REG_START, PPU_REG_END))
+    // check if we're trying to write to a mirror instead
+    if (_transform_addr(addr, &offset, n, PPU_REG_MIRROR_START, PPU_REG_MIRROR_END)) {
+        // transform the offset to an index into s_ppu_reg
+        offset %= PPU_REG_SIZE;
+    } else if (! _transform_addr(addr, &offset, n, PPU_REG_START, PPU_REG_END)) {
         return 0;
+    }
 
     _write_mem(s_ppu_reg, offset, in, n);
     return 1;
