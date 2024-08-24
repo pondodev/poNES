@@ -1,6 +1,6 @@
 #include "memory.h"
 
-#include "raylib.h"
+#include "log.h"
 
 #include <time.h>
 #include <string.h>
@@ -77,7 +77,7 @@ void memory_read(uint16_t addr, void* out, size_t n) {
                         _read_unmapped(addr, out, n);
 
     if (! success)
-        TraceLog(LOG_ERROR, "failed to read %zu byte(s) of memory at address 0x%04X\n", n, addr);
+        log_error("failed to read %zu byte(s) of memory at address 0x%04X\n", n, addr);
 }
 
 void memory_write(uint16_t addr, const void* in, size_t n) {
@@ -88,7 +88,7 @@ void memory_write(uint16_t addr, const void* in, size_t n) {
                         _write_unmapped(addr, in, n);
 
     if (! success)
-        TraceLog(LOG_ERROR, "failed to write %zu byte(s) of memory at address 0x%04X\n", n, addr);
+        log_error("failed to write %zu byte(s) of memory at address 0x%04X\n", n, addr);
 }
 
 uint8_t memory_read8(uint16_t addr) {
@@ -104,7 +104,7 @@ void memory_write8(uint16_t addr, uint8_t data) {
 
 void memory_load_cart_rom_bank(const void* buffer, size_t n) {
     if (n > CART_ROM_BANK_SIZE) {
-        TraceLog(LOG_ERROR, "attempted to load cart ROM of size %zu. max size is %zu", n, CART_ROM_BANK_SIZE);
+        log_error("attempted to load cart ROM of size %zu. max size is %zu", n, CART_ROM_BANK_SIZE);
         return;
     }
 

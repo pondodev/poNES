@@ -1,14 +1,14 @@
 #include "mapper.h"
 
-#include "raylib.h"
+#include "log.h"
 
 CartMapper mapper_get_type(uint16_t mapper_num) {
     switch (mapper_num) {
         case 0:
-            TraceLog(LOG_INFO, "mapper type NROM");
+            log_info("mapper type NROM");
             return kCARTMAPPER_NROM;
         default:
-            TraceLog(LOG_INFO, "unknown mapper type '%u'", mapper_num);
+            log_info("unknown mapper type '%u'", mapper_num);
             return kCARTMAPPER_UNKNOWN;
     }
 }

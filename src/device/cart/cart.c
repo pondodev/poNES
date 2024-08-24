@@ -1,24 +1,23 @@
 #include "cart.h"
 
-#include "raylib.h"
-
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
 #include <stdint.h>
 
 #include "ines.h"
+#include "log.h"
 
 static inline int _parse_ines(Cart* cart);
 static inline int _parse_ines20(Cart* cart);
 
 int cart_load(const char* path, Cart* cart) {
-    TraceLog(LOG_INFO, "loading cart from path '%s'...", path);
+    log_info("loading cart from path '%s'...", path);
 
     int success = 1;
 
     if (cart == NULL) {
-        TraceLog(LOG_ERROR, "failed to load cart (cart cannot be NULL)");
+        log_error("failed to load cart (cart cannot be NULL)");
         return 0;
     }
 
@@ -26,7 +25,7 @@ int cart_load(const char* path, Cart* cart) {
 
     FILE* f = fopen(path, "r");
     if (f == NULL) {
-        TraceLog(LOG_ERROR, "failed to load cart (%s)", strerror(errno));
+        log_error("failed to load cart (%s)", strerror(errno));
         success = 0;
         goto bail;
     }
@@ -35,12 +34,12 @@ int cart_load(const char* path, Cart* cart) {
     cart->buffer_size = ftell(f);
     rewind(f);
 
-    TraceLog(LOG_INFO, "reading %zu bytes...", cart->buffer_size);
+    log_info("reading %zu bytes...", cart->buffer_size);
 
     cart->buffer = malloc(cart->buffer_size);
     const size_t read_bytes = fread(cart->buffer, sizeof(cart->buffer[0]), cart->buffer_size, f);
     if (cart->buffer_size != read_bytes) {
-        TraceLog(LOG_ERROR, "failed to load cart (expected %zu, got %zu)", cart->buffer_size, read_bytes);
+        log_error("failed to load cart (expected %zu, got %zu)", cart->buffer_size, read_bytes);
         success = 0;
         goto bail;
     }
@@ -60,12 +59,12 @@ int cart_load(const char* path, Cart* cart) {
         if (! success)
             goto bail;
     } else {
-        TraceLog(LOG_ERROR, "failed to load card (unrecognised ROM format)");
+        log_error("failed to load cart (unrecognised ROM format)");
         success = 0;
         goto bail;
     }
 
-    TraceLog(LOG_INFO, "done!");
+    log_info("done!");
 
 bail:
     fclose(f);
@@ -82,13 +81,13 @@ uint16_t cart_entrypoint(Cart* cart) {
 }
 
 static inline int _parse_ines(Cart* cart) {
-    TraceLog(LOG_INFO, "ROM is iNES format");
+    log_info("ROM is iNES format");
     cart->format = kROMFORMAT_INES;
     int success = 1;
 
     cart->format_header = ines_load(cart->buffer, cart->buffer_size);
     if (cart->format_header == NULL) {
-        TraceLog(LOG_ERROR, "failed to parse header");
+        log_error("failed to parse header");
         success = 0;
         goto bail;
     }
@@ -96,7 +95,7 @@ static inline int _parse_ines(Cart* cart) {
     const uint8_t mapper_num = ines_mapper(cart->format_header);
     cart->mapper = mapper_get_type(mapper_num);
     if (cart->mapper == kCARTMAPPER_UNKNOWN) {
-        TraceLog(LOG_ERROR, "unknown mapper type '%u'", mapper_num);
+        log_error("unknown mapper type '%u'", mapper_num);
         success = 0;
         goto bail;
     }
@@ -107,22 +106,22 @@ static inline int _parse_ines(Cart* cart) {
     cart->chr_rom_size  = ines_chr_rom_size_bytes(cart->format_header);
     cart->prg_ram_size  = 0; // TODO: implement
 
-    TraceLog(LOG_INFO, "ROM info:");
-    TraceLog(LOG_INFO, "PRG ROM start: 0x%04X", cart->prg_rom_start);
-    TraceLog(LOG_INFO, "PRG ROM size (bytes): %zu", cart->prg_rom_size);
-    TraceLog(LOG_INFO, "CHR ROM start: 0x%04X", cart->chr_rom_start);
-    TraceLog(LOG_INFO, "CHR ROM size (bytes): %zu", cart->chr_rom_size);
-    TraceLog(LOG_INFO, "PRG RAM size (bytes): %zu", cart->prg_ram_size);
+    log_info("ROM info:");
+    log_info("PRG ROM start: 0x%04X", cart->prg_rom_start);
+    log_info("PRG ROM size (bytes): %zu", cart->prg_rom_size);
+    log_info("CHR ROM start: 0x%04X", cart->chr_rom_start);
+    log_info("CHR ROM size (bytes): %zu", cart->chr_rom_size);
+    log_info("PRG RAM size (bytes): %zu", cart->prg_ram_size);
 
 bail:
     return success;
 }
 
 static inline int _parse_ines20(Cart* cart) {
-    TraceLog(LOG_INFO, "ROM is iNES 2.0 format");
+    log_info("ROM is iNES 2.0 format");
     cart->format = kROMFORMAT_INES20;
 
-    TraceLog(LOG_ERROR, "iNES 2.0 parsing not implemented!");
+    log_error("iNES 2.0 parsing not implemented!");
     return 0;
 }
 

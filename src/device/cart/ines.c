@@ -1,6 +1,6 @@
 #include "ines.h"
 
-#include "raylib.h"
+#include "log.h"
 
 #define HEADER_SIZE_BYTES 16
 #define TRAINER_SIZE_BYTES 512
@@ -9,12 +9,12 @@
 
 INESHeader* ines_load(const uint8_t* buffer, size_t size) {
     if (buffer == NULL || size == 0) {
-        TraceLog(LOG_ERROR, "buffer can't be empty");
+        log_error("buffer can't be empty");
         return NULL;
     }
 
     if (size < 16) {
-        TraceLog(LOG_ERROR, "buffer is too small");
+        log_error("buffer is too small");
         return NULL;
     }
 

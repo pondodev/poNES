@@ -4,8 +4,6 @@
 #include "memory.h"
 #include "ppu.h"
 
-#include "raylib.h"
-
 #include <string.h>
 
 Device g_device;

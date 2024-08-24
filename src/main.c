@@ -2,8 +2,7 @@
 #include "device/cart/cart.h"
 #include "device/ppu.h"
 #include "platform/platform.h"
-
-#include "raylib.h"
+#include "log.h"
 
 #include <stdio.h>
 
@@ -11,10 +10,10 @@
 #define MAX_EXPECTED_ARG_COUNT 3
 
 int main(int argc, char* argv[]) {
-    SetTraceLogLevel(LOG_ALL);
+    log_set_level(LOG_TRACE);
 
     if (argc < MIN_EXPECTED_ARG_COUNT || argc > MAX_EXPECTED_ARG_COUNT) {
-        TraceLog(LOG_ERROR, "incorrect arg count. expected between %d and %d (got %d)\n", MIN_EXPECTED_ARG_COUNT, MAX_EXPECTED_ARG_COUNT, argc);
+        log_error("incorrect arg count. expected between %d and %d (got %d)\n", MIN_EXPECTED_ARG_COUNT, MAX_EXPECTED_ARG_COUNT, argc);
         return 1;
     }
 
@@ -35,7 +34,7 @@ int main(int argc, char* argv[]) {
     }
 
     cart_unload(&cart);
-    CloseWindow();
+    platform_cleanup();
 
     return 0;
 }

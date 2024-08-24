@@ -1,6 +1,6 @@
 #include "ppu.h"
 
-#include "raylib.h"
+#include "log.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -41,18 +41,18 @@ void ppu_init(void) {
 
 void ppu_load_color_palette(const char* path) {
     if (path == NULL) {
-        TraceLog(LOG_INFO, "loading default colour palette");
+        log_info("loading default colour palette");
         _load_default_color_palette();
         return;
     }
 
-    TraceLog(LOG_INFO, "loading color palette from file '%s'...", path);
+    log_info("loading color palette from file '%s'...", path);
 
     int success = 1;
 
     FILE* f = fopen(path, "r");
     if (f == NULL) {
-        TraceLog(LOG_ERROR, "failed to load colour palette (%s)", strerror(errno));
+        log_error("failed to load colour palette (%s)", strerror(errno));
         success = 0;
         goto bail;
     }
@@ -60,11 +60,10 @@ void ppu_load_color_palette(const char* path) {
     char* name = NULL;
     size_t name_len = 0;
     if (! getline(&name, &name_len, f)) {
-        if (feof(f)) {
-            TraceLog(LOG_ERROR, "failed to load colour palette (unexpected EOF)");
-        } else {
-            TraceLog(LOG_ERROR, "failed to load colour palette (%s)", strerror(ferror(f)));
-        }
+        if (feof(f))
+            log_error("failed to load colour palette (unexpected EOF)");
+        else
+            log_error("failed to load colour palette (%s)", strerror(ferror(f)));
 
         success = 0;
         goto bail;
@@ -72,7 +71,7 @@ void ppu_load_color_palette(const char* path) {
 
     strncpy(s_current_palette.name, name, COLOR_PALETTE_NAME_MAX_LEN-1);
     _trim_newline(s_current_palette.name, COLOR_PALETTE_NAME_MAX_LEN);
-    TraceLog(LOG_INFO, "found colour palette '%s', parsing...", s_current_palette.name);
+    log_info("found colour palette '%s', parsing...", s_current_palette.name);
 
     int c = fgetc(f);
     size_t parsed_colors = 0;
@@ -101,18 +100,18 @@ void ppu_load_color_palette(const char* path) {
 
     const int ferr = ferror(f);
     if (ferr != 0) {
-        TraceLog(LOG_ERROR, "failed to load colour palette (%s)", strerror(ferr));
+        log_error("failed to load colour palette (%s)", strerror(ferr));
         success = 0;
         goto bail;
     }
 
-    TraceLog(LOG_INFO, "done!");
+    log_info("done!");
 
 bail:
     fclose(f);
 
     if (! success) {
-        TraceLog(LOG_WARNING, "failed to load colour palette, falling back to default");
+        log_warn("failed to load colour palette, falling back to default");
         _load_default_color_palette();
     }
 }

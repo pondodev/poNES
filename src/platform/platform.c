@@ -14,6 +14,10 @@ void platform_init(void) {
     SetTargetFPS(60);
 }
 
+void platform_cleanup(void) {
+    CloseWindow();
+}
+
 int platform_is_running(void) {
     return ! WindowShouldClose();
 }
