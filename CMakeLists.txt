@@ -13,31 +13,18 @@ set     (CMAKE_C_STANDARD 17)
 
 add_compile_options(-Wall -Wextra -pedantic)
 
-# get raylib
-set(RAYLIB_VERSION 4.2.0)
-find_package(raylib ${RAYLIB_VERSION} QUIET)
-if (NOT raylib_FOUND) # download raylib if not present
-  include(FetchContent)
-  FetchContent_Declare(
-    raylib
-    URL https://github.com/raysan5/raylib/archive/refs/tags/${RAYLIB_VERSION}.tar.gz
-  )
-  FetchContent_GetProperties(raylib)
-  if (NOT raylib_POPULATED) # is raylib downloaded yet?
-    set(FETCHCONTENT_QUIET NO)
-    FetchContent_Populate(raylib)
-    set(BUILD_EXAMPLES OFF CACHE BOOL "" FORCE) # don't build the supplied examples
-    add_subdirectory(${raylib_SOURCE_DIR} ${raylib_BINARY_DIR})
-  endif()
-endif()
+# libraries
+include(FetchContent)
 
-set(PROJECT_LIBRARIES ${PROJECT_LIBRARIES} raylib)
-if (APPLE)
-    set(PROJECT_LIBRARIES ${PROJECT_LIBRARIES}
-        "-framework IOKit"
-        "-framework Cocoa"
-        "-framework OpenGL")
-endif()
+set(GLFW_VERSION 3.4)
+FetchContent_Declare(
+    glfw
+    GIT_REPOSITORY  https://github.com/glfw/glfw.git
+    GIT_TAG         ${GLFW_VERSION}
+)
+
+FetchContent_MakeAvailable(glfw)
+set(PROJECT_LIBRARIES ${PROJECT_LIBRARIES} glfw)
 
 # target files
 file(GLOB_RECURSE PROJECT_SOURCES
@@ -45,6 +32,7 @@ file(GLOB_RECURSE PROJECT_SOURCES
 )
 set(PROJECT_INCLUDE_DIRS
     src/
+    src/platform/glad/include/
 )
 
 # platform

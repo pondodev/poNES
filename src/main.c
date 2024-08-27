@@ -29,6 +29,7 @@ int main(int argc, char* argv[]) {
     ppu_load_color_palette(palette_path);
 
     while (platform_is_running()) {
+        platform_poll_events();
         device_exec();
         platform_draw();
     }
