@@ -5,6 +5,7 @@
 #include "log.h"
 
 #include <stdio.h>
+#include <string.h>
 
 #define MIN_EXPECTED_ARG_COUNT 2
 #define MAX_EXPECTED_ARG_COUNT 3
@@ -28,8 +29,16 @@ int main(int argc, char* argv[]) {
     const char* palette_path = argc == 3 ? argv[2] : NULL;
     ppu_load_color_palette(palette_path);
 
+    uint32_t buffer[VIDEO_BUFFER_WIDTH*VIDEO_BUFFER_HEIGHT];
+    size_t pixel = 0;
     while (platform_is_running()) {
         platform_poll_events();
+
+        memset(buffer, 0, sizeof(buffer[0])*VIDEO_BUFFER_WIDTH*VIDEO_BUFFER_HEIGHT);
+        pixel = (pixel+1) % (VIDEO_BUFFER_WIDTH*VIDEO_BUFFER_HEIGHT);
+        buffer[pixel] = 0xFFFFFFFF;
+        platform_update_frame_buffer(buffer);
+
         device_exec();
         platform_draw();
     }
