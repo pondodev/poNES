@@ -34,7 +34,7 @@ static const char* s_vert_shader_src =
     "void main() {\n"
     "   vec2 verts[3] = vec2[3](vec2(-1, -1), vec2(3, -1), vec2(-1, 3));\n"
     "   gl_Position = vec4(verts[gl_VertexID], 0, 1);\n"
-    "   tex_coords = 0.5*gl_Position.xy+vec2(0.5);\n"
+    "   tex_coords = vec2(0.5*gl_Position.x, -0.5*gl_Position.y)+vec2(0.5);\n"
     "}\n";
 static const char* s_frag_shader_src =
     "#version 330\n"
