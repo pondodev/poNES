@@ -35,6 +35,10 @@ see `custom.palette` for an example.
 | [iNES mappers](https://www.nesdev.org/wiki/Mapper#iNES_1.0_mapper_grid) | list of recognised mappers by the iNES file format |
 | [NES illegal opcodes](https://www.nesdev.org/wiki/CPU_unofficial_opcodes) | list of undocumented opcodes |
 | [6502 addressing modes](https://www.nesdev.org/obelisk-6502-guide/addressing.html) | list of addressing modes instructions will use |
+| [NES architecture](https://www.copetti.org/writings/consoles/nes/) | detailed article on the architecture of the NES, including diagrams |
+| [PPU registers](https://www.nesdev.org/wiki/PPU_registers) | information on the PPU and its registers |
+| [CPU memory map](https://www.nesdev.org/wiki/CPU_memory_map) | information on how the CPU maps its memory space |
+| [Mappers](https://www.nesdev.org/wiki/Mapper) | list of mappers used in NES carts |
 
 ## TODO
 - write a bus abstraction to route memory reads/writes to the correct places
