@@ -35,3 +35,15 @@ see `custom.palette` for an example.
 | [iNES mappers](https://www.nesdev.org/wiki/Mapper#iNES_1.0_mapper_grid) | list of recognised mappers by the iNES file format |
 | [NES illegal opcodes](https://www.nesdev.org/wiki/CPU_unofficial_opcodes) | list of undocumented opcodes |
 | [6502 addressing modes](https://www.nesdev.org/obelisk-6502-guide/addressing.html) | list of addressing modes instructions will use |
+
+## TODO
+- write a bus abstraction to route memory reads/writes to the correct places
+- implement 6502 instructions
+- implement PPU
+- implement APU
+- wire up inputs 
+
+## wishlist
+- debug window with tools like a memory inspector and cart info view
+- save states
+- menu with options to load a rom, custom colour palette, or save state

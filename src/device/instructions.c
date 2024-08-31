@@ -8,64 +8,77 @@
 
 typedef void (*InstrExecFunc)(const InstrInfo* instr);
 
-static inline void _instr_fetch_bytes(void* buf, size_t size);
-static void _instr_unknown(const InstrInfo* instr);
-static void _instr_adc(const InstrInfo* instr);
-static void _instr_and(const InstrInfo* instr);
-static void _instr_asl(const InstrInfo* instr);
-static void _instr_bcc(const InstrInfo* instr);
-static void _instr_bcs(const InstrInfo* instr);
-static void _instr_beq(const InstrInfo* instr);
-static void _instr_bit(const InstrInfo* instr);
-static void _instr_bmi(const InstrInfo* instr);
-static void _instr_bne(const InstrInfo* instr);
-static void _instr_bpl(const InstrInfo* instr);
-static void _instr_brk(const InstrInfo* instr);
-static void _instr_bvc(const InstrInfo* instr);
-static void _instr_bvs(const InstrInfo* instr);
-static void _instr_clc(const InstrInfo* instr);
-static void _instr_cld(const InstrInfo* instr);
-static void _instr_cli(const InstrInfo* instr);
-static void _instr_clv(const InstrInfo* instr);
-static void _instr_cmp(const InstrInfo* instr);
-static void _instr_cpx(const InstrInfo* instr);
-static void _instr_cpy(const InstrInfo* instr);
-static void _instr_dec(const InstrInfo* instr);
-static void _instr_dex(const InstrInfo* instr);
-static void _instr_dey(const InstrInfo* instr);
-static void _instr_eor(const InstrInfo* instr);
-static void _instr_inc(const InstrInfo* instr);
-static void _instr_inx(const InstrInfo* instr);
-static void _instr_iny(const InstrInfo* instr);
-static void _instr_jmp(const InstrInfo* instr);
-static void _instr_jsr(const InstrInfo* instr);
-static void _instr_lda(const InstrInfo* instr);
-static void _instr_ldx(const InstrInfo* instr);
-static void _instr_ldy(const InstrInfo* instr);
-static void _instr_lsr(const InstrInfo* instr);
-static void _instr_nop(const InstrInfo* instr);
-static void _instr_ora(const InstrInfo* instr);
-static void _instr_pha(const InstrInfo* instr);
-static void _instr_php(const InstrInfo* instr);
-static void _instr_pla(const InstrInfo* instr);
-static void _instr_plp(const InstrInfo* instr);
-static void _instr_rol(const InstrInfo* instr);
-static void _instr_ror(const InstrInfo* instr);
-static void _instr_rti(const InstrInfo* instr);
-static void _instr_rts(const InstrInfo* instr);
-static void _instr_sbc(const InstrInfo* instr);
-static void _instr_sec(const InstrInfo* instr);
-static void _instr_sed(const InstrInfo* instr);
-static void _instr_sei(const InstrInfo* instr);
-static void _instr_sta(const InstrInfo* instr);
-static void _instr_stx(const InstrInfo* instr);
-static void _instr_sty(const InstrInfo* instr);
-static void _instr_tax(const InstrInfo* instr);
-static void _instr_tay(const InstrInfo* instr);
-static void _instr_tsx(const InstrInfo* instr);
-static void _instr_txa(const InstrInfo* instr);
-static void _instr_txs(const InstrInfo* instr);
-static void _instr_tya(const InstrInfo* instr);
+static inline void _fetch_bytes(void* buf, size_t size);
+
+static inline uint8_t _fetch_data_immediate(const InstrInfo* instr);
+static inline uint8_t _fetch_data_zeropage(const InstrInfo* instr);
+static inline uint8_t _fetch_data_zeropage_x(const InstrInfo* instr);
+static inline uint8_t _fetch_data_zeropage_y(const InstrInfo* instr);
+static inline uint16_t _fetch_addr_relative(const InstrInfo* instr);
+static inline uint8_t _fetch_data_absolute(const InstrInfo* instr);
+static inline uint8_t _fetch_data_absolute_x(const InstrInfo* instr);
+static inline uint8_t _fetch_data_absolute_y(const InstrInfo* instr);
+static inline uint16_t _fetch_addr_indirect(const InstrInfo* instr);
+static inline uint8_t _fetch_data_idx_indirect(const InstrInfo* instr);
+static inline uint8_t _fetch_data_indirect_idx(const InstrInfo* instr);
+
+static inline void _instr_unknown(const InstrInfo* instr);
+static inline void _instr_adc(const InstrInfo* instr);
+static inline void _instr_and(const InstrInfo* instr);
+static inline void _instr_asl(const InstrInfo* instr);
+static inline void _instr_bcc(const InstrInfo* instr);
+static inline void _instr_bcs(const InstrInfo* instr);
+static inline void _instr_beq(const InstrInfo* instr);
+static inline void _instr_bit(const InstrInfo* instr);
+static inline void _instr_bmi(const InstrInfo* instr);
+static inline void _instr_bne(const InstrInfo* instr);
+static inline void _instr_bpl(const InstrInfo* instr);
+static inline void _instr_brk(const InstrInfo* instr);
+static inline void _instr_bvc(const InstrInfo* instr);
+static inline void _instr_bvs(const InstrInfo* instr);
+static inline void _instr_clc(const InstrInfo* instr);
+static inline void _instr_cld(const InstrInfo* instr);
+static inline void _instr_cli(const InstrInfo* instr);
+static inline void _instr_clv(const InstrInfo* instr);
+static inline void _instr_cmp(const InstrInfo* instr);
+static inline void _instr_cpx(const InstrInfo* instr);
+static inline void _instr_cpy(const InstrInfo* instr);
+static inline void _instr_dec(const InstrInfo* instr);
+static inline void _instr_dex(const InstrInfo* instr);
+static inline void _instr_dey(const InstrInfo* instr);
+static inline void _instr_eor(const InstrInfo* instr);
+static inline void _instr_inc(const InstrInfo* instr);
+static inline void _instr_inx(const InstrInfo* instr);
+static inline void _instr_iny(const InstrInfo* instr);
+static inline void _instr_jmp(const InstrInfo* instr);
+static inline void _instr_jsr(const InstrInfo* instr);
+static inline void _instr_lda(const InstrInfo* instr);
+static inline void _instr_ldx(const InstrInfo* instr);
+static inline void _instr_ldy(const InstrInfo* instr);
+static inline void _instr_lsr(const InstrInfo* instr);
+static inline void _instr_nop(const InstrInfo* instr);
+static inline void _instr_ora(const InstrInfo* instr);
+static inline void _instr_pha(const InstrInfo* instr);
+static inline void _instr_php(const InstrInfo* instr);
+static inline void _instr_pla(const InstrInfo* instr);
+static inline void _instr_plp(const InstrInfo* instr);
+static inline void _instr_rol(const InstrInfo* instr);
+static inline void _instr_ror(const InstrInfo* instr);
+static inline void _instr_rti(const InstrInfo* instr);
+static inline void _instr_rts(const InstrInfo* instr);
+static inline void _instr_sbc(const InstrInfo* instr);
+static inline void _instr_sec(const InstrInfo* instr);
+static inline void _instr_sed(const InstrInfo* instr);
+static inline void _instr_sei(const InstrInfo* instr);
+static inline void _instr_sta(const InstrInfo* instr);
+static inline void _instr_stx(const InstrInfo* instr);
+static inline void _instr_sty(const InstrInfo* instr);
+static inline void _instr_tax(const InstrInfo* instr);
+static inline void _instr_tay(const InstrInfo* instr);
+static inline void _instr_tsx(const InstrInfo* instr);
+static inline void _instr_txa(const InstrInfo* instr);
+static inline void _instr_txs(const InstrInfo* instr);
+static inline void _instr_tya(const InstrInfo* instr);
 
 static InstrExecFunc s_instr_exec_funcs[kINSTRTYPE_COUNT];
 #define REG_INSTR(_alias, _func) s_instr_exec_funcs[_alias] = _func
@@ -144,7 +157,7 @@ InstrInfo instr_decode(void) {
         // ADC instructions
         case 0x69:
         {
-            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
+            _fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_ADC;
             instr.addr_mode = kADDRMODE_IMMEDIATE;
             instr.stride    = 2;
@@ -152,7 +165,7 @@ InstrInfo instr_decode(void) {
         }
         case 0x65:
         {
-            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
+            _fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_ADC;
             instr.addr_mode = kADDRMODE_ZEROPAGE;
             instr.stride    = 2;
@@ -160,7 +173,7 @@ InstrInfo instr_decode(void) {
         }
         case 0x75:
         {
-            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
+            _fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_ADC;
             instr.addr_mode = kADDRMODE_ZEROPAGE_X;
             instr.stride    = 2;
@@ -168,7 +181,7 @@ InstrInfo instr_decode(void) {
         }
         case 0x6D:
         {
-            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
+            _fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_ADC;
             instr.addr_mode = kADDRMODE_ABSOLUTE;
             instr.stride    = 3;
@@ -176,7 +189,7 @@ InstrInfo instr_decode(void) {
         }
         case 0x7D:
         {
-            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
+            _fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_ADC;
             instr.addr_mode = kADDRMODE_ABSOLUTE_X;
             instr.stride    = 3;
@@ -184,7 +197,7 @@ InstrInfo instr_decode(void) {
         }
         case 0x79:
         {
-            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
+            _fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_ADC;
             instr.addr_mode = kADDRMODE_ABSOLUTE_Y;
             instr.stride    = 3;
@@ -192,7 +205,7 @@ InstrInfo instr_decode(void) {
         }
         case 0x61:
         {
-            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
+            _fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_ADC;
             instr.addr_mode = kADDRMODE_IDX_INDIRECT;
             instr.stride    = 2;
@@ -200,7 +213,7 @@ InstrInfo instr_decode(void) {
         }
         case 0x71:
         {
-            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
+            _fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_ADC;
             instr.addr_mode = kADDRMODE_INDIRECT_IDX;
             instr.stride    = 2;
@@ -210,7 +223,7 @@ InstrInfo instr_decode(void) {
         // AND instructions
         case 0x29:
         {
-            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
+            _fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_AND;
             instr.addr_mode = kADDRMODE_IMMEDIATE;
             instr.stride    = 2;
@@ -218,7 +231,7 @@ InstrInfo instr_decode(void) {
         }
         case 0x25:
         {
-            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
+            _fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_AND;
             instr.addr_mode = kADDRMODE_ZEROPAGE;
             instr.stride    = 2;
@@ -226,7 +239,7 @@ InstrInfo instr_decode(void) {
         }
         case 0x35:
         {
-            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
+            _fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_AND;
             instr.addr_mode = kADDRMODE_ZEROPAGE_X;
             instr.stride    = 2;
@@ -234,7 +247,7 @@ InstrInfo instr_decode(void) {
         }
         case 0x2D:
         {
-            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
+            _fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_AND;
             instr.addr_mode = kADDRMODE_ABSOLUTE;
             instr.stride    = 3;
@@ -242,7 +255,7 @@ InstrInfo instr_decode(void) {
         }
         case 0x3D:
         {
-            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
+            _fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_AND;
             instr.addr_mode = kADDRMODE_ABSOLUTE_X;
             instr.stride    = 3;
@@ -250,7 +263,7 @@ InstrInfo instr_decode(void) {
         }
         case 0x39:
         {
-            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
+            _fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_AND;
             instr.addr_mode = kADDRMODE_ABSOLUTE_Y;
             instr.stride    = 3;
@@ -258,7 +271,7 @@ InstrInfo instr_decode(void) {
         }
         case 0x21:
         {
-            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
+            _fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_AND;
             instr.addr_mode = kADDRMODE_IDX_INDIRECT;
             instr.stride    = 2;
@@ -266,7 +279,7 @@ InstrInfo instr_decode(void) {
         }
         case 0x31:
         {
-            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
+            _fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_AND;
             instr.addr_mode = kADDRMODE_INDIRECT_IDX;
             instr.stride    = 2;
@@ -282,7 +295,7 @@ InstrInfo instr_decode(void) {
         }
         case 0x06:
         {
-            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
+            _fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_ASL;
             instr.addr_mode = kADDRMODE_ZEROPAGE;
             instr.stride    = 2;
@@ -291,7 +304,7 @@ InstrInfo instr_decode(void) {
         case 0x16:
         {
             uint8_t byte = 0;
-            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
+            _fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_ASL;
             instr.addr_mode = kADDRMODE_ZEROPAGE_X;
             instr.data.byte = byte;
@@ -300,7 +313,7 @@ InstrInfo instr_decode(void) {
         }
         case 0x0E:
         {
-            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
+            _fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_ASL;
             instr.addr_mode = kADDRMODE_ABSOLUTE;
             instr.stride    = 3;
@@ -308,7 +321,7 @@ InstrInfo instr_decode(void) {
         }
         case 0x1E:
         {
-            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
+            _fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_ASL;
             instr.addr_mode = kADDRMODE_ABSOLUTE_X;
             instr.stride    = 3;
@@ -318,7 +331,7 @@ InstrInfo instr_decode(void) {
         // BCC instructions
         case 0x90:
         {
-            _instr_fetch_bytes(&instr.data.offset, sizeof(instr.data.offset));
+            _fetch_bytes(&instr.data.offset, sizeof(instr.data.offset));
             instr.type      = kINSTRTYPE_BCC;
             instr.addr_mode = kADDRMODE_RELATIVE;
             instr.stride    = 2;
@@ -328,7 +341,7 @@ InstrInfo instr_decode(void) {
         // BCS instructions
         case 0xB0:
         {
-            _instr_fetch_bytes(&instr.data.offset, sizeof(instr.data.offset));
+            _fetch_bytes(&instr.data.offset, sizeof(instr.data.offset));
             instr.type      = kINSTRTYPE_BCS;
             instr.addr_mode = kADDRMODE_RELATIVE;
             instr.stride    = 2;
@@ -338,7 +351,7 @@ InstrInfo instr_decode(void) {
         // BEQ instructions
         case 0xF0:
         {
-            _instr_fetch_bytes(&instr.data.offset, sizeof(instr.data.offset));
+            _fetch_bytes(&instr.data.offset, sizeof(instr.data.offset));
             instr.type      = kINSTRTYPE_BEQ;
             instr.addr_mode = kADDRMODE_RELATIVE;
             instr.stride    = 2;
@@ -348,7 +361,7 @@ InstrInfo instr_decode(void) {
         // BIT instructions
         case 0x24:
         {
-            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
+            _fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_BIT;
             instr.addr_mode = kADDRMODE_ZEROPAGE;
             instr.stride    = 2;
@@ -356,7 +369,7 @@ InstrInfo instr_decode(void) {
         }
         case 0x2C:
         {
-            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
+            _fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_BIT;
             instr.addr_mode = kADDRMODE_ABSOLUTE;
             instr.stride    = 3;
@@ -366,7 +379,7 @@ InstrInfo instr_decode(void) {
         // BMI instructions
         case 0x30:
         {
-            _instr_fetch_bytes(&instr.data.offset, sizeof(instr.data.offset));
+            _fetch_bytes(&instr.data.offset, sizeof(instr.data.offset));
             instr.type      = kINSTRTYPE_BMI;
             instr.addr_mode = kADDRMODE_RELATIVE;
             instr.stride    = 2;
@@ -376,7 +389,7 @@ InstrInfo instr_decode(void) {
         // BNE instructions
         case 0xD0:
         {
-            _instr_fetch_bytes(&instr.data.offset, sizeof(instr.data.offset));
+            _fetch_bytes(&instr.data.offset, sizeof(instr.data.offset));
             instr.type      = kINSTRTYPE_BNE;
             instr.addr_mode = kADDRMODE_RELATIVE;
             instr.stride    = 2;
@@ -386,7 +399,7 @@ InstrInfo instr_decode(void) {
         // BPL instructions
         case 0x10:
         {
-            _instr_fetch_bytes(&instr.data.offset, sizeof(instr.data.offset));
+            _fetch_bytes(&instr.data.offset, sizeof(instr.data.offset));
             instr.type      = kINSTRTYPE_BPL;
             instr.addr_mode = kADDRMODE_RELATIVE;
             instr.stride    = 2;
@@ -404,7 +417,7 @@ InstrInfo instr_decode(void) {
         // BVC instructions
         case 0x50:
         {
-            _instr_fetch_bytes(&instr.data.offset, sizeof(instr.data.offset));
+            _fetch_bytes(&instr.data.offset, sizeof(instr.data.offset));
             instr.type      = kINSTRTYPE_BVC;
             instr.addr_mode = kADDRMODE_RELATIVE;
             instr.stride    = 2;
@@ -414,7 +427,7 @@ InstrInfo instr_decode(void) {
         // BVS instructions
         case 0x70:
         {
-            _instr_fetch_bytes(&instr.data.offset, sizeof(instr.data.offset));
+            _fetch_bytes(&instr.data.offset, sizeof(instr.data.offset));
             instr.type      = kINSTRTYPE_BVS;
             instr.addr_mode = kADDRMODE_RELATIVE;
             instr.stride    = 2;
@@ -460,7 +473,7 @@ InstrInfo instr_decode(void) {
         // CMP instructions
         case 0xC9:
         {
-            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
+            _fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_CMP;
             instr.addr_mode = kADDRMODE_IMMEDIATE;
             instr.stride    = 2;
@@ -468,7 +481,7 @@ InstrInfo instr_decode(void) {
         }
         case 0xC5:
         {
-            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
+            _fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_CMP;
             instr.addr_mode = kADDRMODE_ZEROPAGE;
             instr.stride    = 2;
@@ -476,7 +489,7 @@ InstrInfo instr_decode(void) {
         }
         case 0xD5:
         {
-            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
+            _fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_CMP;
             instr.addr_mode = kADDRMODE_ZEROPAGE_X;
             instr.stride    = 2;
@@ -484,7 +497,7 @@ InstrInfo instr_decode(void) {
         }
         case 0xCD:
         {
-            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
+            _fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_CMP;
             instr.addr_mode = kADDRMODE_ABSOLUTE;
             instr.stride    = 3;
@@ -492,7 +505,7 @@ InstrInfo instr_decode(void) {
         }
         case 0xDD:
         {
-            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
+            _fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_CMP;
             instr.addr_mode = kADDRMODE_ABSOLUTE_X;
             instr.stride    = 3;
@@ -500,7 +513,7 @@ InstrInfo instr_decode(void) {
         }
         case 0xD9:
         {
-            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
+            _fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_CMP;
             instr.addr_mode = kADDRMODE_ABSOLUTE_Y;
             instr.stride    = 3;
@@ -508,7 +521,7 @@ InstrInfo instr_decode(void) {
         }
         case 0xC1:
         {
-            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
+            _fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_CMP;
             instr.addr_mode = kADDRMODE_IDX_INDIRECT;
             instr.stride    = 2;
@@ -516,7 +529,7 @@ InstrInfo instr_decode(void) {
         }
         case 0xD1:
         {
-            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
+            _fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_CMP;
             instr.addr_mode = kADDRMODE_INDIRECT_IDX;
             instr.stride    = 2;
@@ -526,7 +539,7 @@ InstrInfo instr_decode(void) {
         // CPX instructions
         case 0xE0:
         {
-            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
+            _fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_CPX;
             instr.addr_mode = kADDRMODE_IMMEDIATE;
             instr.stride    = 2;
@@ -534,7 +547,7 @@ InstrInfo instr_decode(void) {
         }
         case 0xE4:
         {
-            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
+            _fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_CPX;
             instr.addr_mode = kADDRMODE_ZEROPAGE;
             instr.stride    = 2;
@@ -542,7 +555,7 @@ InstrInfo instr_decode(void) {
         }
         case 0xEC:
         {
-            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
+            _fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_CPX;
             instr.addr_mode = kADDRMODE_ABSOLUTE;
             instr.stride    = 3;
@@ -552,7 +565,7 @@ InstrInfo instr_decode(void) {
         // CPY instructions
         case 0xC0:
         {
-            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
+            _fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_CPY;
             instr.addr_mode = kADDRMODE_IMMEDIATE;
             instr.stride    = 2;
@@ -560,7 +573,7 @@ InstrInfo instr_decode(void) {
         }
         case 0xC4:
         {
-            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
+            _fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_CPY;
             instr.addr_mode = kADDRMODE_ZEROPAGE;
             instr.stride    = 2;
@@ -568,7 +581,7 @@ InstrInfo instr_decode(void) {
         }
         case 0xCC:
         {
-            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
+            _fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_CPY;
             instr.addr_mode = kADDRMODE_ABSOLUTE;
             instr.stride    = 3;
@@ -578,7 +591,7 @@ InstrInfo instr_decode(void) {
         // DEC instructions
         case 0xC6:
         {
-            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
+            _fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_DEC;
             instr.addr_mode = kADDRMODE_ZEROPAGE;
             instr.stride    = 2;
@@ -586,7 +599,7 @@ InstrInfo instr_decode(void) {
         }
         case 0xD6:
         {
-            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
+            _fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_DEC;
             instr.addr_mode = kADDRMODE_ZEROPAGE_X;
             instr.stride    = 2;
@@ -594,7 +607,7 @@ InstrInfo instr_decode(void) {
         }
         case 0xCE:
         {
-            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
+            _fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_DEC;
             instr.addr_mode = kADDRMODE_ABSOLUTE;
             instr.stride    = 3;
@@ -602,7 +615,7 @@ InstrInfo instr_decode(void) {
         }
         case 0xDE:
         {
-            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
+            _fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_DEC;
             instr.addr_mode = kADDRMODE_ABSOLUTE_X;
             instr.stride    = 3;
@@ -630,7 +643,7 @@ InstrInfo instr_decode(void) {
         // EOR instructions
         case 0x49:
         {
-            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
+            _fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_EOR;
             instr.addr_mode = kADDRMODE_IMMEDIATE;
             instr.stride    = 2;
@@ -638,7 +651,7 @@ InstrInfo instr_decode(void) {
         }
         case 0x45:
         {
-            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
+            _fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_EOR;
             instr.addr_mode = kADDRMODE_ZEROPAGE;
             instr.stride    = 2;
@@ -646,7 +659,7 @@ InstrInfo instr_decode(void) {
         }
         case 0x55:
         {
-            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
+            _fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_EOR;
             instr.addr_mode = kADDRMODE_ZEROPAGE_X;
             instr.stride    = 2;
@@ -654,7 +667,7 @@ InstrInfo instr_decode(void) {
         }
         case 0x4D:
         {
-            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
+            _fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_EOR;
             instr.addr_mode = kADDRMODE_ABSOLUTE;
             instr.stride    = 3;
@@ -662,7 +675,7 @@ InstrInfo instr_decode(void) {
         }
         case 0x5D:
         {
-            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
+            _fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_EOR;
             instr.addr_mode = kADDRMODE_ABSOLUTE_X;
             instr.stride    = 3;
@@ -670,7 +683,7 @@ InstrInfo instr_decode(void) {
         }
         case 0x59:
         {
-            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
+            _fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_EOR;
             instr.addr_mode = kADDRMODE_ABSOLUTE_Y;
             instr.stride    = 3;
@@ -678,7 +691,7 @@ InstrInfo instr_decode(void) {
         }
         case 0x41:
         {
-            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
+            _fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_EOR;
             instr.addr_mode = kADDRMODE_IDX_INDIRECT;
             instr.stride    = 2;
@@ -686,7 +699,7 @@ InstrInfo instr_decode(void) {
         }
         case 0x51:
         {
-            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
+            _fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_EOR;
             instr.addr_mode = kADDRMODE_INDIRECT_IDX;
             instr.stride    = 2;
@@ -696,7 +709,7 @@ InstrInfo instr_decode(void) {
         // INC instructions
         case 0xE6:
         {
-            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
+            _fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_INC;
             instr.addr_mode = kADDRMODE_ZEROPAGE;
             instr.stride    = 2;
@@ -704,7 +717,7 @@ InstrInfo instr_decode(void) {
         }
         case 0xF6:
         {
-            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
+            _fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_INC;
             instr.addr_mode = kADDRMODE_ZEROPAGE_X;
             instr.stride    = 2;
@@ -712,7 +725,7 @@ InstrInfo instr_decode(void) {
         }
         case 0xEE:
         {
-            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
+            _fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_INC;
             instr.addr_mode = kADDRMODE_ABSOLUTE;
             instr.stride    = 3;
@@ -720,7 +733,7 @@ InstrInfo instr_decode(void) {
         }
         case 0xFE:
         {
-            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
+            _fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_INC;
             instr.addr_mode = kADDRMODE_ABSOLUTE_X;
             instr.stride    = 3;
@@ -748,7 +761,7 @@ InstrInfo instr_decode(void) {
         // JMP instructions
         case 0x4C:
         {
-            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
+            _fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_JMP;
             instr.addr_mode = kADDRMODE_ABSOLUTE;
             instr.stride    = 3;
@@ -756,7 +769,7 @@ InstrInfo instr_decode(void) {
         }
         case 0x6C:
         {
-            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
+            _fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_JMP;
             instr.addr_mode = kADDRMODE_INDIRECT;
             instr.stride    = 3;
@@ -766,7 +779,7 @@ InstrInfo instr_decode(void) {
         // JSR instructions
         case 0x20:
         {
-            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
+            _fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_JSR;
             instr.addr_mode = kADDRMODE_ABSOLUTE;
             instr.stride    = 3;
@@ -776,7 +789,7 @@ InstrInfo instr_decode(void) {
         // LDA instructions
         case 0xA9:
         {
-            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
+            _fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_LDA;
             instr.addr_mode = kADDRMODE_IMMEDIATE;
             instr.stride    = 2;
@@ -784,7 +797,7 @@ InstrInfo instr_decode(void) {
         }
         case 0xA5:
         {
-            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
+            _fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_LDA;
             instr.addr_mode = kADDRMODE_ZEROPAGE;
             instr.stride    = 2;
@@ -792,7 +805,7 @@ InstrInfo instr_decode(void) {
         }
         case 0xB5:
         {
-            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
+            _fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_LDA;
             instr.addr_mode = kADDRMODE_ZEROPAGE_X;
             instr.stride    = 2;
@@ -800,7 +813,7 @@ InstrInfo instr_decode(void) {
         }
         case 0xAD:
         {
-            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
+            _fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_LDA;
             instr.addr_mode = kADDRMODE_ABSOLUTE;
             instr.stride    = 3;
@@ -808,7 +821,7 @@ InstrInfo instr_decode(void) {
         }
         case 0xBD:
         {
-            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
+            _fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_LDA;
             instr.addr_mode = kADDRMODE_ABSOLUTE_X;
             instr.stride    = 3;
@@ -816,7 +829,7 @@ InstrInfo instr_decode(void) {
         }
         case 0xB9:
         {
-            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
+            _fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_LDA;
             instr.addr_mode = kADDRMODE_ABSOLUTE_Y;
             instr.stride    = 3;
@@ -824,7 +837,7 @@ InstrInfo instr_decode(void) {
         }
         case 0xA1:
         {
-            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
+            _fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_LDA;
             instr.addr_mode = kADDRMODE_IDX_INDIRECT;
             instr.stride    = 2;
@@ -832,7 +845,7 @@ InstrInfo instr_decode(void) {
         }
         case 0xB1:
         {
-            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
+            _fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_LDA;
             instr.addr_mode = kADDRMODE_INDIRECT_IDX;
             instr.stride    = 2;
@@ -842,7 +855,7 @@ InstrInfo instr_decode(void) {
         // LDX instructions
         case 0xA2:
         {
-            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
+            _fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_LDX;
             instr.addr_mode = kADDRMODE_IMMEDIATE;
             instr.stride    = 2;
@@ -850,7 +863,7 @@ InstrInfo instr_decode(void) {
         }
         case 0xA6:
         {
-            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
+            _fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_LDX;
             instr.addr_mode = kADDRMODE_ZEROPAGE;
             instr.stride    = 2;
@@ -858,7 +871,7 @@ InstrInfo instr_decode(void) {
         }
         case 0xB6:
         {
-            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
+            _fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_LDX;
             instr.addr_mode = kADDRMODE_ZEROPAGE_Y;
             instr.stride    = 2;
@@ -866,7 +879,7 @@ InstrInfo instr_decode(void) {
         }
         case 0xAE:
         {
-            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
+            _fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_LDX;
             instr.addr_mode = kADDRMODE_ABSOLUTE;
             instr.stride    = 3;
@@ -874,7 +887,7 @@ InstrInfo instr_decode(void) {
         }
         case 0xBE:
         {
-            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
+            _fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_LDX;
             instr.addr_mode = kADDRMODE_ABSOLUTE_Y;
             instr.stride    = 3;
@@ -884,7 +897,7 @@ InstrInfo instr_decode(void) {
         // LDY instructions
         case 0xA0:
         {
-            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
+            _fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_LDY;
             instr.addr_mode = kADDRMODE_IMMEDIATE;
             instr.stride    = 2;
@@ -892,7 +905,7 @@ InstrInfo instr_decode(void) {
         }
         case 0xA4:
         {
-            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
+            _fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_LDY;
             instr.addr_mode = kADDRMODE_ZEROPAGE;
             instr.stride    = 2;
@@ -900,7 +913,7 @@ InstrInfo instr_decode(void) {
         }
         case 0xB4:
         {
-            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
+            _fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_LDY;
             instr.addr_mode = kADDRMODE_ZEROPAGE_X;
             instr.stride    = 2;
@@ -908,7 +921,7 @@ InstrInfo instr_decode(void) {
         }
         case 0xAC:
         {
-            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
+            _fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_LDY;
             instr.addr_mode = kADDRMODE_ABSOLUTE;
             instr.stride    = 3;
@@ -916,7 +929,7 @@ InstrInfo instr_decode(void) {
         }
         case 0xBC:
         {
-            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
+            _fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_LDY;
             instr.addr_mode = kADDRMODE_ABSOLUTE_X;
             instr.stride    = 3;
@@ -933,7 +946,7 @@ InstrInfo instr_decode(void) {
         }
         case 0x46:
         {
-            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
+            _fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_LSR;
             instr.addr_mode = kADDRMODE_ZEROPAGE;
             instr.stride    = 2;
@@ -941,7 +954,7 @@ InstrInfo instr_decode(void) {
         }
         case 0x56:
         {
-            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
+            _fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_LSR;
             instr.addr_mode = kADDRMODE_ZEROPAGE_X;
             instr.stride    = 2;
@@ -949,7 +962,7 @@ InstrInfo instr_decode(void) {
         }
         case 0x4E:
         {
-            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
+            _fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_LSR;
             instr.addr_mode = kADDRMODE_ABSOLUTE;
             instr.stride    = 3;
@@ -957,7 +970,7 @@ InstrInfo instr_decode(void) {
         }
         case 0x5E:
         {
-            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
+            _fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_LSR;
             instr.addr_mode = kADDRMODE_ABSOLUTE_X;
             instr.stride    = 3;
@@ -975,7 +988,7 @@ InstrInfo instr_decode(void) {
         // ORA instructions
         case 0x09:
         {
-            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
+            _fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_ORA;
             instr.addr_mode = kADDRMODE_IMMEDIATE;
             instr.stride    = 2;
@@ -983,7 +996,7 @@ InstrInfo instr_decode(void) {
         }
         case 0x05:
         {
-            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
+            _fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_ORA;
             instr.addr_mode = kADDRMODE_ZEROPAGE;
             instr.stride    = 2;
@@ -991,7 +1004,7 @@ InstrInfo instr_decode(void) {
         }
         case 0x15:
         {
-            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
+            _fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_ORA;
             instr.addr_mode = kADDRMODE_ZEROPAGE_X;
             instr.stride    = 2;
@@ -999,7 +1012,7 @@ InstrInfo instr_decode(void) {
         }
         case 0x0D:
         {
-            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
+            _fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_ORA;
             instr.addr_mode = kADDRMODE_ABSOLUTE;
             instr.stride    = 3;
@@ -1007,7 +1020,7 @@ InstrInfo instr_decode(void) {
         }
         case 0x1D:
         {
-            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
+            _fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_ORA;
             instr.addr_mode = kADDRMODE_ABSOLUTE_X;
             instr.stride    = 3;
@@ -1015,7 +1028,7 @@ InstrInfo instr_decode(void) {
         }
         case 0x19:
         {
-            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
+            _fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_ORA;
             instr.addr_mode = kADDRMODE_ABSOLUTE_Y;
             instr.stride    = 3;
@@ -1023,7 +1036,7 @@ InstrInfo instr_decode(void) {
         }
         case 0x01:
         {
-            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
+            _fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_ORA;
             instr.addr_mode = kADDRMODE_IDX_INDIRECT;
             instr.stride    = 2;
@@ -1031,7 +1044,7 @@ InstrInfo instr_decode(void) {
         }
         case 0x11:
         {
-            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
+            _fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_ORA;
             instr.addr_mode = kADDRMODE_INDIRECT_IDX;
             instr.stride    = 2;
@@ -1084,7 +1097,7 @@ InstrInfo instr_decode(void) {
         }
         case 0x26:
         {
-            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
+            _fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_ROL;
             instr.addr_mode = kADDRMODE_ZEROPAGE;
             instr.stride    = 2;
@@ -1092,7 +1105,7 @@ InstrInfo instr_decode(void) {
         }
         case 0x36:
         {
-            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
+            _fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_ROL;
             instr.addr_mode = kADDRMODE_ZEROPAGE_X;
             instr.stride    = 2;
@@ -1100,7 +1113,7 @@ InstrInfo instr_decode(void) {
         }
         case 0x2E:
         {
-            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
+            _fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_ROL;
             instr.addr_mode = kADDRMODE_ABSOLUTE;
             instr.stride    = 3;
@@ -1108,7 +1121,7 @@ InstrInfo instr_decode(void) {
         }
         case 0x3E:
         {
-            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
+            _fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_ROL;
             instr.addr_mode = kADDRMODE_ABSOLUTE_X;
             instr.stride    = 3;
@@ -1125,7 +1138,7 @@ InstrInfo instr_decode(void) {
         }
         case 0x66:
         {
-            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
+            _fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_ROR;
             instr.addr_mode = kADDRMODE_ZEROPAGE;
             instr.stride    = 2;
@@ -1133,7 +1146,7 @@ InstrInfo instr_decode(void) {
         }
         case 0x76:
         {
-            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
+            _fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_ROR;
             instr.addr_mode = kADDRMODE_ZEROPAGE_X;
             instr.stride    = 2;
@@ -1141,7 +1154,7 @@ InstrInfo instr_decode(void) {
         }
         case 0x6E:
         {
-            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
+            _fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_ROR;
             instr.addr_mode = kADDRMODE_ABSOLUTE;
             instr.stride    = 3;
@@ -1149,7 +1162,7 @@ InstrInfo instr_decode(void) {
         }
         case 0x7E:
         {
-            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
+            _fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_ROR;
             instr.addr_mode = kADDRMODE_ABSOLUTE_X;
             instr.stride    = 3;
@@ -1177,7 +1190,7 @@ InstrInfo instr_decode(void) {
         // SBC instructions
         case 0xE9:
         {
-            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
+            _fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_SBC;
             instr.addr_mode = kADDRMODE_IMMEDIATE;
             instr.stride    = 2;
@@ -1185,7 +1198,7 @@ InstrInfo instr_decode(void) {
         }
         case 0xE5:
         {
-            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
+            _fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_SBC;
             instr.addr_mode = kADDRMODE_ZEROPAGE;
             instr.stride    = 2;
@@ -1193,7 +1206,7 @@ InstrInfo instr_decode(void) {
         }
         case 0xF5:
         {
-            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
+            _fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_SBC;
             instr.addr_mode = kADDRMODE_ZEROPAGE_X;
             instr.stride    = 2;
@@ -1201,7 +1214,7 @@ InstrInfo instr_decode(void) {
         }
         case 0xED:
         {
-            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
+            _fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_SBC;
             instr.addr_mode = kADDRMODE_ABSOLUTE;
             instr.stride    = 3;
@@ -1209,7 +1222,7 @@ InstrInfo instr_decode(void) {
         }
         case 0xFD:
         {
-            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
+            _fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_SBC;
             instr.addr_mode = kADDRMODE_ABSOLUTE_X;
             instr.stride    = 3;
@@ -1217,7 +1230,7 @@ InstrInfo instr_decode(void) {
         }
         case 0xF9:
         {
-            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
+            _fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_SBC;
             instr.addr_mode = kADDRMODE_ABSOLUTE_Y;
             instr.stride    = 3;
@@ -1225,7 +1238,7 @@ InstrInfo instr_decode(void) {
         }
         case 0xE1:
         {
-            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
+            _fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_SBC;
             instr.addr_mode = kADDRMODE_IDX_INDIRECT;
             instr.stride    = 2;
@@ -1233,7 +1246,7 @@ InstrInfo instr_decode(void) {
         }
         case 0xF1:
         {
-            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
+            _fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_SBC;
             instr.addr_mode = kADDRMODE_INDIRECT_IDX;
             instr.stride    = 2;
@@ -1270,7 +1283,7 @@ InstrInfo instr_decode(void) {
         // STA instructions
         case 0x85:
         {
-            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
+            _fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_STA;
             instr.addr_mode = kADDRMODE_ZEROPAGE;
             instr.stride    = 2;
@@ -1278,7 +1291,7 @@ InstrInfo instr_decode(void) {
         }
         case 0x95:
         {
-            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
+            _fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_STA;
             instr.addr_mode = kADDRMODE_ZEROPAGE_X;
             instr.stride    = 2;
@@ -1286,7 +1299,7 @@ InstrInfo instr_decode(void) {
         }
         case 0x8D:
         {
-            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
+            _fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_STA;
             instr.addr_mode = kADDRMODE_ABSOLUTE;
             instr.stride    = 3;
@@ -1294,7 +1307,7 @@ InstrInfo instr_decode(void) {
         }
         case 0x9D:
         {
-            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
+            _fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_STA;
             instr.addr_mode = kADDRMODE_ABSOLUTE_X;
             instr.stride    = 3;
@@ -1302,7 +1315,7 @@ InstrInfo instr_decode(void) {
         }
         case 0x99:
         {
-            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
+            _fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_STA;
             instr.addr_mode = kADDRMODE_ABSOLUTE_Y;
             instr.stride    = 3;
@@ -1310,7 +1323,7 @@ InstrInfo instr_decode(void) {
         }
         case 0x81:
         {
-            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
+            _fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_STA;
             instr.addr_mode = kADDRMODE_IDX_INDIRECT;
             instr.stride    = 2;
@@ -1318,7 +1331,7 @@ InstrInfo instr_decode(void) {
         }
         case 0x91:
         {
-            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
+            _fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_STA;
             instr.addr_mode = kADDRMODE_INDIRECT_IDX;
             instr.stride    = 2;
@@ -1328,7 +1341,7 @@ InstrInfo instr_decode(void) {
         // STX instructions
         case 0x86:
         {
-            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
+            _fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_STX;
             instr.addr_mode = kADDRMODE_ZEROPAGE;
             instr.stride    = 2;
@@ -1336,7 +1349,7 @@ InstrInfo instr_decode(void) {
         }
         case 0x96:
         {
-            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
+            _fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_STX;
             instr.addr_mode = kADDRMODE_ZEROPAGE_Y;
             instr.stride    = 2;
@@ -1344,7 +1357,7 @@ InstrInfo instr_decode(void) {
         }
         case 0x8E:
         {
-            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
+            _fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_STX;
             instr.addr_mode = kADDRMODE_ABSOLUTE;
             instr.stride    = 3;
@@ -1354,7 +1367,7 @@ InstrInfo instr_decode(void) {
         // STY instructions
         case 0x84:
         {
-            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
+            _fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_STY;
             instr.addr_mode = kADDRMODE_ZEROPAGE;
             instr.stride    = 2;
@@ -1362,7 +1375,7 @@ InstrInfo instr_decode(void) {
         }
         case 0x94:
         {
-            _instr_fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
+            _fetch_bytes(&instr.data.byte, sizeof(instr.data.byte));
             instr.type      = kINSTRTYPE_STY;
             instr.addr_mode = kADDRMODE_ZEROPAGE_X;
             instr.stride    = 2;
@@ -1370,7 +1383,7 @@ InstrInfo instr_decode(void) {
         }
         case 0x8C:
         {
-            _instr_fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
+            _fetch_bytes(&instr.data.addr, sizeof(instr.data.addr));
             instr.type      = kINSTRTYPE_STY;
             instr.addr_mode = kADDRMODE_ABSOLUTE;
             instr.stride    = 3;
@@ -1441,16 +1454,65 @@ void instr_exec(const InstrInfo* instr) {
     s_instr_exec_funcs[instr->type](instr);
 }
 
-static inline void _instr_fetch_bytes(void* buf, size_t size) {
+static inline void _fetch_bytes(void* buf, size_t size) {
     // +1 offset since pc should point at current instruction opcode
     memory_read(g_device.pc+1, buf, size);
 }
 
-static void _instr_unknown(const InstrInfo* instr) {
+static inline uint8_t _fetch_data_immediate(const InstrInfo* instr) {
+    return instr->data.byte;
+}
+
+static inline uint8_t _fetch_data_zeropage(const InstrInfo* instr) {
+    return memory_read8(instr->data.byte);
+}
+
+static inline uint8_t _fetch_data_zeropage_x(const InstrInfo* instr) {
+    return memory_read8(instr->data.byte + g_device.x);
+}
+
+static inline uint8_t _fetch_data_zeropage_y(const InstrInfo* instr) {
+    return memory_read8(instr->data.byte + g_device.y);
+}
+
+static inline uint16_t _fetch_addr_relative(const InstrInfo* instr) {
+    return g_device.pc + instr->data.offset;
+}
+
+static inline uint8_t _fetch_data_absolute(const InstrInfo* instr) {
+    return memory_read8(instr->data.addr);
+}
+
+static inline uint8_t _fetch_data_absolute_x(const InstrInfo* instr) {
+    return memory_read8(instr->data.addr + g_device.x);
+}
+
+static inline uint8_t _fetch_data_absolute_y(const InstrInfo* instr) {
+    return memory_read8(instr->data.addr + g_device.y);
+}
+
+static inline uint16_t _fetch_addr_indirect(const InstrInfo* instr) {
+    uint16_t addr;
+    memory_read(instr->data.addr, &addr, sizeof(addr));
+    return addr;
+}
+
+static inline uint8_t _fetch_data_idx_indirect(const InstrInfo* instr) {
+    const uint16_t addr = instr->data.byte + g_device.x;
+    return memory_read8(addr & 0x00FF);
+}
+
+static inline uint8_t _fetch_data_indirect_idx(const InstrInfo* instr) {
+    const uint16_t addr = memory_read8(instr->data.byte) + g_device.y;
+    return memory_read8(addr);
+}
+
+static inline void _instr_unknown(const InstrInfo* instr) {
     log_warn("unhandled instruction '0x%02X'", instr->opcode);
 }
 
-static void _instr_adc(const InstrInfo* instr) {
+static inline void _instr_adc(const InstrInfo* instr) {
+    uint8_t data;
     switch (instr->addr_mode) {
         case kADDRMODE_IMMEDIATE:
         case kADDRMODE_ZEROPAGE:
@@ -1469,7 +1531,7 @@ static void _instr_adc(const InstrInfo* instr) {
     }
 }
 
-static void _instr_and(const InstrInfo* instr) {
+static inline void _instr_and(const InstrInfo* instr) {
     switch (instr->addr_mode) {
         case kADDRMODE_IMMEDIATE:
         case kADDRMODE_ZEROPAGE:
@@ -1488,7 +1550,7 @@ static void _instr_and(const InstrInfo* instr) {
     }
 }
 
-static void _instr_asl(const InstrInfo* instr) {
+static inline void _instr_asl(const InstrInfo* instr) {
     switch (instr->addr_mode) {
         case kADDRMODE_ACCUMULATOR:
         case kADDRMODE_ZEROPAGE:
@@ -1504,7 +1566,7 @@ static void _instr_asl(const InstrInfo* instr) {
     }
 }
 
-static void _instr_bcc(const InstrInfo* instr) {
+static inline void _instr_bcc(const InstrInfo* instr) {
     switch (instr->addr_mode) {
         case kADDRMODE_RELATIVE:
             log_info("%s", disasm_get_asm(instr));
@@ -1516,7 +1578,7 @@ static void _instr_bcc(const InstrInfo* instr) {
     }
 }
 
-static void _instr_bcs(const InstrInfo* instr) {
+static inline void _instr_bcs(const InstrInfo* instr) {
     switch (instr->addr_mode) {
         case kADDRMODE_RELATIVE:
             log_info("%s", disasm_get_asm(instr));
@@ -1528,7 +1590,7 @@ static void _instr_bcs(const InstrInfo* instr) {
     }
 }
 
-static void _instr_beq(const InstrInfo* instr) {
+static inline void _instr_beq(const InstrInfo* instr) {
     switch (instr->addr_mode) {
         case kADDRMODE_RELATIVE:
             log_info("%s", disasm_get_asm(instr));
@@ -1540,7 +1602,7 @@ static void _instr_beq(const InstrInfo* instr) {
     }
 }
 
-static void _instr_bit(const InstrInfo* instr) {
+static inline void _instr_bit(const InstrInfo* instr) {
     switch (instr->addr_mode) {
         case kADDRMODE_ZEROPAGE:
         case kADDRMODE_ABSOLUTE:
@@ -1553,7 +1615,7 @@ static void _instr_bit(const InstrInfo* instr) {
     }
 }
 
-static void _instr_bmi(const InstrInfo* instr) {
+static inline void _instr_bmi(const InstrInfo* instr) {
     switch (instr->addr_mode) {
         case kADDRMODE_RELATIVE:
             log_info("%s", disasm_get_asm(instr));
@@ -1565,7 +1627,7 @@ static void _instr_bmi(const InstrInfo* instr) {
     }
 }
 
-static void _instr_bne(const InstrInfo* instr) {
+static inline void _instr_bne(const InstrInfo* instr) {
     switch (instr->addr_mode) {
         case kADDRMODE_RELATIVE:
             log_info("%s", disasm_get_asm(instr));
@@ -1577,7 +1639,7 @@ static void _instr_bne(const InstrInfo* instr) {
     }
 }
 
-static void _instr_bpl(const InstrInfo* instr) {
+static inline void _instr_bpl(const InstrInfo* instr) {
     switch (instr->addr_mode) {
         case kADDRMODE_RELATIVE:
             log_info("%s", disasm_get_asm(instr));
@@ -1589,7 +1651,7 @@ static void _instr_bpl(const InstrInfo* instr) {
     }
 }
 
-static void _instr_brk(const InstrInfo* instr) {
+static inline void _instr_brk(const InstrInfo* instr) {
     switch (instr->addr_mode) {
         case kADDRMODE_IMPLICIT:
             log_info("%s", disasm_get_asm(instr));
@@ -1601,7 +1663,7 @@ static void _instr_brk(const InstrInfo* instr) {
     }
 }
 
-static void _instr_bvc(const InstrInfo* instr) {
+static inline void _instr_bvc(const InstrInfo* instr) {
     switch (instr->addr_mode) {
         case kADDRMODE_RELATIVE:
             log_info("%s", disasm_get_asm(instr));
@@ -1613,7 +1675,7 @@ static void _instr_bvc(const InstrInfo* instr) {
     }
 }
 
-static void _instr_bvs(const InstrInfo* instr) {
+static inline void _instr_bvs(const InstrInfo* instr) {
     switch (instr->addr_mode) {
         case kADDRMODE_RELATIVE:
             log_info("%s", disasm_get_asm(instr));
@@ -1625,7 +1687,7 @@ static void _instr_bvs(const InstrInfo* instr) {
     }
 }
 
-static void _instr_clc(const InstrInfo* instr) {
+static inline void _instr_clc(const InstrInfo* instr) {
     switch (instr->addr_mode) {
         case kADDRMODE_IMPLICIT:
             log_info("%s", disasm_get_asm(instr));
@@ -1637,7 +1699,7 @@ static void _instr_clc(const InstrInfo* instr) {
     }
 }
 
-static void _instr_cld(const InstrInfo* instr) {
+static inline void _instr_cld(const InstrInfo* instr) {
     switch (instr->addr_mode) {
         case kADDRMODE_IMPLICIT:
             log_info("%s", disasm_get_asm(instr));
@@ -1649,7 +1711,7 @@ static void _instr_cld(const InstrInfo* instr) {
     }
 }
 
-static void _instr_cli(const InstrInfo* instr) {
+static inline void _instr_cli(const InstrInfo* instr) {
     switch (instr->addr_mode) {
         case kADDRMODE_IMPLICIT:
             log_info("%s", disasm_get_asm(instr));
@@ -1661,7 +1723,7 @@ static void _instr_cli(const InstrInfo* instr) {
     }
 }
 
-static void _instr_clv(const InstrInfo* instr) {
+static inline void _instr_clv(const InstrInfo* instr) {
     switch (instr->addr_mode) {
         case kADDRMODE_IMPLICIT:
             log_info("%s", disasm_get_asm(instr));
@@ -1673,7 +1735,7 @@ static void _instr_clv(const InstrInfo* instr) {
     }
 }
 
-static void _instr_cmp(const InstrInfo* instr) {
+static inline void _instr_cmp(const InstrInfo* instr) {
     switch (instr->addr_mode) {
         case kADDRMODE_IMMEDIATE:
         case kADDRMODE_ZEROPAGE:
@@ -1692,7 +1754,7 @@ static void _instr_cmp(const InstrInfo* instr) {
     }
 }
 
-static void _instr_cpx(const InstrInfo* instr) {
+static inline void _instr_cpx(const InstrInfo* instr) {
     switch (instr->addr_mode) {
         case kADDRMODE_IMMEDIATE:
         case kADDRMODE_ZEROPAGE:
@@ -1706,7 +1768,7 @@ static void _instr_cpx(const InstrInfo* instr) {
     }
 }
 
-static void _instr_cpy(const InstrInfo* instr) {
+static inline void _instr_cpy(const InstrInfo* instr) {
     switch (instr->addr_mode) {
         case kADDRMODE_IMMEDIATE:
         case kADDRMODE_ZEROPAGE:
@@ -1720,7 +1782,7 @@ static void _instr_cpy(const InstrInfo* instr) {
     }
 }
 
-static void _instr_dec(const InstrInfo* instr) {
+static inline void _instr_dec(const InstrInfo* instr) {
     switch (instr->addr_mode) {
         case kADDRMODE_ZEROPAGE:
         case kADDRMODE_ZEROPAGE_X:
@@ -1735,7 +1797,7 @@ static void _instr_dec(const InstrInfo* instr) {
     }
 }
 
-static void _instr_dex(const InstrInfo* instr) {
+static inline void _instr_dex(const InstrInfo* instr) {
     switch (instr->addr_mode) {
         case kADDRMODE_IMPLICIT:
             log_info("%s", disasm_get_asm(instr));
@@ -1747,7 +1809,7 @@ static void _instr_dex(const InstrInfo* instr) {
     }
 }
 
-static void _instr_dey(const InstrInfo* instr) {
+static inline void _instr_dey(const InstrInfo* instr) {
     switch (instr->addr_mode) {
         case kADDRMODE_IMPLICIT:
             log_info("%s", disasm_get_asm(instr));
@@ -1759,7 +1821,7 @@ static void _instr_dey(const InstrInfo* instr) {
     }
 }
 
-static void _instr_eor(const InstrInfo* instr) {
+static inline void _instr_eor(const InstrInfo* instr) {
     switch (instr->addr_mode) {
         case kADDRMODE_IMMEDIATE:
         case kADDRMODE_ZEROPAGE:
@@ -1778,7 +1840,7 @@ static void _instr_eor(const InstrInfo* instr) {
     }
 }
 
-static void _instr_inc(const InstrInfo* instr) {
+static inline void _instr_inc(const InstrInfo* instr) {
     switch (instr->addr_mode) {
         case kADDRMODE_ZEROPAGE:
         case kADDRMODE_ZEROPAGE_X:
@@ -1793,7 +1855,7 @@ static void _instr_inc(const InstrInfo* instr) {
     }
 }
 
-static void _instr_inx(const InstrInfo* instr) {
+static inline void _instr_inx(const InstrInfo* instr) {
     switch (instr->addr_mode) {
         case kADDRMODE_IMPLICIT:
             log_info("%s", disasm_get_asm(instr));
@@ -1805,7 +1867,7 @@ static void _instr_inx(const InstrInfo* instr) {
     }
 }
 
-static void _instr_iny(const InstrInfo* instr) {
+static inline void _instr_iny(const InstrInfo* instr) {
     switch (instr->addr_mode) {
         case kADDRMODE_IMPLICIT:
             log_info("%s", disasm_get_asm(instr));
@@ -1817,7 +1879,7 @@ static void _instr_iny(const InstrInfo* instr) {
     }
 }
 
-static void _instr_jmp(const InstrInfo* instr) {
+static inline void _instr_jmp(const InstrInfo* instr) {
     switch (instr->addr_mode) {
         case kADDRMODE_ABSOLUTE:
         case kADDRMODE_INDIRECT:
@@ -1830,7 +1892,7 @@ static void _instr_jmp(const InstrInfo* instr) {
     }
 }
 
-static void _instr_jsr(const InstrInfo* instr) {
+static inline void _instr_jsr(const InstrInfo* instr) {
     switch (instr->addr_mode) {
         case kADDRMODE_ABSOLUTE:
             log_info("%s", disasm_get_asm(instr));
@@ -1842,7 +1904,7 @@ static void _instr_jsr(const InstrInfo* instr) {
     }
 }
 
-static void _instr_lda(const InstrInfo* instr) {
+static inline void _instr_lda(const InstrInfo* instr) {
     switch (instr->addr_mode) {
         case kADDRMODE_IMMEDIATE:
         case kADDRMODE_ZEROPAGE:
@@ -1861,7 +1923,7 @@ static void _instr_lda(const InstrInfo* instr) {
     }
 }
 
-static void _instr_ldx(const InstrInfo* instr) {
+static inline void _instr_ldx(const InstrInfo* instr) {
     switch (instr->addr_mode) {
         case kADDRMODE_IMMEDIATE:
         case kADDRMODE_ZEROPAGE:
@@ -1877,7 +1939,7 @@ static void _instr_ldx(const InstrInfo* instr) {
     }
 }
 
-static void _instr_ldy(const InstrInfo* instr) {
+static inline void _instr_ldy(const InstrInfo* instr) {
     switch (instr->addr_mode) {
         case kADDRMODE_IMMEDIATE:
         case kADDRMODE_ZEROPAGE:
@@ -1893,7 +1955,7 @@ static void _instr_ldy(const InstrInfo* instr) {
     }
 }
 
-static void _instr_lsr(const InstrInfo* instr) {
+static inline void _instr_lsr(const InstrInfo* instr) {
     switch (instr->addr_mode) {
         case kADDRMODE_ACCUMULATOR:
         case kADDRMODE_ZEROPAGE:
@@ -1909,7 +1971,7 @@ static void _instr_lsr(const InstrInfo* instr) {
     }
 }
 
-static void _instr_nop(const InstrInfo* instr) {
+static inline void _instr_nop(const InstrInfo* instr) {
     switch (instr->addr_mode) {
         case kADDRMODE_IMPLICIT:
             log_info("%s", disasm_get_asm(instr));
@@ -1921,7 +1983,7 @@ static void _instr_nop(const InstrInfo* instr) {
     }
 }
 
-static void _instr_ora(const InstrInfo* instr) {
+static inline void _instr_ora(const InstrInfo* instr) {
     switch (instr->addr_mode) {
         case kADDRMODE_IMMEDIATE:
         case kADDRMODE_ZEROPAGE:
@@ -1940,7 +2002,7 @@ static void _instr_ora(const InstrInfo* instr) {
     }
 }
 
-static void _instr_pha(const InstrInfo* instr) {
+static inline void _instr_pha(const InstrInfo* instr) {
     switch (instr->addr_mode) {
         case kADDRMODE_IMPLICIT:
             log_info("%s", disasm_get_asm(instr));
@@ -1952,7 +2014,7 @@ static void _instr_pha(const InstrInfo* instr) {
     }
 }
 
-static void _instr_php(const InstrInfo* instr) {
+static inline void _instr_php(const InstrInfo* instr) {
     switch (instr->addr_mode) {
         case kADDRMODE_IMPLICIT:
             log_info("%s", disasm_get_asm(instr));
@@ -1964,7 +2026,7 @@ static void _instr_php(const InstrInfo* instr) {
     }
 }
 
-static void _instr_pla(const InstrInfo* instr) {
+static inline void _instr_pla(const InstrInfo* instr) {
     switch (instr->addr_mode) {
         case kADDRMODE_IMPLICIT:
             log_info("%s", disasm_get_asm(instr));
@@ -1976,7 +2038,7 @@ static void _instr_pla(const InstrInfo* instr) {
     }
 }
 
-static void _instr_plp(const InstrInfo* instr) {
+static inline void _instr_plp(const InstrInfo* instr) {
     switch (instr->addr_mode) {
         case kADDRMODE_IMPLICIT:
             log_info("%s", disasm_get_asm(instr));
@@ -1988,7 +2050,7 @@ static void _instr_plp(const InstrInfo* instr) {
     }
 }
 
-static void _instr_rol(const InstrInfo* instr) {
+static inline void _instr_rol(const InstrInfo* instr) {
     switch (instr->addr_mode) {
         case kADDRMODE_ACCUMULATOR:
         case kADDRMODE_ZEROPAGE:
@@ -2004,7 +2066,7 @@ static void _instr_rol(const InstrInfo* instr) {
     }
 }
 
-static void _instr_ror(const InstrInfo* instr) {
+static inline void _instr_ror(const InstrInfo* instr) {
     switch (instr->addr_mode) {
         case kADDRMODE_ACCUMULATOR:
         case kADDRMODE_ZEROPAGE:
@@ -2020,7 +2082,7 @@ static void _instr_ror(const InstrInfo* instr) {
     }
 }
 
-static void _instr_rti(const InstrInfo* instr) {
+static inline void _instr_rti(const InstrInfo* instr) {
     switch (instr->addr_mode) {
         case kADDRMODE_IMPLICIT:
             log_info("%s", disasm_get_asm(instr));
@@ -2032,7 +2094,7 @@ static void _instr_rti(const InstrInfo* instr) {
     }
 }
 
-static void _instr_rts(const InstrInfo* instr) {
+static inline void _instr_rts(const InstrInfo* instr) {
     switch (instr->addr_mode) {
         case kADDRMODE_IMPLICIT:
             log_info("%s", disasm_get_asm(instr));
@@ -2044,7 +2106,7 @@ static void _instr_rts(const InstrInfo* instr) {
     }
 }
 
-static void _instr_sbc(const InstrInfo* instr) {
+static inline void _instr_sbc(const InstrInfo* instr) {
     switch (instr->addr_mode) {
         case kADDRMODE_IMMEDIATE:
         case kADDRMODE_ZEROPAGE:
@@ -2063,7 +2125,7 @@ static void _instr_sbc(const InstrInfo* instr) {
     }
 }
 
-static void _instr_sec(const InstrInfo* instr) {
+static inline void _instr_sec(const InstrInfo* instr) {
     switch (instr->addr_mode) {
         case kADDRMODE_IMPLICIT:
             log_info("%s", disasm_get_asm(instr));
@@ -2075,7 +2137,7 @@ static void _instr_sec(const InstrInfo* instr) {
     }
 }
 
-static void _instr_sed(const InstrInfo* instr) {
+static inline void _instr_sed(const InstrInfo* instr) {
     switch (instr->addr_mode) {
         case kADDRMODE_IMPLICIT:
             log_info("%s", disasm_get_asm(instr));
@@ -2087,7 +2149,7 @@ static void _instr_sed(const InstrInfo* instr) {
     }
 }
 
-static void _instr_sei(const InstrInfo* instr) {
+static inline void _instr_sei(const InstrInfo* instr) {
     switch (instr->addr_mode) {
         case kADDRMODE_IMPLICIT:
             log_info("%s", disasm_get_asm(instr));
@@ -2099,7 +2161,7 @@ static void _instr_sei(const InstrInfo* instr) {
     }
 }
 
-static void _instr_sta(const InstrInfo* instr) {
+static inline void _instr_sta(const InstrInfo* instr) {
     switch (instr->addr_mode) {
         case kADDRMODE_ZEROPAGE:
         case kADDRMODE_ZEROPAGE_X:
@@ -2117,7 +2179,7 @@ static void _instr_sta(const InstrInfo* instr) {
     }
 }
 
-static void _instr_stx(const InstrInfo* instr) {
+static inline void _instr_stx(const InstrInfo* instr) {
     switch (instr->addr_mode) {
         case kADDRMODE_ZEROPAGE:
         case kADDRMODE_ZEROPAGE_Y:
@@ -2131,7 +2193,7 @@ static void _instr_stx(const InstrInfo* instr) {
     }
 }
 
-static void _instr_sty(const InstrInfo* instr) {
+static inline void _instr_sty(const InstrInfo* instr) {
     switch (instr->addr_mode) {
         case kADDRMODE_ZEROPAGE:
         case kADDRMODE_ZEROPAGE_X:
@@ -2145,7 +2207,7 @@ static void _instr_sty(const InstrInfo* instr) {
     }
 }
 
-static void _instr_tax(const InstrInfo* instr) {
+static inline void _instr_tax(const InstrInfo* instr) {
     switch (instr->addr_mode) {
         case kADDRMODE_IMPLICIT:
             log_info("%s", disasm_get_asm(instr));
@@ -2157,7 +2219,7 @@ static void _instr_tax(const InstrInfo* instr) {
     }
 }
 
-static void _instr_tay(const InstrInfo* instr) {
+static inline void _instr_tay(const InstrInfo* instr) {
     switch (instr->addr_mode) {
         case kADDRMODE_IMPLICIT:
             log_info("%s", disasm_get_asm(instr));
@@ -2169,7 +2231,7 @@ static void _instr_tay(const InstrInfo* instr) {
     }
 }
 
-static void _instr_tsx(const InstrInfo* instr) {
+static inline void _instr_tsx(const InstrInfo* instr) {
     switch (instr->addr_mode) {
         case kADDRMODE_IMPLICIT:
             log_info("%s", disasm_get_asm(instr));
@@ -2181,7 +2243,7 @@ static void _instr_tsx(const InstrInfo* instr) {
     }
 }
 
-static void _instr_txa(const InstrInfo* instr) {
+static inline void _instr_txa(const InstrInfo* instr) {
     switch (instr->addr_mode) {
         case kADDRMODE_IMPLICIT:
             log_info("%s", disasm_get_asm(instr));
@@ -2193,7 +2255,7 @@ static void _instr_txa(const InstrInfo* instr) {
     }
 }
 
-static void _instr_txs(const InstrInfo* instr) {
+static inline void _instr_txs(const InstrInfo* instr) {
     switch (instr->addr_mode) {
         case kADDRMODE_IMPLICIT:
             log_info("%s", disasm_get_asm(instr));
@@ -2205,7 +2267,7 @@ static void _instr_txs(const InstrInfo* instr) {
     }
 }
 
-static void _instr_tya(const InstrInfo* instr) {
+static inline void _instr_tya(const InstrInfo* instr) {
     switch (instr->addr_mode) {
         case kADDRMODE_IMPLICIT:
             log_info("%s", disasm_get_asm(instr));
