@@ -73,8 +73,13 @@ typedef enum {
 } CPUStatusFlag;
 
 void cpu_init(void);
-void cpu_exec(void);
-void* cpu_get_reg(CPUReg reg);
+uint16_t* cpu_get_pc(void);
+uint8_t* cpu_get_sp(void);
+uint8_t* cpu_get_x(void);
+uint8_t* cpu_get_y(void);
+uint8_t* cpu_get_status(void);
+InstrInfo cpu_decode(void);
+void cpu_exec(const InstrInfo* instr);
 int cpu_apu_io_reg_read(uint16_t addr, void* out, size_t n);
 int cpu_apu_io_reg_write(uint16_t addr, const void* in, size_t n);
 

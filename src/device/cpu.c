@@ -1,6 +1,12 @@
 #include "cpu.h"
 
 #include "memory_bus.h"
+#include "cpu_instr_impl.h"
+
+typedef void (*InstrExecFunc)(const InstrInfo* instr);
+
+static InstrExecFunc s_instr_exec_funcs[kINSTRTYPE_COUNT];
+#define REG_INSTR(_alias, _func) s_instr_exec_funcs[_alias] = _func
 
 static struct {
     uint16_t    pc;
@@ -17,16 +23,96 @@ static struct {
     .status = 0x00 & kCPUSTATUSFLAG_IRQ_DISABLE,
 };
 
+static inline void _fetch_bytes(void* buf, size_t size);
+
 void cpu_init(void) {
+    REG_INSTR(kINSTRTYPE_UNKNOWN, cpu_instr_unknown);
+
+    REG_INSTR(kINSTRTYPE_ADC, cpu_instr_adc);
+    REG_INSTR(kINSTRTYPE_AND, cpu_instr_and);
+    REG_INSTR(kINSTRTYPE_ASL, cpu_instr_asl);
+    REG_INSTR(kINSTRTYPE_BCC, cpu_instr_bcc);
+    REG_INSTR(kINSTRTYPE_BCS, cpu_instr_bcs);
+    REG_INSTR(kINSTRTYPE_BEQ, cpu_instr_beq);
+    REG_INSTR(kINSTRTYPE_BIT, cpu_instr_bit);
+    REG_INSTR(kINSTRTYPE_BMI, cpu_instr_bmi);
+    REG_INSTR(kINSTRTYPE_BPL, cpu_instr_bpl);
+    REG_INSTR(kINSTRTYPE_BNE, cpu_instr_bne);
+    REG_INSTR(kINSTRTYPE_BRK, cpu_instr_brk);
+    REG_INSTR(kINSTRTYPE_BVC, cpu_instr_bvc);
+    REG_INSTR(kINSTRTYPE_BVS, cpu_instr_bvs);
+    REG_INSTR(kINSTRTYPE_CLC, cpu_instr_clc);
+    REG_INSTR(kINSTRTYPE_CLD, cpu_instr_cld);
+    REG_INSTR(kINSTRTYPE_CLI, cpu_instr_cli);
+    REG_INSTR(kINSTRTYPE_CLV, cpu_instr_clv);
+    REG_INSTR(kINSTRTYPE_CMP, cpu_instr_cmp);
+    REG_INSTR(kINSTRTYPE_CPX, cpu_instr_cpx);
+    REG_INSTR(kINSTRTYPE_CPY, cpu_instr_cpy);
+    REG_INSTR(kINSTRTYPE_DEC, cpu_instr_dec);
+    REG_INSTR(kINSTRTYPE_DEX, cpu_instr_dex);
+    REG_INSTR(kINSTRTYPE_DEY, cpu_instr_dey);
+    REG_INSTR(kINSTRTYPE_EOR, cpu_instr_eor);
+    REG_INSTR(kINSTRTYPE_INC, cpu_instr_inc);
+    REG_INSTR(kINSTRTYPE_INX, cpu_instr_inx);
+    REG_INSTR(kINSTRTYPE_INY, cpu_instr_iny);
+    REG_INSTR(kINSTRTYPE_JMP, cpu_instr_jmp);
+    REG_INSTR(kINSTRTYPE_JSR, cpu_instr_jsr);
+    REG_INSTR(kINSTRTYPE_LDA, cpu_instr_lda);
+    REG_INSTR(kINSTRTYPE_LDX, cpu_instr_ldx);
+    REG_INSTR(kINSTRTYPE_LDY, cpu_instr_ldy);
+    REG_INSTR(kINSTRTYPE_LSR, cpu_instr_lsr);
+    REG_INSTR(kINSTRTYPE_NOP, cpu_instr_nop);
+    REG_INSTR(kINSTRTYPE_ORA, cpu_instr_ora);
+    REG_INSTR(kINSTRTYPE_PHA, cpu_instr_pha);
+    REG_INSTR(kINSTRTYPE_PHP, cpu_instr_php);
+    REG_INSTR(kINSTRTYPE_PLA, cpu_instr_pla);
+    REG_INSTR(kINSTRTYPE_PLP, cpu_instr_plp);
+    REG_INSTR(kINSTRTYPE_ROL, cpu_instr_rol);
+    REG_INSTR(kINSTRTYPE_ROR, cpu_instr_ror);
+    REG_INSTR(kINSTRTYPE_RTI, cpu_instr_rti);
+    REG_INSTR(kINSTRTYPE_RTS, cpu_instr_rts);
+    REG_INSTR(kINSTRTYPE_SBC, cpu_instr_sbc);
+    REG_INSTR(kINSTRTYPE_SEC, cpu_instr_sec);
+    REG_INSTR(kINSTRTYPE_SED, cpu_instr_sed);
+    REG_INSTR(kINSTRTYPE_SEI, cpu_instr_sei);
+    REG_INSTR(kINSTRTYPE_STA, cpu_instr_sta);
+    REG_INSTR(kINSTRTYPE_STX, cpu_instr_stx);
+    REG_INSTR(kINSTRTYPE_STY, cpu_instr_sty);
+    REG_INSTR(kINSTRTYPE_TAX, cpu_instr_tax);
+    REG_INSTR(kINSTRTYPE_TAY, cpu_instr_tay);
+    REG_INSTR(kINSTRTYPE_TSX, cpu_instr_tsx);
+    REG_INSTR(kINSTRTYPE_TXA, cpu_instr_txa);
+    REG_INSTR(kINSTRTYPE_TXS, cpu_instr_txs);
+    REG_INSTR(kINSTRTYPE_TYA, cpu_instr_tya);
 }
 
-void cpu_exec(void) {
+uint16_t* cpu_get_pc(void) {
+    return &s_regs.pc;
+}
+
+uint8_t* cpu_get_sp(void) {
+    return &s_regs.sp;
+}
+
+uint8_t* cpu_get_x(void) {
+    return &s_regs.x;
+}
+
+uint8_t* cpu_get_y(void) {
+    return &s_regs.y;
+}
+
+uint8_t* cpu_get_status(void) {
+    return &s_regs.status;
+}
+
+InstrInfo cpu_decode(void) {
     InstrInfo instr = {
         .type       = kINSTRTYPE_UNKNOWN,
         .addr_mode  = kADDRMODE_UNKNOWN,
         .stride     = 1,
     };
-    memory_bus_read(g_device.pc, &instr.opcode, sizeof(instr.opcode));
+    memory_bus_read(s_regs.pc, &instr.opcode, sizeof(instr.opcode));
 
     switch (instr.opcode) {
         // ADC instructions
@@ -1325,17 +1411,8 @@ void cpu_exec(void) {
     return instr;
 }
 
-void* cpu_get_reg(CPUReg reg) {
-    switch (reg)
-    {
-        case kCPU_REG_PC:   return &s_regs.pc;
-        case kCPU_REG_SP:   return &s_regs.sp;
-        case kCPU_REG_ACC:  return &s_regs.acc;
-        case kCPU_REG_X:    return &s_regs.x;
-        // TODO
-    }
-
-    return nullptr;
+void cpu_exec(const InstrInfo* instr) {
+    s_instr_exec_funcs[instr->type](instr);
 }
 
 int cpu_apu_io_reg_read(uint16_t addr, void* out, size_t n) {
@@ -1346,4 +1423,9 @@ int cpu_apu_io_reg_read(uint16_t addr, void* out, size_t n) {
 int cpu_apu_io_reg_write(uint16_t addr, const void* in, size_t n) {
     // TODO
     return 0;
+}
+
+static inline void _fetch_bytes(void* buf, size_t size) {
+    // +1 offset since pc should point at current instruction opcode
+    memory_bus_read(s_regs.pc+1, buf, size);
 }

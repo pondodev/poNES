@@ -28,9 +28,8 @@ void device_load_cart(Cart* cart) {
 }
 
 void device_exec(void) {
-    cpu_exec();
-    InstrInfo instr = instr_decode();
-    instr_exec(&instr);
+    const InstrInfo instr = cpu_decode();
+    cpu_exec(&instr);
 
     g_device.pc += instr.stride;
 }

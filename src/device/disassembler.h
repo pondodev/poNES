@@ -3,7 +3,7 @@
 
 #define DISASM_INSTRUCTIONS
 
-#include "instructions.h"
+#include "cpu.h"
 
 const char* disasm_get_asm(const InstrInfo* instr);
 
