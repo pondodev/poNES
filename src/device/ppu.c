@@ -39,6 +39,16 @@ void ppu_init(void) {
     memset(s_video_buffer, 0, sizeof(s_video_buffer[0])*VIDEO_BUFFER_SIZE);
 }
 
+int ppu_reg_read(uint16_t addr, void* out, size_t n) {
+    // TODO
+    return 0;
+}
+
+int ppu_reg_write(uint16_t addr, const void* in, size_t n) {
+    // TODO
+    return 0;
+}
+
 void ppu_load_color_palette(const char* path) {
     if (path == NULL) {
         log_info("loading default colour palette");

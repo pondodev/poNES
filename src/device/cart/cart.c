@@ -76,6 +76,16 @@ void cart_unload(Cart* cart) {
     memset(cart, 0, sizeof(*cart));
 }
 
+int cart_read(uint16_t addr, void* out, size_t n) {
+    // TODO
+    return 0;
+}
+
+int cart_write(uint16_t addr, const void* in, size_t n) {
+    // TODO
+    return 0;
+}
+
 uint16_t cart_entrypoint(Cart* cart) {
     return mapper_get_start_addr(cart->mapper);
 }

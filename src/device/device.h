@@ -5,16 +5,6 @@
 
 #include <stdint.h>
 
-typedef enum {
-    kCPUSTATUSFLAG_CARRY        = 1 << 0,
-    kCPUSTATUSFLAG_ZERO         = 1 << 1,
-    kCPUSTATUSFLAG_IRQ_DISABLE  = 1 << 2,
-    kCPUSTATUSFLAG_DEC_MODE     = 1 << 3,
-    kCPUSTATUSFLAG_BREAK_CMD    = 1 << 4,
-    kCPUSTATUSFLAG_OVERFLOW     = 1 << 5,
-    kCPUSTATUSFLAG_NEGATIVE     = 1 << 6,
-} CPUStatusFlag;
-
 typedef struct {
     // registers
     uint16_t    pc;
