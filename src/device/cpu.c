@@ -8,6 +8,8 @@ typedef void (*InstrExecFunc)(const InstrInfo* instr);
 static InstrExecFunc s_instr_exec_funcs[kINSTRTYPE_COUNT];
 #define REG_INSTR(_alias, _func) s_instr_exec_funcs[_alias] = _func
 
+#define STACK_ADDR_MSB 0x0100
+
 static struct {
     uint16_t    pc;
     uint8_t     sp;
@@ -20,7 +22,7 @@ static struct {
     .sp     = 0xFD,
     .x      = 0x00,
     .y      = 0x00,
-    .status = 0x00 & kCPUSTATUSFLAG_IRQ_DISABLE,
+    .status = 0x00 & (1 << kCPUSTATUSFLAG_IRQ_DISABLE),
 };
 
 static inline void _fetch_bytes(void* buf, size_t size);
@@ -94,6 +96,10 @@ uint8_t* cpu_get_sp(void) {
     return &s_regs.sp;
 }
 
+uint8_t* cpu_get_acc(void) {
+    return &s_regs.acc;
+}
+
 uint8_t* cpu_get_x(void) {
     return &s_regs.x;
 }
@@ -104,6 +110,36 @@ uint8_t* cpu_get_y(void) {
 
 uint8_t* cpu_get_status(void) {
     return &s_regs.status;
+}
+
+uint8_t cpu_get_status_flag(CPUStatusFlag flag) {
+    uint8_t bit = s_regs.status & (1 << flag);
+    bit = bit >> flag;
+    return bit;
+}
+
+void cpu_set_status_flag(CPUStatusFlag flag, int value) {
+    if (value)
+        s_regs.status |= 1 << flag;
+    else
+        s_regs.status &= ~(1 << flag);
+}
+
+void cpu_stack_push(uint8_t data) {
+    const uint16_t addr = STACK_ADDR_MSB | s_regs.sp;
+
+    memory_bus_write(addr, &data, sizeof(data));
+    --s_regs.sp;
+}
+
+uint8_t cpu_stack_pop(void) {
+    const uint16_t addr = STACK_ADDR_MSB | s_regs.sp;
+
+    uint8_t data;
+    memory_bus_read(addr, &data, sizeof(data));
+    ++s_regs.sp;
+
+    return data;
 }
 
 InstrInfo cpu_decode(void) {

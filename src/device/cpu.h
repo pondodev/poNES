@@ -54,32 +54,31 @@ typedef struct {
 } InstrInfo;
 
 typedef enum {
-    kCPU_REG_PC,
-    kCPU_REG_SP,
-    kCPU_REG_ACC,
-    kCPU_REG_X,
-    kCPU_REG_Y,
-    kCPU_REG_STATUS,
-} CPUReg;
-
-typedef enum {
-    kCPUSTATUSFLAG_CARRY        = 1 << 0,
-    kCPUSTATUSFLAG_ZERO         = 1 << 1,
-    kCPUSTATUSFLAG_IRQ_DISABLE  = 1 << 2,
-    kCPUSTATUSFLAG_DEC_MODE     = 1 << 3,
-    kCPUSTATUSFLAG_BREAK_CMD    = 1 << 4,
-    kCPUSTATUSFLAG_OVERFLOW     = 1 << 5,
-    kCPUSTATUSFLAG_NEGATIVE     = 1 << 6,
+    kCPUSTATUSFLAG_CARRY        = 0,
+    kCPUSTATUSFLAG_ZERO         = 1,
+    kCPUSTATUSFLAG_IRQ_DISABLE  = 2,
+    kCPUSTATUSFLAG_DEC_MODE     = 3,
+    kCPUSTATUSFLAG_BREAK_CMD    = 4,
+    kCPUSTATUSFLAG_OVERFLOW     = 5,
+    kCPUSTATUSFLAG_NEGATIVE     = 6,
 } CPUStatusFlag;
 
 void cpu_init(void);
+
 uint16_t* cpu_get_pc(void);
 uint8_t* cpu_get_sp(void);
+uint8_t* cpu_get_acc(void);
 uint8_t* cpu_get_x(void);
 uint8_t* cpu_get_y(void);
 uint8_t* cpu_get_status(void);
+uint8_t cpu_get_status_flag(CPUStatusFlag flag);
+void cpu_set_status_flag(CPUStatusFlag flag, int value);
+void cpu_stack_push(uint8_t data);
+uint8_t cpu_stack_pop(void);
+
 InstrInfo cpu_decode(void);
 void cpu_exec(const InstrInfo* instr);
+
 int cpu_apu_io_reg_read(uint16_t addr, void* out, size_t n);
 int cpu_apu_io_reg_write(uint16_t addr, const void* in, size_t n);
 

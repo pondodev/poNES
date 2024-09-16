@@ -41,11 +41,11 @@ see `custom.palette` for an example.
 | [Mappers](https://www.nesdev.org/wiki/Mapper) | list of mappers used in NES carts |
 
 ## TODO
-- write a bus abstraction to route memory reads/writes to the correct places
-- implement 6502 instructions
 - implement PPU
 - implement APU
 - wire up inputs 
+- implement cart mapper abstraction
+- implement nrom cart mapper
 
 ## wishlist
 - debug window with tools like a memory inspector and cart info view
