@@ -46,6 +46,8 @@ see `custom.palette` for an example.
 - wire up inputs 
 - implement cart mapper abstraction
 - implement nrom cart mapper
+- rework the memory bus read/write funcs so that they read single bytes from each location at a time to allow
+  read/writes that cross boundaries over to other devices
 
 ## wishlist
 - debug window with tools like a memory inspector and cart info view

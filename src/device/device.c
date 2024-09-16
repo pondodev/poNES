@@ -3,6 +3,7 @@
 #include "cpu.h"
 #include "ppu.h"
 #include "ram.h"
+#include "helpers.h"
 
 #include <string.h>
 
@@ -16,7 +17,7 @@ void device_init(void) {
         .acc    = 0x00,
         .x      = 0x00,
         .y      = 0x00,
-        .status = 0x00 & kCPUSTATUSFLAG_IRQ_DISABLE,
+        .status = 0x00 & BIT(kCPUSTATUSFLAG_IRQ_DISABLE),
         .cart   = NULL,
     };
 

@@ -2,6 +2,7 @@
 
 #include "memory_bus.h"
 #include "cpu_instr_impl.h"
+#include "helpers.h"
 
 typedef void (*InstrExecFunc)(const InstrInfo* instr);
 
@@ -22,7 +23,7 @@ static struct {
     .sp     = 0xFD,
     .x      = 0x00,
     .y      = 0x00,
-    .status = 0x00 & (1 << kCPUSTATUSFLAG_IRQ_DISABLE),
+    .status = 0x00 & BIT(kCPUSTATUSFLAG_IRQ_DISABLE),
 };
 
 static inline void _fetch_bytes(void* buf, size_t size);
@@ -113,16 +114,14 @@ uint8_t* cpu_get_status(void) {
 }
 
 uint8_t cpu_get_status_flag(CPUStatusFlag flag) {
-    uint8_t bit = s_regs.status & (1 << flag);
-    bit = bit >> flag;
-    return bit;
+    return read_bit(s_regs.status, flag);
 }
 
 void cpu_set_status_flag(CPUStatusFlag flag, int value) {
     if (value)
-        s_regs.status |= 1 << flag;
+        set_bit(&s_regs.status, flag);
     else
-        s_regs.status &= ~(1 << flag);
+        unset_bit(&s_regs.status, flag);
 }
 
 void cpu_stack_push(uint8_t data) {
