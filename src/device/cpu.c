@@ -1452,11 +1452,19 @@ void cpu_exec(const InstrInfo* instr) {
 }
 
 int cpu_apu_io_reg_read(uint16_t addr, void* out, size_t n) {
+    (void)addr;
+    (void)out;
+    (void)n;
+
     // TODO
     return 0;
 }
 
 int cpu_apu_io_reg_write(uint16_t addr, const void* in, size_t n) {
+    (void)addr;
+    (void)in;
+    (void)n;
+
     // TODO
     return 0;
 }

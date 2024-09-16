@@ -77,11 +77,19 @@ void cart_unload(Cart* cart) {
 }
 
 int cart_read(uint16_t addr, void* out, size_t n) {
+    (void)addr;
+    (void)out;
+    (void)n;
+
     // TODO
     return 0;
 }
 
 int cart_write(uint16_t addr, const void* in, size_t n) {
+    (void)addr;
+    (void)in;
+    (void)n;
+
     // TODO
     return 0;
 }
