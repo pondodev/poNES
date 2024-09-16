@@ -2,6 +2,7 @@
 
 #include "cpu.h"
 #include "ppu.h"
+#include "ram.h"
 
 #include <string.h>
 
@@ -21,6 +22,7 @@ void device_init(void) {
 
     cpu_init();
     ppu_init();
+    ram_init();
 }
 
 void device_load_cart(Cart* cart) {

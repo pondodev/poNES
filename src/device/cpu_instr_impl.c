@@ -1,10 +1,10 @@
 #include "cpu_instr_impl.h"
 
 #include "memory_bus.h"
+#include "helpers.h"
 
 #include "log.h"
 
-#define BIT(n) (1 << n)
 #define IRQ_VECTOR 0xFFFE
 
 static inline void _branch(const InstrInfo* instr);
