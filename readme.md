@@ -39,6 +39,9 @@ see `custom.palette` for an example.
 | [PPU registers](https://www.nesdev.org/wiki/PPU_registers) | information on the PPU and its registers |
 | [CPU memory map](https://www.nesdev.org/wiki/CPU_memory_map) | information on how the CPU maps its memory space |
 | [Mappers](https://www.nesdev.org/wiki/Mapper) | list of mappers used in NES carts |
+| [CPU power up state](https://www.nesdev.org/wiki/CPU_power_up_state) | details on the state the CPU on startup of the system |
+| [PPU power up state](https://www.nesdev.org/wiki/PPU_power_up_state) | details on the state of the PPU on startup of the system |
+| [PPU scrolling](https://www.nesdev.org/wiki/PPU_scrolling) | info on how scrolling works, + info on internal PPU registers |
 
 ## TODO
 - implement PPU
