@@ -5,8 +5,8 @@
 #include <stdlib.h>
 
 void ram_init(void);
-int ram_read(uint16_t addr, void* out, size_t n);
-int ram_write(uint16_t addr, const void* in, size_t n);
+int ram_read8(uint16_t addr, uint8_t* out);
+int ram_write8(uint16_t addr, const uint8_t* in);
 
 #endif
 

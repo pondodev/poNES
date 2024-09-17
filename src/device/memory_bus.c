@@ -25,17 +25,19 @@ int memory_bus_read(uint16_t addr, void* out, size_t n) {
         return 0;
     }
 
-    const BusLocation location = _get_bus_location(addr);
-    switch (location)
-    {
-        case kBUS_LOCATION_RAM:         return ram_read(addr, out, n);
-        case kBUS_LOCATION_PPU_REG:     return ppu_reg_read(addr, out, n);
-        case kBUS_LOCATION_APU_IO_REG:  return cpu_apu_io_reg_read(addr, out, n);
-        case kBUS_LOCATION_UNMAPPED:    return cart_read(addr, out, n);
+    uint8_t* buf = (uint8_t*)out;
+    for (size_t i = 0; i < n; ++i) {
+        const BusLocation location = _get_bus_location(addr);
+        switch (location) {
+            case kBUS_LOCATION_RAM:         return ram_read8(addr, buf+i);
+            case kBUS_LOCATION_PPU_REG:     return ppu_reg_read8(addr, buf+i);
+            case kBUS_LOCATION_APU_IO_REG:  return cpu_apu_io_reg_read8(addr, buf+i);
+            case kBUS_LOCATION_UNMAPPED:    return cart_read8(addr, buf+i);
 
-        default:
-            log_error("attempted to read from memory not mapped in the bus (0x%04X)", addr);
-            break;
+            default:
+                log_error("attempted to read from memory not mapped in the bus (0x%04X)", addr);
+                break;
+        }
     }
 
     return 0;
@@ -47,17 +49,19 @@ int memory_bus_write(uint16_t addr, const void* in, size_t n) {
         return 0;
     }
 
-    const BusLocation location = _get_bus_location(addr);
-    switch (location)
-    {
-        case kBUS_LOCATION_RAM:         return ram_write(addr, in, n);
-        case kBUS_LOCATION_PPU_REG:     return ppu_reg_write(addr, in, n);
-        case kBUS_LOCATION_APU_IO_REG:  return cpu_apu_io_reg_write(addr, in, n);
-        case kBUS_LOCATION_UNMAPPED:    return cart_write(addr, in, n);
+    const uint8_t* buf = (const uint8_t*)in;
+    for (size_t i = 0; i < n; ++i) {
+        const BusLocation location = _get_bus_location(addr);
+        switch (location) {
+            case kBUS_LOCATION_RAM:         return ram_write8(addr, buf+i);
+            case kBUS_LOCATION_PPU_REG:     return ppu_reg_write8(addr, buf+i);
+            case kBUS_LOCATION_APU_IO_REG:  return cpu_apu_io_reg_write8(addr, buf+i);
+            case kBUS_LOCATION_UNMAPPED:    return cart_write8(addr, buf+i);
 
-        default:
-            log_error("attempted to read from memory not mapped in the bus (0x%04X)", addr);
-            break;
+            default:
+                log_error("attempted to read from memory not mapped in the bus (0x%04X)", addr);
+                break;
+        }
     }
 
     return 0;

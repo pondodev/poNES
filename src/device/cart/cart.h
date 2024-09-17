@@ -28,8 +28,8 @@ typedef struct {
 int cart_load(const char* path, Cart* cart);
 void cart_unload(Cart* cart);
 
-int cart_read(uint16_t addr, void* out, size_t n);
-int cart_write(uint16_t addr, const void* in, size_t n);
+int cart_read8(uint16_t addr, uint8_t* out);
+int cart_write8(uint16_t addr, const uint8_t* in);
 
 uint16_t cart_entrypoint(Cart* cart);
 

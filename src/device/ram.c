@@ -11,24 +11,16 @@ void ram_init(void) {
     randomise_buffer(s_ram, INTERNAL_RAM_SIZE);
 }
 
-int ram_read(uint16_t addr, void* out, size_t n) {
-    uint8_t* buf = (uint8_t*)out;
-
-    for (size_t i = 0; i < n; ++i) {
-        const uint16_t ram_idx = _transform_addr(addr+i);
-        buf[i] = s_ram[ram_idx];
-    }
+int ram_read8(uint16_t addr, uint8_t* out) {
+    const uint16_t ram_idx  = _transform_addr(addr);
+    *out = s_ram[ram_idx];
 
     return 1;
 }
 
-int ram_write(uint16_t addr, const void* in, size_t n) {
-    const uint8_t* buf = (const uint8_t*)in;
-
-    for (size_t i = 0; i < n; ++i) {
-        const uint16_t ram_idx = _transform_addr(addr+i);
-        s_ram[ram_idx] = buf[i];
-    }
+int ram_write8(uint16_t addr, const uint8_t* in) {
+    const uint16_t ram_idx  = _transform_addr(addr);
+    s_ram[ram_idx]          = *in;
 
     return 1;
 }

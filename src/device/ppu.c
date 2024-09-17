@@ -39,19 +39,17 @@ void ppu_init(void) {
     memset(s_video_buffer, 0, sizeof(s_video_buffer[0])*VIDEO_BUFFER_SIZE);
 }
 
-int ppu_reg_read(uint16_t addr, void* out, size_t n) {
+int ppu_reg_read8(uint16_t addr, uint8_t* out) {
     (void)addr;
     (void)out;
-    (void)n;
 
     // TODO
     return 0;
 }
 
-int ppu_reg_write(uint16_t addr, const void* in, size_t n) {
+int ppu_reg_write8(uint16_t addr, const uint8_t* in) {
     (void)addr;
     (void)in;
-    (void)n;
 
     // TODO
     return 0;

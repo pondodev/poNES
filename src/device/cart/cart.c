@@ -76,19 +76,17 @@ void cart_unload(Cart* cart) {
     memset(cart, 0, sizeof(*cart));
 }
 
-int cart_read(uint16_t addr, void* out, size_t n) {
+int cart_read8(uint16_t addr, uint8_t* out) {
     (void)addr;
     (void)out;
-    (void)n;
 
     // TODO
     return 0;
 }
 
-int cart_write(uint16_t addr, const void* in, size_t n) {
+int cart_write8(uint16_t addr, const uint8_t* in) {
     (void)addr;
     (void)in;
-    (void)n;
 
     // TODO
     return 0;
