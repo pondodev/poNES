@@ -1,6 +1,7 @@
 #include "device/device.h"
 #include "device/cart/cart.h"
 #include "device/ppu.h"
+#include "device/color_palette.h"
 #include "platform/platform.h"
 #include "log.h"
 
@@ -27,7 +28,7 @@ int main(int argc, char* argv[]) {
     device_load_cart(&cart);
 
     const char* palette_path = argc == 3 ? argv[2] : NULL;
-    ppu_load_color_palette(palette_path);
+    color_palette_from_file(palette_path);
 
     uint32_t buffer[VIDEO_BUFFER_WIDTH*VIDEO_BUFFER_HEIGHT];
     size_t pixel = 0;

@@ -12,8 +12,6 @@ void ppu_init(void);
 int ppu_reg_read8(uint16_t addr, uint8_t* out);
 int ppu_reg_write8(uint16_t addr, const uint8_t* in);
 
-void ppu_load_color_palette(const char* path);
-uint32_t ppu_get_color(uint8_t index);
 const uint32_t* ppu_get_buffer(void);
 
 #endif
