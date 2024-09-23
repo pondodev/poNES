@@ -2,7 +2,7 @@
 
 #include "memory_map.h"
 #include "ram.h"
-#include "ppu.h"
+#include "ppu/ppu_reg.h"
 #include "cpu.h"
 #include "cart/cart.h"
 

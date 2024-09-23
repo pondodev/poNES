@@ -3,7 +3,9 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-#include "device/ppu.h"
+// TODO: add a function to device.h which allows the retrieval of the
+// frame buffer so we can stop relying on the ppu here
+#include "device/ppu/ppu.h"
 #include "helpers.h"
 #include "log.h"
 
@@ -152,8 +154,7 @@ void platform_poll_events(void) {
         const int key   = s_keymap[i];
         const int state = glfwGetKey(s_window, key);
 
-        if (state == GLFW_PRESS)    set_bit(&s_input_state, i);
-        else                        unset_bit(&s_input_state, i);
+        write_bit(&s_input_state, i, state == GLFW_PRESS);
     }
 }
 

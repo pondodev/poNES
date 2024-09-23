@@ -2,12 +2,11 @@
 
 #include <time.h>
 
-void set_bit(uint8_t* bitset, uint8_t idx) {
-    *bitset |= 1 << idx;
-}
-
-void unset_bit(uint8_t* bitset, uint8_t idx) {
-    *bitset &= ~(1 << idx);
+void write_bit(uint8_t* bitset, uint8_t idx, int value) {
+    if (value)
+        *bitset |= 1 << idx;
+    else
+        *bitset &= ~(1 << idx);
 }
 
 int read_bit(uint8_t bitset, uint8_t idx) {

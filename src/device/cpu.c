@@ -118,10 +118,7 @@ uint8_t cpu_get_status_flag(CPUStatusFlag flag) {
 }
 
 void cpu_set_status_flag(CPUStatusFlag flag, int value) {
-    if (value)
-        set_bit(&s_regs.status, flag);
-    else
-        unset_bit(&s_regs.status, flag);
+    write_bit(&s_regs.status, flag, value);
 }
 
 void cpu_stack_push(uint8_t data) {

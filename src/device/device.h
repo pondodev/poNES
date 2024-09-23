@@ -22,7 +22,6 @@ extern Device g_device;
 void device_init(void);
 void device_load_cart(Cart* cart);
 void device_exec(void);
-uint8_t device_read_mem(uint16_t addr);
 
 #endif
 

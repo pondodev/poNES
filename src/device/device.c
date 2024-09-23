@@ -1,7 +1,7 @@
 #include "device.h"
 
 #include "cpu.h"
-#include "ppu.h"
+#include "ppu/ppu.h"
 #include "ram.h"
 #include "helpers.h"
 
@@ -35,5 +35,8 @@ void device_exec(void) {
     cpu_exec(&instr);
 
     g_device.pc += instr.stride;
+
+    for (size_t i = 0; i < 3; ++i)
+        ppu_cycle();
 }
 

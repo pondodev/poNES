@@ -1,7 +1,7 @@
 #include "device/device.h"
 #include "device/cart/cart.h"
-#include "device/ppu.h"
-#include "device/color_palette.h"
+#include "device/ppu/ppu.h"
+#include "device/ppu/color_palette.h"
 #include "platform/platform.h"
 #include "log.h"
 
